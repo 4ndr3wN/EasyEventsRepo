@@ -38,7 +38,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/third"
-            android:title="Third item" />
+            android:title="LONG ASS ITEM NAME CAUSE WTH HAPPENS WHEN IT IS TOO BROAD?!?!?!?!?! item" />
     </group>
     <group android:id="@+id/group4"
         android:checkableBehavior="single">

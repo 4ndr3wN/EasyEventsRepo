@@ -16,12 +16,33 @@
     app:menu="@menu/activity_main_drawer" -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:background="@drawable/side_nav_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/activity_main_drawer" />
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_itemlist"
+            android:background="@drawable/side_nav_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:layout_marginTop="-25dp"
+            android:layout_marginRight="@dimen/btn_drawer_width"
+            app:menu="@menu/activity_main_drawer" />
+
+        <!-- Close drawer button, this is the dark-bar on the right of the drawer -->
+        <Button
+            android:id="@+id/btn_close_drawer"
+            android:layout_width="@dimen/btn_drawer_width"
+            android:layout_height="match_parent"
+            android:background="@color/colorDark"
+            android:layout_gravity="right"
+            android:onClick="btn_toggleDrawer"/>
+    </android.support.design.widget.NavigationView>
+
+
 
 </android.support.v4.widget.DrawerLayout>

@@ -15,6 +15,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!-- Open drawer button, this is the dark-bar on the left -->
+    <Button
+        android:id="@+id/btn_open_drawer"
+        android:layout_width="@dimen/btn_drawer_width"
+        android:layout_height="match_parent"
+        android:background="@color/colorDark"
+        android:layout_gravity="left"
+        android:onClick="btn_toggleDrawer"/>
+
     <!-- Orignal layout below the app bar -->
     <!-- -->
     <!--  <include layout="@layout/content_main" /> -->
