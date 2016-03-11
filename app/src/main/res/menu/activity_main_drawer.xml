@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:checkableBehavior="single">
+<!-- original menu in the drawer ALSO COMMENTED IN java/MainActivity.java -->
+    <!--<group>
         <item android:id="@+id/nav_camara" android:icon="@android:drawable/ic_menu_camera"
             android:title="Import" />
         <item android:id="@+id/nav_gallery" android:icon="@android:drawable/ic_menu_gallery"
@@ -19,6 +19,25 @@
             <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>
+    </item>-->
+    <group android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/first"
+            android:title="First item" />
+    </group>
 
+    <group android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/second"
+            android:title="Second item" />
+    </group>
+
+    <group android:id="@+id/group3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/third"
+            android:title="Third item" />
+    </group>
 </menu>

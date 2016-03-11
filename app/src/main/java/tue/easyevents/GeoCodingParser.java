@@ -1,4 +1,4 @@
-package tue.easyevents;
+/*package tue.easyevents;
 
 import org.apache.http.*;
 import org.apache.http.HttpResponse;
@@ -79,4 +79,4 @@ public class GeoCodingParser {
         return json;
 
     }
-}
+}*/
