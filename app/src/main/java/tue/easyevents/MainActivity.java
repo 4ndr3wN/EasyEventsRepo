@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity
         //Make drawer dark fading colour transparent
         drawer.setScrimColor(Color.TRANSPARENT);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //ORIGINAL: R.id.nav_view, had to bechanged due to the new wrapping NavigationView
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_itemlist);
         navigationView.setNavigationItemSelectedListener(this);
 
     }

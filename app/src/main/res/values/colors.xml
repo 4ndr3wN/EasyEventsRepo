@@ -3,4 +3,5 @@
     <color name="colorLight">#3c8d93</color>
     <color name="colorDark">#1f454d</color>
     <color name="colorGrey">#d9d7ca</color>
+    <color name="colorTrans">#00000000</color>
 </resources>
