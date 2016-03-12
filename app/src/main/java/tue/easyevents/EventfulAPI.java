@@ -3,6 +3,12 @@ package tue.easyevents;
 
 import android.util.Xml;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -16,6 +22,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by Adriaan on 10-3-2016.
@@ -38,14 +49,16 @@ public class EventfulAPI {
      * @throws ConnectException
      * @return An arraylist of events fitting the criteria
      */
-    public static ArrayList<Event> searchEvents(String latLong, String from, String to, ArrayList<String> cat)
+    public static ArrayList<Event> searchEvents(String latLong, String from, String to,
+                                                ArrayList<String> cat)
             throws ConnectException{
 
         InputStream in = null;
         ArrayList<Event> events = new ArrayList<>();
         String TIMEFRAME = from + "00-" + to + "00";
         //To change the amount of returned events, edit the argument page_size here
-        String SEARCH_PARAMETERS = "&location=" + latLong + "&date=" + TIMEFRAME + "&include=categories&page_size=10";
+        String SEARCH_PARAMETERS = "&location=" + latLong + "&date=" + TIMEFRAME +
+                "&include=categories,links&page_size=10";
         String SEARCH_ADDRESS = BASE_ADDRESS + "/search?..." + SEARCH_PARAMETERS + APP_KEY;
 
 
@@ -53,22 +66,55 @@ public class EventfulAPI {
             HttpURLConnection connect = getHttpConnection(SEARCH_ADDRESS);
             in = connect.getInputStream();
 
-            // Set up an XML parser.
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(in, null); // Enter the stream.
-            parser.nextTag();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(new InputSource(in));
+            doc.getDocumentElement().normalize();
+
+            NodeList nodeList = doc.getElementsByTagName("event");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+
+                String info = parseData(node, "description");
+                String picture = parseData(node, "image");
+                String ticket = "";
+                String title = parseData(node, "title");
+                String venue = parseData(node, "venue_name");
+                String longitude = parseData(node, "longitude");
+                String latitude = parseData(node, "latitude");
+
+            }
+
+
 
 
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (XmlPullParserException e) {
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
             e.printStackTrace();
         }
 
         return events;
 
+    }
+
+    private static String parseData(Node node, String tag) {
+        String data = "";
+
+        Element firstElement = (Element) node;
+
+        NodeList dataList = firstElement.getElementsByTagName(tag);
+        if (dataList.getLength() > 0){
+            Element dataElement = (Element) dataList.item(0);
+            dataList = dataElement.getChildNodes();
+            data = dataList.item(0).getNodeValue();
+        }
+
+        return data;
     }
 
     private static HttpURLConnection getHttpConnection(String link)
