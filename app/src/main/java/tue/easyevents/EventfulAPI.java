@@ -67,9 +67,11 @@ public class EventfulAPI {
         String searchParameters = "&location=" + latLong + "&date=" + timeframe +
                 "&include=categories,links&page_size=25";
         String searchAddress = baseAddress + "/search?..." + searchParameters + "&sort_order=popularity" + appKey;
+
+        //We log the search address for testing purposes
         Log.d("Address", searchAddress);
 
-
+        //Here the connection is made with the API and the generated searchAddress
         try {
             HttpURLConnection connect = getHttpConnection(searchAddress);
             in = connect.getInputStream();
@@ -80,7 +82,8 @@ public class EventfulAPI {
             doc.getDocumentElement().normalize();
 
             NodeList nodeList = doc.getElementsByTagName("event");
-            Log.d("Size of list is ", Integer.toString(nodeList.getLength()));
+            //For each event we found we parse the data and then create an Event object to store in
+            //the arraylist we intend to retun
             for (int i = 0; i < nodeList.getLength(); i++) {
                 if(nodeList.item(i) != null){
                     Node node = nodeList.item(i);
@@ -98,9 +101,9 @@ public class EventfulAPI {
                     String city = parseData(node, "city_name");
                     Date dateDate = stringToDate(dateString);
                     Long date = dateDate.getTime();
-
-                    events.add(new Event(address, country, city, info, picture, ticket, title, venue, longitude,
-                            latitude, 0, 0, 0, 0, date, id));
+                    //Create an Event object and add it to the arraylist
+                    events.add(new Event(address, country, city, info, picture, ticket, title,
+                            venue, longitude, latitude, 0, 0, 0, 0, date, id));
                 }
 
             }
@@ -108,7 +111,7 @@ public class EventfulAPI {
 
 
 
-
+        //Error handling
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
@@ -123,6 +126,13 @@ public class EventfulAPI {
 
     }
 
+    /**This method makes a Date out of the string we got from the Eventful API.
+     * As long as Eventful maintains their current date format it will never throw the ParseException
+     *
+     * @param date
+     * @return the date entered, but as a Date object
+     * @throws ParseException
+     */
     private static Date stringToDate(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date formattedDate = format.parse(date);
@@ -130,16 +140,27 @@ public class EventfulAPI {
     }
 
 
+    /**This method parses the XML file and returns the information from the relevant tag.
+     * It has a general way of parsing for most tags, but some require a different approach
+     * @param node
+     * @param tag
+     * @return The string from the requested tag
+     */
     private static String parseData(Node node, String tag) {
         String data = " ";
 
         Element firstElement = (Element) node;
+        //The event ID is contained in the attribute of the firstElement and not as a child,
+        //therefore we need to check if the tag is "id" first
         if(tag.equals("id")){
             data = firstElement.getAttribute("id");
             return data;
         }
 
+        //Get all the elements with the proper tag name, in almost all cases this is just 1 child.
         NodeList dataList = firstElement.getElementsByTagName(tag);
+        //The image urls are nested inside multiple children, which is why we need to check if
+        //an image is requested
         if(tag.equals("image")){
             if(dataList.item(0).getChildNodes().getLength()>1){
                 int biggestPicture = dataList.item(0).getChildNodes().getLength()-2;
@@ -149,6 +170,9 @@ public class EventfulAPI {
             }
             return data;
         }
+
+        //The description of events is formatted in such a way that we need the second child of
+        //dataList instead of the first
         if(tag.equals("description")){
             Element dataElement = (Element) dataList.item(1);
             dataList = dataElement.getChildNodes();
@@ -158,6 +182,9 @@ public class EventfulAPI {
             data = dataList.item(0).getNodeValue();
             return data;
         }
+
+        //The ticket links are again nested inside multiple children, which is why we need another
+        //check
         if (tag.equals("links")){
             Element dataElement = (Element) dataList.item(0);
             dataList = dataElement.getChildNodes();
@@ -176,6 +203,7 @@ public class EventfulAPI {
         return data;
     }
 
+    //This method creates the connection for the API call
     private static HttpURLConnection getHttpConnection(String link)
             throws IOException {
         URL url = new URL(link);
