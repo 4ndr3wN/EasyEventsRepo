@@ -6,7 +6,8 @@
     android:layout_height="match_parent" android:fitsSystemWindows="true"
     tools:context="tue.easyevents.Settings_Activity">
 
-    <include layout="@layout/settings_view" />
+    <include layout="@layout/settings_view" android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </android.support.design.widget.CoordinatorLayout>

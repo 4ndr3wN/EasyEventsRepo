@@ -54,7 +54,7 @@
     <!-- Orignal layout below the app bar -->
     <!-- -->
     <!--  <include layout="@layout/content_main" /> -->
-    <include layout="@layout/settings_view" />
+    <!--<include layout="@layout/settings_view" />-->
 
     <!-- Original, floating button with e-mail-->
     <!-- -->
