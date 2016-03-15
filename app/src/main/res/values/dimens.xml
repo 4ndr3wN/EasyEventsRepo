@@ -10,4 +10,6 @@
     <dimen name="status_bar_size">-25dp</dimen>
     <dimen name="btn_arrow_size">16dp</dimen>
     <!-- status bar size should always be 25dp, not tested on multiple devices yet! -->
+    <dimen name="general_padding_LR">10dp</dimen>
+    <dimen name="general_padding_TB">2dp</dimen>
 </resources>

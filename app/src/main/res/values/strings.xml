@@ -13,7 +13,7 @@
     <string name="settings_time1">Time period</string>
     <string name="settings_time2">This will limit the Events shown.</string>
     <string name="settings_time3">Week</string>
-    <string name="settings_range1">Range\r\n</string>
+    <string name="settings_range1">Range</string>
     <string name="settings_range2">This changes the search radius.</string>
     <string name="settings_range3">10 km</string>
     <string name="settings_route1">Route Planner</string>
