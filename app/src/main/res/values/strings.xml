@@ -22,5 +22,6 @@
     <string name="settings_route3">Den Dolech 2, Eindhoven</string>
     <string name="settings_route4">Use GPS location</string>
     <string name="settings_route5"></string>
+    <string name="title_activity_settings_">Settings_Activity</string>
 
 </resources>
