@@ -1,5 +1,6 @@
 package tue.easyevents;
 
+<<<<<<< HEAD
 import android.util.Xml;
 
 import org.w3c.dom.Document;
@@ -15,12 +16,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+=======
+>>>>>>> origin/master
 import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,6 +44,7 @@ public class GoogleDirectionsAPI {
      * @return An arraylist of directions fitting the criteria and parameters
      * @throws ConnectException
      */
+<<<<<<< HEAD
     public static String[] searchEvents(String origin, String destination, int arrival_time)
             throws ConnectException {
 
@@ -118,6 +117,16 @@ public class GoogleDirectionsAPI {
         conn.connect();
         return conn;
     }
+=======
+//    public static ArrayList<WAAROMWERKTDEZEVARIABELENIET> searchEvents(String origin, String destination, String mode, int departure_time, ArrayList<String> cat)
+//            throws ConnectException {
+//
+//        InputStream in = null;
+//        ArrayList<WAAROMWERKTDEZEVARIABELENIET> routes = new ArrayList<>();
+//        String SEARCH_PARAMETERS = "origin=" + origin + "&destination=" + destination + "&mode=" + mode + "&departure_time=" + departure_time;
+//        String SEARCH_ADDRESS = BASE_ADDRESS + SEARCH_PARAMETERS + API_KEY;
+//    }
+>>>>>>> origin/master
 }
 
 
