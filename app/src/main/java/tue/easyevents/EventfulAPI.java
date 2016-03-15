@@ -1,7 +1,9 @@
 package tue.easyevents;
 
 
+import android.util.Log;
 import android.util.Xml;
+import android.widget.TextView;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,21 +23,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+
 /**
  * Created by Adriaan on 10-3-2016.
  */
 public class EventfulAPI {
 
-    public static String BASE_ADDRESS = "http://api.eventful.com/rest/events";
-    public static String APP_KEY = "&app_key=hTSLpFpxJ47C5W8t";
-    private final static int TIME_OUT = 10000; // in milliseconds.
+    public static String baseAddress = "http://api.eventful.com/rest/events";
+    public static String appKey = "&app_key=hTSLpFpxJ47C5W8t";
+    private final static int timeOut = 10000; // in milliseconds.
 
 
     /**
@@ -49,21 +55,23 @@ public class EventfulAPI {
      * @throws ConnectException
      * @return An arraylist of events fitting the criteria
      */
-    public static ArrayList<Event> searchEvents(String latLong, String from, String to,
-                                                ArrayList<String> cat)
+
+    // Add this in as input for implementing categories: ArrayList<String> cat
+    public static ArrayList<Event> searchEvents(String latLong, String from, String to)
             throws ConnectException{
 
         InputStream in = null;
         ArrayList<Event> events = new ArrayList<>();
-        String TIMEFRAME = from + "00-" + to + "00";
+        String timeframe = from + "00-" + to + "00";
         //To change the amount of returned events, edit the argument page_size here
-        String SEARCH_PARAMETERS = "&location=" + latLong + "&date=" + TIMEFRAME +
-                "&include=categories,links&page_size=10";
-        String SEARCH_ADDRESS = BASE_ADDRESS + "/search?..." + SEARCH_PARAMETERS + APP_KEY;
+        String searchParameters = "&location=" + latLong + "&date=" + timeframe +
+                "&include=categories,links&page_size=25";
+        String searchAddress = baseAddress + "/search?..." + searchParameters + "&sort_order=popularity" + appKey;
+        Log.d("Address", searchAddress);
 
 
         try {
-            HttpURLConnection connect = getHttpConnection(SEARCH_ADDRESS);
+            HttpURLConnection connect = getHttpConnection(searchAddress);
             in = connect.getInputStream();
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -72,17 +80,28 @@ public class EventfulAPI {
             doc.getDocumentElement().normalize();
 
             NodeList nodeList = doc.getElementsByTagName("event");
-
+            Log.d("Size of list is ", Integer.toString(nodeList.getLength()));
             for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
+                if(nodeList.item(i) != null){
+                    Node node = nodeList.item(i);
+                    String ticket = parseData(node, "links");
+                    String id = parseData(node, "id");
+                    String title = parseData(node, "title");
+                    String picture = parseData(node, "image");
+                    String info = parseData(node, "description");
+                    String venue = parseData(node, "venue_name");
+                    String longitude = parseData(node, "longitude");
+                    String latitude = parseData(node, "latitude");
+                    String dateString = parseData(node, "start_time");
+                    String address = parseData(node, "venue_address");
+                    String country = parseData(node, "country_name");
+                    String city = parseData(node, "city_name");
+                    Date dateDate = stringToDate(dateString);
+                    Long date = dateDate.getTime();
 
-                String info = parseData(node, "description");
-                String picture = parseData(node, "image");
-                String ticket = "";
-                String title = parseData(node, "title");
-                String venue = parseData(node, "venue_name");
-                String longitude = parseData(node, "longitude");
-                String latitude = parseData(node, "latitude");
+                    events.add(new Event(address, country, city, info, picture, ticket, title, venue, longitude,
+                            latitude, 0, 0, 0, 0, date, id));
+                }
 
             }
 
@@ -96,23 +115,63 @@ public class EventfulAPI {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         return events;
 
     }
 
+    private static Date stringToDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date formattedDate = format.parse(date);
+        return formattedDate;
+    }
+
+
     private static String parseData(Node node, String tag) {
-        String data = "";
+        String data = " ";
 
         Element firstElement = (Element) node;
+        if(tag.equals("id")){
+            data = firstElement.getAttribute("id");
+            return data;
+        }
 
         NodeList dataList = firstElement.getElementsByTagName(tag);
-        if (dataList.getLength() > 0){
+        if(tag.equals("image")){
+            if(dataList.item(0).getChildNodes().getLength()>1){
+                int biggestPicture = dataList.item(0).getChildNodes().getLength()-2;
+                NodeList pictureInfo = dataList.item(0).getChildNodes().item(biggestPicture).getChildNodes();
+                data = pictureInfo.item(1).getChildNodes().item(0).getNodeValue();
+
+            }
+            return data;
+        }
+        if(tag.equals("description")){
+            Element dataElement = (Element) dataList.item(1);
+            dataList = dataElement.getChildNodes();
+            if (dataList.item(0).getNodeValue() == null){
+                return data;
+            }
+            data = dataList.item(0).getNodeValue();
+            return data;
+        }
+        if (tag.equals("links")){
             Element dataElement = (Element) dataList.item(0);
             dataList = dataElement.getChildNodes();
-            data = dataList.item(0).getNodeValue();
+            data = dataList.item(1).getChildNodes().item(1).getChildNodes().item(0).getNodeValue();
+            return data;
         }
+        Element dataElement = (Element) dataList.item(0);
+        dataList = dataElement.getChildNodes();
+
+        if (dataList.item(0).getNodeValue() == null) {
+            return data;
+        }
+        data = dataList.item(0).getNodeValue();
+
 
         return data;
     }
@@ -122,8 +181,8 @@ public class EventfulAPI {
         URL url = new URL(link);
         HttpURLConnection conn= (HttpURLConnection) url.openConnection();
         conn.setInstanceFollowRedirects(false);
-        conn.setReadTimeout(EventfulAPI.TIME_OUT);
-        conn.setConnectTimeout(EventfulAPI.TIME_OUT);
+        conn.setReadTimeout(EventfulAPI.timeOut);
+        conn.setConnectTimeout(EventfulAPI.timeOut);
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
         conn.setDoOutput(false);

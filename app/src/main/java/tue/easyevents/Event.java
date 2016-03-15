@@ -6,27 +6,33 @@ package tue.easyevents;
 public class Event {
 
     String addressEvent;
+    String countryEvent;
+    String cityEvent;
     String infoEvent;
     String pictureEvent;
     String ticketEvent;
     String titleEvent;
     String venueEvent;
+    String eventLongtitude;
+    String eventLatitude;
+    String idEvent;
 
-    double eventLongtitude;
-    double eventLatitude;
+
     double ratingEvent;
     double ratingUsers;
     double ratingVenue;
     double ratingWeather;
 
-    int dateEvent;
-    int idEvent;
+    long dateEvent;
 
-    public Event(String address, String info, String picture, String ticket, String title, String venue,
-                 double longtitude, double latitude, double ratingEvent, double ratingUsers, double ratingVenue,
-                 double ratingWeather, int date, int id) {
+
+    public Event(String address, String country, String city, String info, String picture, String ticket, String title, String venue,
+                 String longtitude, String latitude, double ratingEvent, double ratingUsers, double ratingVenue,
+                 double ratingWeather, long date, String id) {
 
         this.addressEvent = address; //get from api
+        this.countryEvent = country;
+        this.cityEvent = cityEvent;
         this.infoEvent = info;
         this.pictureEvent = picture;
         this.ticketEvent = ticket;
