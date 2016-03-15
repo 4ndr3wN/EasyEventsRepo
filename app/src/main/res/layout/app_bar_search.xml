@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+<!-- START HEADER -->
+    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_logo" />
+
+            <!--<EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:hint="Testing 123..."/> -->
+
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="right"
+                android:queryHint="@string/queryHint">
+
+            </SearchView>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!-- END HEADER -->
+
+    <!-- Open drawer button, this is the dark-bar on the left -->
+    <!-- <Button
+        android:id="@+id/btn_open_drawer"
+        android:layout_width="@dimen/btn_drawer_width"
+        android:layout_height="match_parent"
+        android:background="@color/colorDark"
+        android:layout_gravity="left"
+        android:onClick="btn_toggleDrawer"/> -->
+
+    <!-- Orignal layout below the app bar -->
+    <!-- -->
+    <!--  <include layout="@layout/content_main" /> -->
+    <include layout="@layout/settings_view" />
+
+    <!-- Original, floating button with e-mail-->
+    <!-- -->
+    <!-- <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
+         android:src="@android:drawable/ic_dialog_email" /> -->
+
+</android.support.design.widget.CoordinatorLayout>
