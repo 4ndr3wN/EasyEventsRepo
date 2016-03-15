@@ -43,9 +43,10 @@
         android:id="@+id/btn_open_drawer"
         android:layout_width="@dimen/btn_drawer_width"
         android:layout_height="match_parent"
-        android:background="@color/colorDark"
+        android:background="@drawable/btn_sidebar"
         android:layout_gravity="left"
-        android:onClick="btn_toggleDrawer"/>
+        android:onClick="btn_toggleDrawer"
+        android:layout_marginTop="?attr/actionBarSize"/>
 
     <!-- Orignal layout below the app bar -->
     <!-- -->

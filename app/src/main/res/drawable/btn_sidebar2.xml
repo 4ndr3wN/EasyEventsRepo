@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorDark"/>
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/btn_arrow2"
+        android:width="@dimen/btn_arrow_size"
+        android:height="@dimen/btn_arrow_size"
+        android:gravity="center"/>
+</layer-list>

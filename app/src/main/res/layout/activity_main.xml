@@ -39,7 +39,7 @@
             android:id="@+id/btn_close_drawer"
             android:layout_width="@dimen/btn_drawer_width"
             android:layout_height="match_parent"
-            android:background="@color/colorDark"
+            android:background="@drawable/btn_sidebar2"
             android:layout_gravity="right"
             android:onClick="btn_toggleDrawer"/>
     </android.support.design.widget.NavigationView>

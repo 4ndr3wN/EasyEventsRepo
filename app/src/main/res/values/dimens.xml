@@ -8,5 +8,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="btn_drawer_width">20dp</dimen>
     <dimen name="status_bar_size">-25dp</dimen>
+    <dimen name="btn_arrow_size">16dp</dimen>
     <!-- status bar size should always be 25dp, not tested on multiple devices yet! -->
 </resources>
