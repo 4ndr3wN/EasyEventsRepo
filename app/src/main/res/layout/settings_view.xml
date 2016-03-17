@@ -57,6 +57,11 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_padding_TB"
+        android:background="@drawable/gradient_grey"/>
+
     <!-- Time Row -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,6 +118,11 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_padding_TB"
+        android:background="@drawable/gradient_grey"/>
+
     <!-- Range Row -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -168,10 +178,15 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_padding_TB"
+        android:background="@drawable/gradient_grey"/>
+
     <!-- Route Row -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:background="@drawable/gradient_dark"
         android:paddingLeft="@dimen/general_padding_LR"
