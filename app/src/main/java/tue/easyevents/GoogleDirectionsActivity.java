@@ -21,24 +21,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class GoogleDirectionsActivity extends AppCompatActivity implements OnMapReadyCallback, View.onClickListener, DirectionCallback {
-    private Button btnRequestDirection;
+public class GoogleDirectionsActivity extends AppCompatActivity implements OnMapReadyCallback, DirectionCallback {
     private GoogleMap googleMap;
     private String serverKey = "AIzaSyANaZSYC__XBBCPvkP8VGbdfW7OX86w9PQ";
     //change preferably according to center of origin and destination
-    private LatLng camera = new LatLng(0.0, 0.0);
+    private LatLng camera = new LatLng(5.0, 5.0);
     //change according to origin for directions
-    private LatLng origin = new LatLng(0.0, 0.0);
+    private LatLng origin = new LatLng(10.0, 10.0);
     //change according to destination (location of event)
     private LatLng destination = new LatLng(0.0, 0.0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_direction);
-
-        btnRequestDirection = (Button) findViewById(R.id.btn_request_direction);
-        btnRequestDirection.setOnClickListener(this);
+        setContentView(R.layout.directions_activity);
 
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
     }
@@ -47,18 +43,11 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, 13));
-    }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.btn_request_direction) {
-            requestDirection();
-        }
+        requestDirection();
     }
 
     public void requestDirection() {
-        Snackbar.make(btnRequestDirection, "Direction Requesting...", Snackbar.LENGTH_SHORT).show();
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
                 .to(destination)
@@ -68,20 +57,17 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
 
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
-        Snackbar.make(btnRequestDirection, "Success with status : " + direction.getStatus(), Snackbar.LENGTH_SHORT).show();
         if (direction.isOK()) {
             googleMap.addMarker(new MarkerOptions().position(origin));
             googleMap.addMarker(new MarkerOptions().position(destination));
 
             ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
             googleMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.RED));
-
-            btnRequestDirection.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onDirectionFailure(Throwable t) {
-        Snackbar.make(btnRequestDirection, t.getMessage(), Snackbar.LENGTH_SHORT).show();
+        //nog niks
     }
 }
