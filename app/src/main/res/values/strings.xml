@@ -9,6 +9,7 @@
 
     <string name="queryHint">City</string>
 
+
     <string name="settings_title">Settings</string>
     <string name="settings_time1">Time period</string>
     <string name="settings_time2">This will limit the Events shown.</string>
@@ -23,5 +24,6 @@
     <string name="settings_route4">Use GPS location</string>
     <string name="settings_route5"></string>
     <string name="title_activity_settings_">Settings_Activity</string>
+    <string name="title_activity_googledirections_">Google Directions</string>
 
 </resources>
