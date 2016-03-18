@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //KOEN TEST
-            Intent intent = new Intent(MainActivity.this,GoogleDirectionsActivity.class);
+            Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             startActivity(intent);
             return true;
         }
