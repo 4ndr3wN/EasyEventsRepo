@@ -49,4 +49,12 @@ public class Event {
         this.dateEvent = date;
         this.idEvent = id;
     }
+
+    public void updateRatingVenue(int rating){
+        this.ratingVenue = rating;
+    }
+
+    public void updateRatingWeather(int rating){
+        this.ratingWeather = rating;
+    }
 }
