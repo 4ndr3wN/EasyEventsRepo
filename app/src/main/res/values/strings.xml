@@ -10,19 +10,22 @@
     <string name="queryHint">City</string>
 
 
+    <!-- Strings for Settings_View -->
     <string name="settings_title">Settings</string>
     <string name="settings_time1">Time period</string>
     <string name="settings_time2">This will limit the Events shown.</string>
-    <string name="settings_time3">Week</string>
+
     <string name="settings_range1">Range</string>
     <string name="settings_range2">This changes the search radius.</string>
-    <string name="settings_range3">10 km</string>
+
     <string name="settings_route1">Route Planner</string>
     <string name="settings_route2">Here you can set the default departure location
-    to be used</string>
-    <string name="settings_route3">Den Dolech 2, Eindhoven</string>
+    to be used.</string>
+    <string name="settings_route5">NOTE: Ticking the box will override your depature location with your current location.</string>
+    <string name="settings_route3">E.g. your home address</string>
     <string name="settings_route4">Use GPS location</string>
-    <string name="settings_route5"></string>
+
+    <!-- Activity Strings -->
     <string name="title_activity_settings_">Settings_Activity</string>
     <string name="title_activity_googledirections_">Google Directions</string>
 

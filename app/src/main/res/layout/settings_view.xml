@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- How to use this layout for the back-end:
+        The only things of interest for the back-end developers are the 'settings' themselves,
+        in this comment the id's of these views are listed for quick reference. Line numbers are
+        included but they might be incorrect, due to future updates.
+
+        Time Period:
+            ID:     @+id/spinner_time
+            LINE:   149
+            TYPE:   Spinner
+            REFERENCE: http://developer.android.com/guide/topics/ui/controls/spinner.html
+
+        Search Range:
+            ID:     @+id/spinner_range
+            LINE:   206
+            TYPE:   Spinner
+            REFERENCE: http://developer.android.com/guide/topics/ui/controls/spinner.html
+
+        Home Address:
+            ID:     @+id/editText_Home
+            LINE:   272
+            TYPE:   EditText, inputType="textPostalAddress"
+            REFERENCE: http://developer.android.com/reference/android/widget/EditText.html
+
+        Use GPS:
+            ID:     @+id/checkBox_GPS
+            LINE:   282
+            TYPE:   CheckBox
+            REFERENCE: http://developer.android.com/reference/android/widget/CheckBox.html
+        -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +40,11 @@
     <include layout="@layout/app_bar_search" android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_padding_TB"
+        android:background="@drawable/gradient_grey"/>
 
     <!-- Settings Row -->
     <LinearLayout
@@ -93,11 +128,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_time2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_time3" />
-
         </LinearLayout>
 
         <!-- Time Column Right -->
@@ -109,13 +139,21 @@
             android:gravity="right"
             android:orientation="vertical">
 
-            <TextView
+           <!-- Spinner are dropdown menu's, they are only constructors in xml
+                i.e. to modify them you'll need to search the related Activity (java file)
+                for the id, in this case "spinner_time".
+
+                In this same snippet of Java you'll find a reference to an ArrayAdapter,
+                in this case R.array.time_array. This 'time_array' contains the actual items inside
+                the dropdown and these can be modified in res/values/settings_view_spinners.xml -->
+            <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_time1" />
+                android:gravity="right"
+                android:id="@+id/spinner_time" />
+
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -154,10 +192,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_range2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_range3" />
         </LinearLayout>
 
         <!-- Range Column Right -->
@@ -169,12 +203,12 @@
             android:gravity="right"
             android:orientation="vertical">
 
-            <TextView
+            <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_range1" />
+                android:gravity="right"
+                android:id="@+id/spinner_range" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -217,17 +251,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_route3" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_route4" />
+                android:text="" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_route5" />
+
         </LinearLayout>
 
         <!-- Route Column Right -->
@@ -239,13 +269,26 @@
             android:gravity="right"
             android:orientation="vertical">
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_range1" />
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:textColor="@color/colorGrey"
+                android:textColorHint="@color/colorGrey"
+                android:hint="@string/settings_route3"
+                android:id="@+id/editText_Home"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGrey"
+                android:buttonTint="@color/colorGrey"
+                android:text="@string/settings_route4"
+                android:layout_gravity="right"
+                android:id="@+id/checkBox_GPS"/>
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -1,0 +1,16 @@
+<resources>
+    <string-array name="time_array">
+        <item>Today</item>
+        <item>Weekend</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
+    <string-array name="range_array">
+        <item>5 km</item>
+        <item>10 km</item>
+        <item>25 km</item>
+        <item>50 km</item>
+        <item>100 km</item>
+    </string-array>
+</resources>
