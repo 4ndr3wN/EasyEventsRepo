@@ -83,13 +83,19 @@
             android:gravity="right"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_title" />
+                <Button
+                    android:id="@+id/btn_close_settingsview"
+                    android:layout_width="@dimen/btn_close_overlay"
+                    android:layout_height="@dimen/btn_close_overlay"
+                    android:background="@drawable/btn_closebtn"
+                    android:layout_gravity="right"
+                    android:focusable="true"
+                    android:onClick="btn_close_settings"/>
+
+
+
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

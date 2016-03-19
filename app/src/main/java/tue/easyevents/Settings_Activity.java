@@ -3,18 +3,21 @@ package tue.easyevents;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class Settings_Activity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 //
 //
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -35,6 +38,23 @@ public class Settings_Activity extends AppCompatActivity {
                 R.array.range_array, android.R.layout.simple_spinner_item);
         adapter_range.setDropDownViewResource(R.layout.dropdown_layouts);
         spinner_range.setAdapter(adapter_range);
+
+    }
+
+    public void btn_close_settings(View v) {
+
+
+        /**
+         * Super class method back pressed, to get the original map activity back
+         */
+        super.onBackPressed();
+
+        /**
+         * New intent, in case we want to redraw the google map
+
+            Intent intent = new Intent(Settings_Activity.this,MainActivity.class);
+            startActivity(intent);
+         */
 
     }
 
