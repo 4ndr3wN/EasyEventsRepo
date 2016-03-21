@@ -57,7 +57,7 @@ public class EventfulAPI {
      */
 
     // Add this in as input for implementing categories: ArrayList<String> cat
-    public static ArrayList<Event> searchEvents(String latLong, String from, String to)
+    public static ArrayList<Event> searchEvents(String latLong, String from, String to, int range)
             throws ConnectException{
 
         InputStream in = null;
@@ -65,7 +65,7 @@ public class EventfulAPI {
         String timeframe = from + "00-" + to + "00";
         //To change the amount of returned events, edit the argument page_size here
         String searchParameters = "&location=" + latLong + "&date=" + timeframe +
-                "&include=categories,links&page_size=25";
+                "&units=km&include=categories,links&page_size=25" + "&within=" + range;
         String searchAddress = baseAddress + "/search?..." + searchParameters +
                 "&sort_order=popularity&sort_direction=descending" + appKey;
 

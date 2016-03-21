@@ -28,8 +28,8 @@ public class Settings_Activity extends AppCompatActivity {
                 R.array.time_array, android.R.layout.simple_spinner_item);
         adapter_time.setDropDownViewResource(R.layout.dropdown_layouts);
         spinner_time.setAdapter(adapter_time);
-
         Spinner spinner_range = (Spinner) findViewById(R.id.spinner_range);
+
         ArrayAdapter<CharSequence> adapter_range = ArrayAdapter.createFromResource(this,
                 R.array.range_array, android.R.layout.simple_spinner_item);
         adapter_range.setDropDownViewResource(R.layout.dropdown_layouts);

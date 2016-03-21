@@ -2,6 +2,7 @@ package tue.easyevents;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +13,34 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Spinner;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public String location;
+    public String query;
+    public String geoCodedLocation;
+    public String from = "20160321";
+    public String to = "20160328";
+    public ArrayList<Event> events;
+    public int range;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //TODO: search met location van user??
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -65,11 +86,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         SearchView searchView = (SearchView) findViewById(R.id.search_events);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.d("test", query);
+            public boolean onQueryTextSubmit(String userQuery) {
+                //Log.d("test", query); //test
+
+                //call search function to handle searching and API calls
+                search(userQuery);
                 return false;
             }
 
@@ -79,6 +104,70 @@ public class MainActivity extends AppCompatActivity
             }
         });
         return true;
+    }
+
+    public void search(String userQuery) {
+        query = userQuery;
+
+        //get the date
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+
+        //set public String from
+        from = date;
+
+        //timerange additions
+        long unixTime = System.currentTimeMillis();
+        long unixDay = 86400000;
+
+        //read out the time spinner in settings
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_time);
+        String time = spinner.getSelectedItem().toString();
+
+        if (time.equals("Today")) {
+            to = date;
+        }
+        else if (time.equals("Weekend")) {
+            unixTime =  unixTime + (unixDay*3);
+            String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
+            to = date2;
+        }
+        else if (time.equals("Week")) {
+            unixTime =  unixTime + (unixDay*7);
+            String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
+            to = date2;
+        }
+        else if (time.equals("Month")) {
+            unixTime =  unixTime + (unixDay*30);
+            String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
+            to = date2;
+        }
+
+        //read out range spinner in settings
+        Spinner spinner2 = (Spinner) findViewById(R.id.spinner_range);
+        String spinner_range = spinner.getSelectedItem().toString();
+
+        if (spinner_range.equals("5 km")) {
+            range = 5;
+        }
+        else if (spinner_range.equals("10 km")) {
+            range = 10;
+        }
+        else if (spinner_range.equals("25 km")) {
+            range = 25;
+        }
+        else if (spinner_range.equals("50 km")) {
+            range = 50;
+        }
+        else if (spinner_range.equals("100 km")) {
+            range = 100;
+        }
+
+        //geocode the users requested location
+        try {
+            new Search().execute();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 
     @Override
@@ -201,4 +290,45 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //use an Asynchronous Task to do the GeoCodingAPI call
+    //TODO: runOnUiThread
+    public class Search extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params){
+            try {
+                geoCodedLocation = GeoCodingAPI.geoCode(query);
+
+                try {
+                    events = EventfulAPI.searchEvents(geoCodedLocation, from, to, range);
+
+                    runOnUiThread(new Runnable() {
+                    @Override
+                        public void run() {
+                            //doe functionaliteit op UI thread hier
+                            //vul de list view
+                            NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+                            Menu m = navView.getMenu();
+                            SubMenu topChannelMenu = m.addSubMenu("Events");
+                            topChannelMenu.add("Event 1");
+                            topChannelMenu.add("Event 2");
+                            topChannelMenu.add("Event 3");
+
+                            MenuItem mi = m.getItem(m.size()-1);
+                            mi.setTitle(mi.getTitle());
+                        }
+                    });
+
+                } catch (ConnectException e) {
+                    e.printStackTrace();
+                }
+            } catch (ConnectException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+    }
 }
+
