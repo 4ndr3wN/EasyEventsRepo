@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Get Tickets"
-                android:background="@color/colorDark"
+                android:background="@drawable/btn_pill"
                 android:id="@+id/btn_tickets"
                 android:layout_gravity="center_vertical" />
             <Button
