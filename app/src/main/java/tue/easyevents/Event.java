@@ -17,7 +17,6 @@ public class Event {
     String eventLatitude;
     String idEvent;
 
-    Boolean ticketAvailable;
 
     double ratingEvent;
     double ratingUsers;
@@ -29,7 +28,7 @@ public class Event {
 
     public Event(String address, String country, String city, String info, String picture, String ticket, String title, String venue,
                  String longtitude, String latitude, double ratingEvent, double ratingUsers, double ratingVenue,
-                 double ratingWeather, long date, String id, Boolean ticketAvailable) {
+                 double ratingWeather, long date, String id) {
 
         this.addressEvent = address; //get from api
         this.countryEvent = country;
@@ -49,8 +48,6 @@ public class Event {
 
         this.dateEvent = date;
         this.idEvent = id;
-
-        this.ticketAvailable = ticketAvailable;
     }
 
     public void updateRatingVenue(int rating){

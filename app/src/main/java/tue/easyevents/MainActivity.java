@@ -2,7 +2,6 @@ package tue.easyevents;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.net.ConnectException;
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,18 +23,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        try {
-            new getVenueRating().execute();
-        } catch (Exception e) {
-            System.err.println("Error finding events " + e);
-        }
-
-//        try {
-//            new getEvents().execute();
-//        } catch (Exception e) {
-//            System.err.println("Error finding events " + e);
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -126,35 +110,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public class getVenueRating extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params){
-
-            try {
-                int test = FoursquareAPI.getRating("40.700,-73.999", "Michael's Food Cart");
-            } catch (ConnectException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-    }
-
-    public class getEvents extends AsyncTask<Void, Void, Void>{
-
-        @Override
-        protected Void doInBackground(Void... params){
-            try {
-                ArrayList<Event> test = EventfulAPI.searchEvents("32.746682,-117.162741", "20160314", "20160320");
-            } catch (ConnectException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
     }
 }

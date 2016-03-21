@@ -1,4 +1,4 @@
-
+/**
 package tue.easyevents;
 
 import android.util.Log;
@@ -31,7 +31,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by Boy on 17-3-2016.
-*/
  
 public class FoursquareAPI {
     public static String baseAddress = "https://api.foursquare.com/v2/venues/search?";
@@ -48,13 +47,13 @@ public class FoursquareAPI {
      * @throws ConnectException
      * @return An integer representing the likes a venue has
      */
-
+/**
     public static int getRating(String latLong, String query)
             throws ConnectException {
 
 
         String searchParameters = "&ll=" + latLong + "&query=" + query;
-        String searchAddress = baseAddress + apiKey + searchParameters;
+        String searchAddress = baseAddress + searchParameters + apiKey;
         int likesVenue = -1;
 
 
@@ -66,10 +65,6 @@ public class FoursquareAPI {
         try {
             HttpURLConnection connect = getHttpConnection(searchAddress);
 //            HttpURLConnection connect = (HttpURLConnection) searchAddress.openConnection();
-            Log.d("Response", Integer.toString(connect.getResponseCode()));
-            int response = connect.getResponseCode();
-//            InputStream error = connect.getErrorStream();
-
             InputStream in = new BufferedInputStream(connect.getInputStream());
             String result = null;
 
@@ -99,14 +94,15 @@ public class FoursquareAPI {
             throws IOException {
         URL url = new URL(link);
         HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-        conn.setInstanceFollowRedirects(false);
-        conn.setReadTimeout(FoursquareAPI.delay);
-        conn.setConnectTimeout(FoursquareAPI.delay);
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        conn.setDoOutput(false);
-
-        conn.connect();
+//        conn.setInstanceFollowRedirects(false);
+//        conn.setReadTimeout(EventfulAPI.timeOut);
+//        conn.setConnectTimeout(EventfulAPI.timeOut);
+//        conn.setRequestMethod("POST");
+//        conn.setDoInput(true);
+//        conn.setDoOutput(false);
+//
+//        conn.connect();
         return conn;
     }
 }
+*/
