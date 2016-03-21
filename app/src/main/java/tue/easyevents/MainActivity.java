@@ -1,26 +1,19 @@
 package tue.easyevents;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-
-import java.net.ConnectException;
-import java.util.ArrayList;
+import android.widget.SearchView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -96,14 +89,32 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_detailview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            //Comment voor de software scientist Koen Verhaegh toevegoed.
+            Intent intent = new Intent(MainActivity.this,DetailView_Activity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_ptview) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
             Intent intent = new Intent(MainActivity.this,GoogleDirectionsActivity.class);
             startActivity(intent);
             return true;
+        }else if (id == R.id.action_settings) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            startActivity(intent);
+            return true;
+        }else if (id == R.id.action_about_us) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(MainActivity.this,AboutUs_Activity.class);
+            startActivity(intent);
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
