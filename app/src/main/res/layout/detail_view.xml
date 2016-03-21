@@ -92,7 +92,7 @@
                 android:background="@drawable/btn_closebtn"
                 android:layout_gravity="right"
                 android:focusable="true"
-                android:onClick="btn_close_settings"/>
+                android:onClick="btn_close_detailview"/>
 
         </LinearLayout>
 

@@ -1,6 +1,5 @@
 package tue.easyevents;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,20 +37,17 @@ public class Settings_Activity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method closes the settings activity and returns to the inital map
+     * @param v
+     */
     public void btn_close_settings(View v) {
 
 
         /**
          * Super class method back pressed, to get the original map activity back
          */
-//        super.onBackPressed();
-
-        /**
-         * GOING TO THE DETAIL VIEW
-         */
-
-        Intent intent = new Intent(Settings_Activity.this,DetailView_Activity.class);
-        startActivity(intent);
+        super.onBackPressed();
 
         /**
          * New intent, in case we want to redraw the google map
