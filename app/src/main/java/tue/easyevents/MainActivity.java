@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         //Make drawer dark fading colour transparent
         drawer.setScrimColor(Color.TRANSPARENT);
+        //dat go-up-pijltje eindelijk uitgezet, hoera!
+        toolbar.setNavigationIcon(null);
 
         //ORIGINAL: R.id.nav_view, had to bechanged due to the new wrapping NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_itemlist);
@@ -272,25 +274,25 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_detailview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
+            Intent intent = new Intent(this, DetailView_Activity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_ptview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this, GoogleDirectionsActivity.class);
+            Intent intent = new Intent(this, GoogleDirectionsActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_settings) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this, Settings_Activity.class);
+            Intent intent = new Intent(this, Settings_Activity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_about_us) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this, AboutUs_Activity.class);
+            Intent intent = new Intent(this, AboutUs_Activity.class);
             startActivity(intent);
             return true;
         }

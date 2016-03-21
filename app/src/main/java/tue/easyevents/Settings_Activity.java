@@ -1,10 +1,13 @@
 package tue.easyevents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,8 +26,13 @@ public class Settings_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //go-up-pijltje die het doet ook al is parent niet specified
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //go-up-pijltje die het alleen doet als parent specified is
+        //getSupportActionBar().setHomeButtonEnabled(true); //laat nu dus niets zien! Want is niet specified
+        //go-up-pijltje veranderen in eigen drawable
+        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_arrow);
 //        getSupportActionBar().setDisplayOptions();
 ////
 
@@ -125,6 +133,61 @@ public class Settings_Activity extends AppCompatActivity {
             startActivity(intent);
          */
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    /*      hele @Override van onOptionsItemSelected is gekopieerd uit MainActivity.java
+            voor alle 'submenus', i.e. alle behalve de MainActivity, is het van belang
+            om de huidige Activity the sluiten met finish(). Op deze manier ga je met de
+            back-button of close-button terug naar de map, i.p.v. naar de 'previous' activity.
+      */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_detailview) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(this, DetailView_Activity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        } else if (id == R.id.action_ptview) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(this, GoogleDirectionsActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        } else if (id == R.id.action_settings) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(this, Settings_Activity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        } else if (id == R.id.action_about_us) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(this, AboutUs_Activity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
