@@ -1,5 +1,6 @@
 package tue.easyevents;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,6 +21,12 @@ import android.widget.Spinner;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.text.SimpleDateFormat;
@@ -60,6 +67,56 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_itemlist);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //check for fileoutput files
+        try {
+            openFileInput("time_file");
+        } catch (FileNotFoundException e) {
+            //set basic settings
+            String FILENAME = "time_file";
+            String string = "Week";
+
+            FileOutputStream fos = null;
+            try {
+                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                fos.write(string.getBytes());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        try {
+            openFileInput("range_file");
+        } catch (FileNotFoundException e) {
+            //set basic settings
+            String FILENAME = "range_file";
+            String string = "10 km";
+
+            FileOutputStream fos = null;
+            try {
+                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                fos.write(string.getBytes());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                fos.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     //Toggles the drawer, used on the side-bar-buttons
@@ -119,46 +176,80 @@ public class MainActivity extends AppCompatActivity
         long unixTime = System.currentTimeMillis();
         long unixDay = 86400000;
 
-        //read out the time spinner in settings
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_time);
-        String time = spinner.getSelectedItem().toString();
+        //CHECK SAVED TIME PERIOD
+        String read = "";
+        String saved_time = "";
+        //check for fileinput files
+        try {
+            FileInputStream fis = openFileInput("time_file");
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+            if (fis != null) {
+                while ((read = reader.readLine()) != null) {
+                    buffer.append(read + "\n" );
+                }
+            }
+            fis.close();
+            saved_time = buffer.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if (time.equals("Today")) {
+
+        if (saved_time.equals("Today")) {
             to = date;
         }
-        else if (time.equals("Weekend")) {
+        else if (saved_time.equals("Weekend")) {
             unixTime =  unixTime + (unixDay*3);
             String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
             to = date2;
         }
-        else if (time.equals("Week")) {
+        else if (saved_time.equals("Week")) {
             unixTime =  unixTime + (unixDay*7);
             String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
             to = date2;
         }
-        else if (time.equals("Month")) {
-            unixTime =  unixTime + (unixDay*30);
+        else if (saved_time.equals("Month")) {
+            unixTime = unixTime + (unixDay * 30);
             String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
             to = date2;
         }
 
-        //read out range spinner in settings
-        Spinner spinner2 = (Spinner) findViewById(R.id.spinner_range);
-        String spinner_range = spinner.getSelectedItem().toString();
+        //CHECK THE RANGE
+        String saved_range = "";
+        //check for fileinput files
+        try {
+            FileInputStream fis = openFileInput("time_file");
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+            if (fis != null) {
+                while ((read = reader.readLine()) != null) {
+                    buffer.append(read + "\n" );
+                }
+            }
+            fis.close();
+            saved_range = buffer.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if (spinner_range.equals("5 km")) {
+        if (saved_range.equals("5 km")) {
             range = 5;
         }
-        else if (spinner_range.equals("10 km")) {
+        else if (saved_range.equals("10 km")) {
             range = 10;
         }
-        else if (spinner_range.equals("25 km")) {
+        else if (saved_range.equals("25 km")) {
             range = 25;
         }
-        else if (spinner_range.equals("50 km")) {
+        else if (saved_range.equals("50 km")) {
             range = 50;
         }
-        else if (spinner_range.equals("100 km")) {
+        else if (saved_range.equals("100 km")) {
             range = 100;
         }
 
