@@ -54,15 +54,36 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tue.easyevents.MainActivity" />
         </activity>
-        <!-- <activity -->
-        <!-- android:name=".Settings_Activity" -->
-        <!-- android:label="@string/title_activity_settings_" -->
-        <!-- android:parentActivityName=".MainActivity" -->
-        <!-- android:theme="@style/AppTheme.NoActionBar" > -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value="tue.easyevents.MainActivity" /> -->
-        <!-- </activity> -->
+
+         <activity
+         android:name=".Settings_Activity"
+         android:label="@string/title_activity_settings_"
+         android:parentActivityName=".MainActivity"
+         android:theme="@style/AppTheme.NoActionBar" >
+         <meta-data
+         android:name="android.support.PARENT_ACTIVITY"
+         android:value="tue.easyevents.MainActivity" />
+         </activity>
+
+        <activity
+            android:name=".DetailView_Activity"
+            android:label="@string/title_activity_detail_view_"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tue.easyevents.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".AboutUs_Activity"
+            android:label="@string/title_activity_settings_"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tue.easyevents.MainActivity" />
+        </activity>
 
         <activity
             android:name=".GoogleDirectionsActivity"
