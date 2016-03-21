@@ -83,6 +83,8 @@
             android:gravity="right"
             android:orientation="vertical">
 
+            <!-- verticaal centreren van de button nog doen! -->
+
                 <Button
                     android:id="@+id/btn_close_settingsview"
                     android:layout_width="@dimen/btn_close_overlay"
