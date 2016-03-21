@@ -36,12 +36,11 @@ public class Settings_Activity extends AppCompatActivity {
         adapter_time.setDropDownViewResource(R.layout.dropdown_layouts);
         spinner_time.setAdapter(adapter_time);
 
-        final String time = spinner_time.getSelectedItem().toString();;
         spinner_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String FILENAME = "time_file";
-                String string = time;
+                String string = spinner_time.getSelectedItem().toString();
 
                 FileOutputStream fos = null;
                 try {
@@ -67,13 +66,13 @@ public class Settings_Activity extends AppCompatActivity {
             }
         });
 
-        Spinner spinner_range = (Spinner) findViewById(R.id.spinner_range);
-        final String range = spinner_range.getSelectedItem().toString();
+        final Spinner spinner_range = (Spinner) findViewById(R.id.spinner_range);
+
         spinner_range.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String FILENAME = "range_file";
-                String string = range;
+                String string = spinner_range.getSelectedItem().toString();
 
                 FileOutputStream fos = null;
                 try {
