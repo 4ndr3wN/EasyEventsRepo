@@ -32,5 +32,6 @@
     <!-- Activity Strings -->
     <string name="title_activity_settings_">Settings_Activity</string>
     <string name="title_activity_googledirections_">Google Directions</string>
+    <string name="title_activity_detail_view_">DetailView_Activity</string>
 
 </resources>
