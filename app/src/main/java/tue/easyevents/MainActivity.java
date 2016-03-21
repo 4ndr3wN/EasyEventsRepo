@@ -92,25 +92,25 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_detailview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this,DetailView_Activity.class);
+            Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_ptview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this,GoogleDirectionsActivity.class);
+            Intent intent = new Intent(MainActivity.this, GoogleDirectionsActivity.class);
             startActivity(intent);
             return true;
-        }else if (id == R.id.action_settings) {
+        } else if (id == R.id.action_settings) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            Intent intent = new Intent(MainActivity.this, Settings_Activity.class);
             startActivity(intent);
             return true;
-        }else if (id == R.id.action_about_us) {
+        } else if (id == R.id.action_about_us) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
-            Intent intent = new Intent(MainActivity.this,AboutUs_Activity.class);
+            Intent intent = new Intent(MainActivity.this, AboutUs_Activity.class);
             startActivity(intent);
             return true;
         }
@@ -140,9 +140,61 @@ public class MainActivity extends AppCompatActivity
 
         }*/
 
+        /**
+         * TESTING DRAWER GROUPS
+         */
+
         if (id == R.id.group01) {
 
+            System.out.println("CLICKED ON GROUP 1");
+
+        } else if (id == R.id.group02) {
+
+        } else if (id == R.id.group03) {
+
+        } else if (id == R.id.group04) {
+
+        } else if (id == R.id.group05) {
+
+        } else if (id == R.id.group06) {
+
+        } else if (id == R.id.group07) {
+
+        } else if (id == R.id.group08) {
+
+        } else if (id == R.id.group09) {
+
+        } else if (id == R.id.group10) {
+
         }
+
+        /**
+         * TESTING DRAWER EVENT ITEMS
+         */
+        if (id == R.id.event01) {
+
+            System.out.println("CLICKED ON ITEM 1");
+
+        } else if (id == R.id.event02) {
+
+        } else if (id == R.id.event03) {
+
+        } else if (id == R.id.event04) {
+
+        } else if (id == R.id.event05) {
+
+        } else if (id == R.id.event06) {
+
+        } else if (id == R.id.event07) {
+
+        } else if (id == R.id.event08) {
+
+        } else if (id == R.id.event09) {
+
+        } else if (id == R.id.group10) {
+
+        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

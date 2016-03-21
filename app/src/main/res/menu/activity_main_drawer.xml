@@ -25,13 +25,13 @@
         <item
             android:id="@+id/event01"
             android:title="First item"
-            android:icon="@drawable/gradient_grey"/>
+            android:icon="@drawable/easyevents"/>
     </group>
 
     <group android:id="@+id/group02"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/second"
+            android:id="@+id/event02"
             android:title="Second item" />
     </group>
 
@@ -44,7 +44,7 @@
     <group android:id="@+id/group04"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/event0"
+            android:id="@+id/event04"
             android:title="" />
     </group>
 
