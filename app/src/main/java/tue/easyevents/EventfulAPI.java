@@ -66,7 +66,8 @@ public class EventfulAPI {
         //To change the amount of returned events, edit the argument page_size here
         String searchParameters = "&location=" + latLong + "&date=" + timeframe +
                 "&include=categories,links&page_size=25";
-        String searchAddress = baseAddress + "/search?..." + searchParameters + "&sort_order=popularity" + appKey;
+        String searchAddress = baseAddress + "/search?..." + searchParameters +
+                "&sort_order=popularity&sort_direction=descending" + appKey;
 
         //We log the search address for testing purposes
         Log.d("Address", searchAddress);
@@ -87,11 +88,33 @@ public class EventfulAPI {
             for (int i = 0; i < nodeList.getLength(); i++) {
                 if(nodeList.item(i) != null){
                     Node node = nodeList.item(i);
-                    String ticket = parseData(node, "links");
+                    String ticket = "";
+                    Boolean ticketAvailable = true;
+                    try {
+                        ticket = parseData(node, "links");
+                    } catch (NullPointerException e){
+                        ticketAvailable = false;
+                        e.printStackTrace();
+                    }
+                    Log.d("Ticket url", ticket);
+
                     String id = parseData(node, "id");
                     String title = parseData(node, "title");
-                    String picture = parseData(node, "image");
-                    String info = parseData(node, "description");
+                    String picture = "mipmap-xxxhdpi/ic_launcher.png";
+                    try {
+                        picture = parseData(node, "image");
+                    } catch (NullPointerException e){
+                        picture = "mipmap-xxxhdpi/ic_launcher.png";
+                        e.printStackTrace();
+                    }
+                    Log.d("Image url:", picture);
+                    String info = "";
+                    try {
+                        info = parseData(node, "description");
+                    } catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+
                     String venue = parseData(node, "venue_name");
                     String longitude = parseData(node, "longitude");
                     String latitude = parseData(node, "latitude");
@@ -103,7 +126,7 @@ public class EventfulAPI {
                     Long date = dateDate.getTime();
                     //Create an Event object and add it to the arraylist
                     events.add(new Event(address, country, city, info, picture, ticket, title,
-                            venue, longitude, latitude, 0, 0, 0, 0, date, id));
+                            venue, longitude, latitude, 0, 0, 0, 0, date, id, ticketAvailable));
                 }
 
             }
@@ -146,7 +169,7 @@ public class EventfulAPI {
      * @param tag
      * @return The string from the requested tag
      */
-    private static String parseData(Node node, String tag) {
+    private static String parseData(Node node, String tag) throws NullPointerException{
         String data = " ";
 
         Element firstElement = (Element) node;
@@ -187,7 +210,13 @@ public class EventfulAPI {
         //check
         if (tag.equals("links")){
             Element dataElement = (Element) dataList.item(0);
+            if(dataElement.getChildNodes() == null){
+                return data;
+            }
             dataList = dataElement.getChildNodes();
+            if(dataList.item(1).getChildNodes().item(1).getChildNodes() == null){
+                return data;
+            }
             data = dataList.item(1).getChildNodes().item(1).getChildNodes().item(0).getNodeValue();
             return data;
         }
