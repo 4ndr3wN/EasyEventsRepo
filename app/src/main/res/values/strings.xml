@@ -9,6 +9,10 @@
 
     <string name="queryHint">City</string>
 
+    <!-- Strings for Detail View -->
+    <string name="ratings_1">OVERALL</string>
+    <string name="ratings_2">Weather</string>
+    <string name="ratings_3">Foursquare</string>
 
     <!-- Strings for Settings_View -->
     <string name="settings_title">Settings</string>
