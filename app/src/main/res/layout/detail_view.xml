@@ -167,9 +167,11 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Get Tickets"
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
                 android:background="@drawable/btn_pill"
                 android:id="@+id/btn_tickets"
+                android:text="Get Tickets"
                 android:layout_gravity="center_vertical" />
             <Button
                 style="?attr/buttonStyleSmall"
@@ -177,7 +179,9 @@
                 android:layout_height="wrap_content"
                 android:text="Show me route"
                 android:id="@+id/btn_detail_route"
-                android:background="@color/colorDark"
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:background="@drawable/btn_pill"
                 android:layout_gravity="center_vertical" />
 
         </LinearLayout>
