@@ -94,8 +94,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tue.easyevents.MainActivity" />
         </activity>
-        <activity android:name=".AboutUs_Activity" >
-        </activity>
     </application>
 
 </manifest>

@@ -20,72 +20,72 @@
                 android:title="Send" />
         </menu>
     </item>-->
-    <group android:id="@+id/group1"
+    <group android:id="@+id/group01"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/first"
+            android:id="@+id/event01"
             android:title="First item"
             android:icon="@drawable/gradient_grey"/>
     </group>
 
-    <group android:id="@+id/group2"
+    <group android:id="@+id/group02"
         android:checkableBehavior="single">
         <item
             android:id="@+id/second"
             android:title="Second item" />
     </group>
 
-    <group android:id="@+id/group3"
+    <group android:id="@+id/group03"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/third"
+            android:id="@+id/event03"
             android:title="LONG ASS ITEM NAME CAUSE WTH HAPPENS WHEN IT IS TOO BROAD?!?!?!?!?! item" />
     </group>
-    <group android:id="@+id/group4"
+    <group android:id="@+id/group04"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/fourth"
+            android:id="@+id/event0"
             android:title="" />
     </group>
 
-    <group android:id="@+id/group5"
+    <group android:id="@+id/group05"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/fifth"
+            android:id="@+id/event05"
             android:title="Second item" />
     </group>
 
-    <group android:id="@+id/group6"
+    <group android:id="@+id/group06"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/sixth"
+            android:id="@+id/event06"
             android:title="Third item" />
     </group>
-    <group android:id="@+id/group7"
+    <group android:id="@+id/group07"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/seventh"
+            android:id="@+id/event07"
             android:title="First item" />
     </group>
 
-    <group android:id="@+id/group8"
+    <group android:id="@+id/group08"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/eight"
+            android:id="@+id/event08"
             android:title="Second item" />
     </group>
 
-    <group android:id="@+id/group9"
+    <group android:id="@+id/group09"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/ninth"
+            android:id="@+id/event09"
             android:title="Third item" />
     </group>
 
     <group android:id="@+id/group10"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/tenth"
+            android:id="@+id/event10"
             android:title="LAST ITEM BITCH" />
     </group>
 </menu>
