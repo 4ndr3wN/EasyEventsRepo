@@ -1,7 +1,4 @@
-/*
-
 package tue.easyevents;
-
 
 import android.util.Log;
 import android.util.Xml;
@@ -37,28 +34,32 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class OpenWeatherAPI {
 
-    public static String baseAdress = "api.openweathermap.org/data/2.5/forecast?";
+    public static String baseAdress = "http://api.openweathermap.org/data/2.5/forecast?";
     public static String appid = "&appid=94217f697ba5de6a6ea15d90d6080bf1";
     private final static int timeOut = 10000; // in milliseconds.
 
-*
+
+
+
+    /**
      * Search for the weatherforecast at the location of the event
      * @param latitude
      * @param longitude
-     * @throws ConnectException
      * @return An arraylist of the weather forecast from now
-
-
-
-
-    public static ArrayList<Event> searchWeather(double latitude, double longitude)
+     * @throws ConnectException
+     * @throws ParseException
+     */
+    public static int searchWeather(String latitude, String longitude, long date)
             throws ConnectException, ParseException {
 
         InputStream in = null;
-        ArrayList<Event> weather = new ArrayList<>();
-        String locationSearch = "lat=" + latitude + "&lon=" +  longitude;     //Coordinaten van event locations
+        int ratingWeather = 0;
+
+        //Coordinaten van event locations
+        String locationSearch = "lat=" + latitude + "&lon=" +  longitude;
         String searchAddress = baseAdress + locationSearch + "&mode=xml" + appid;
 
+//        String searchAddress = "http://api.openweathermap.org/data/2.5/forecast?lat=32.746682&lon=-117.162741&mode=xml&appid=0dfcf6d089af67d15ee8bcb4221b55c9";
         try {
             HttpURLConnection connect = getHttpConnection(searchAddress);
             in = connect.getInputStream();
@@ -68,57 +69,56 @@ public class OpenWeatherAPI {
             Document doc = db.parse(new InputSource(in));
             doc.getDocumentElement().normalize();
 
-            NodeList nodeList = doc.getElementsByTagName("forecast");
+            NodeList nodeList = doc.getElementsByTagName("time");
+            String icon = "";
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 if(nodeList.item(i) != null){
                     Node node = nodeList.item(i);
-                    String forecastTime = parseData(node, "from");
-                    String icon = parseData(node, "var");
-
-                    //Openweather geeft icoontjes per categorie
-                    //Hieronder staat de rating die ik per icoontje toepasselijk vond
-
-                    double ratingWeather = 0;
-
-                    if (icon == "01d" || icon == "01n"){
-                        ratingWeather = 10;
+                    Element firstElement = (Element) node;
+                    String dateTime = firstElement.getAttribute("from");
+                    Date dateDate = stringToDate(dateTime);
+                    Long dateUnix = dateDate.getTime();
+                    Long timeDifference = Math.abs(date-dateUnix);
+                    if(timeDifference < 10800000){
+                        icon = parseData(node, "symbol");
+                        i = nodeList.getLength();
                     }
-                    else if (icon == "02d" || icon == "02n"){
-                        ratingWeather = 9;
-                    }
-                    else if (icon == "03d" || icon == "03n"){
-                        ratingWeather = 7;
-                    }
-                    else if (icon == "04d" || icon == "04n"){
-                        ratingWeather = 6;
-                    }
-                    else if (icon == "09d" || icon == "09n"){
-                        ratingWeather = 4;
-                    }
-                    else if (icon == "10d" || icon == "10n"){
-                        ratingWeather = 5;
-                    }
-                    else if (icon == "11d" || icon == "11n"){
-                        ratingWeather = 4;
-                    }
-                    else if (icon == "13d" || icon == "13n"){
-                        ratingWeather = 3;
-                    }
-                    else if (icon == "50d" || icon == "50n"){
-                        ratingWeather = 5;
-                    }
-
-                    //Hier klopt sowieso niet zo veel van
-
-                    if (forecastTime == Event.date){
-                       Event.setRatingWeather(ratingWeather);
-                    }
-
-
                 }
             }
 
+            //Openweather geeft icoontjes per categorie
+            //Hieronder staat de rating die ik per icoontje toepasselijk vond
+            if(icon.equals("")){
+                ratingWeather = 0;
+            }
+            else if (icon == "01d" || icon == "01n"){
+                ratingWeather = 10;
+            }
+            else if (icon == "02d" || icon == "02n"){
+                ratingWeather = 9;
+            }
+            else if (icon == "03d" || icon == "03n"){
+                ratingWeather = 8;
+            }
+            else if (icon == "04d" || icon == "04n"){
+                ratingWeather = 6;
+            }
+            else if (icon == "09d" || icon == "09n"){
+                ratingWeather = 3;
+            }
+            else if (icon == "10d" || icon == "10n"){
+                ratingWeather = 4;
+            }
+            else if (icon == "11d" || icon == "11n"){
+                ratingWeather = 1;
+            }
+            else if (icon == "13d" || icon == "13n"){
+                ratingWeather = 2;
+            }
+            else if (icon == "50d" || icon == "50n"){
+                ratingWeather = 5;
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,48 +127,51 @@ public class OpenWeatherAPI {
         } catch (SAXException e) {
             e.printStackTrace();
         }
+        return ratingWeather;
 
-        return weather;
+    }
 
+    /**This method makes a Date out of the string we got from the Eventful API.
+     * As long as Eventful maintains their current date format it will never throw the ParseException
+     *
+     * @param date
+     * @return the date entered, but as a Date object
+     * @throws ParseException
+     */
+    private static Date stringToDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date formattedDate = format.parse(date);
+        return formattedDate;
     }
 
 
     private static String parseData(Node node, String tag) {
         String data = "";
-
         Element firstElement = (Element) node;
-        //icon en time from staan als attribute ipv child
-        if(tag.equals("from")){
-            data = firstElement.getAttribute("from");
-            return data;
-
-            if(tag.equals("icon")){
-                data = firstElement.getAttribute("icon");
-                return data;
-
-            NodeList dataList = firstElement.getElementsByTagName(tag);
-            if (dataList.getLength() > 0){
-                Element dataElement = (Element) dataList.item(0);
-                dataList = dataElement.getChildNodes();
-                data = dataList.item(0).getNodeValue();
+        if(tag.equals("symbol")){
+            //icon en time from staan als attribute ipv child
+            NodeList dataList = firstElement.getChildNodes();
+            Node dataNode = dataList.item(0);
+            Element dataElement = (Element) dataNode;
+            data = ((Element) dataNode).getAttribute("var");
         }
-
         return data;
     }
 
-    private static HttpURLConnection getHttpConnection(String link)
-            throws IOException {
-        URL url = new URL(link);
-        HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-        conn.setInstanceFollowRedirects(false);
-        conn.setReadTimeout(OpenWeatherAPI.timeOut);
-        conn.setConnectTimeout(OpenWeatherAPI.timeOut);
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        conn.setDoOutput(false);
 
-        conn.connect();
-        return conn;
+    private static HttpURLConnection getHttpConnection (String link)throws IOException {
+            URL url = new URL(link);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setInstanceFollowRedirects(false);
+            conn.setReadTimeout(OpenWeatherAPI.timeOut);
+            conn.setConnectTimeout(OpenWeatherAPI.timeOut);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setDoOutput(false);
+
+            conn.connect();
+            return conn;
+        }
+
+
     }
-}
-*/
