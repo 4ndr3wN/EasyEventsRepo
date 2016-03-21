@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -48,16 +49,24 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     }
 
     public void requestDirection() {
+        Log.d("requestDirection", "HOI");
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
                 .to(destination)
                 .transportMode(TransportMode.DRIVING)
                 .execute(this);
+                //eventueel .execute(new DirectionCallback() bla bla not sure
+                // nieuwe key testen?
     }
 
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
+        String testStatus;
+        Log.d("onDirectionSuccess", "HOI2");
+        testStatus = direction.getStatus();
+        Log.d("TestStatus", testStatus);
         if (direction.isOK()) {
+            Log.d("direction.isOK", "OK!");
             googleMap.addMarker(new MarkerOptions().position(origin));
             googleMap.addMarker(new MarkerOptions().position(destination));
 
@@ -69,5 +78,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     @Override
     public void onDirectionFailure(Throwable t) {
         //nog niks
+        Log.d("KAPOT", "WAAROM WERKT HET NIET");
     }
 }
