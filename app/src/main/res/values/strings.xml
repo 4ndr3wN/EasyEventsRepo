@@ -9,6 +9,10 @@
 
     <string name="queryHint">City</string>
 
+    <!-- Strings for Detail View -->
+    <string name="ratings_1">OVERALL</string>
+    <string name="ratings_2">Weather</string>
+    <string name="ratings_3">Foursquare</string>
 
     <!-- Strings for Settings_View -->
     <string name="settings_title">Settings</string>
@@ -28,5 +32,6 @@
     <!-- Activity Strings -->
     <string name="title_activity_settings_">Settings_Activity</string>
     <string name="title_activity_googledirections_">Google Directions</string>
+    <string name="title_activity_detail_view_">DetailView_Activity</string>
 
 </resources>

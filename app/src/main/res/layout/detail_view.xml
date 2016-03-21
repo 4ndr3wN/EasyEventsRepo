@@ -37,8 +37,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <include layout="@layout/app_bar_search" android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <include layout="@layout/app_bar_search" android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,10 +57,10 @@
         android:paddingTop="@dimen/general_padding_TB"
         android:paddingBottom="@dimen/general_padding_TB">
 
-        <!-- Settings Column Left -->
+        <!-- Artist Title Column -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.85"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:orientation="vertical">
@@ -70,14 +70,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                android:text="@string/settings_title" />
+                android:text="Event Name" />
 
         </LinearLayout>
 
-        <!-- Settings Column Right -->
+        <!-- Close Button Column -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.15"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:gravity="right"
@@ -85,16 +85,14 @@
 
             <!-- verticaal centreren van de button nog doen! -->
 
-                <Button
-                    android:id="@+id/btn_close_settingsview"
-                    android:layout_width="@dimen/btn_close_overlay"
-                    android:layout_height="@dimen/btn_close_overlay"
-                    android:background="@drawable/btn_closebtn"
-                    android:layout_gravity="right"
-                    android:focusable="true"
-                    android:onClick="btn_close_settings"/>
-
-
+            <Button
+                android:id="@+id/btn_close_settingsview"
+                android:layout_width="@dimen/btn_close_overlay"
+                android:layout_height="@dimen/btn_close_overlay"
+                android:background="@drawable/btn_closebtn"
+                android:layout_gravity="right"
+                android:focusable="true"
+                android:onClick="btn_close_settings"/>
 
         </LinearLayout>
 
@@ -105,7 +103,7 @@
         android:layout_height="@dimen/general_padding_TB"
         android:background="@drawable/gradient_grey"/>
 
-    <!-- Time Row -->
+    <!-- Image Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -116,10 +114,9 @@
         android:paddingTop="@dimen/general_padding_TB"
         android:paddingBottom="@dimen/general_padding_TB">
 
-        <!-- Time Column Left -->
+        <!-- Image Column -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:orientation="vertical">
@@ -129,36 +126,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:text="@string/settings_time1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_time2" />
-
-        </LinearLayout>
-
-        <!-- Time Column Right -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:orientation="vertical">
-
-           <!-- Spinner are dropdown menu's, they are only constructors in xml
-                i.e. to modify them you'll need to search the related Activity (java file)
-                for the id, in this case "spinner_time".
-
-                In this same snippet of Java you'll find a reference to an ArrayAdapter,
-                in this case R.array.time_array. This 'time_array' contains the actual items inside
-                the dropdown and these can be modified in res/values/settings_view_spinners.xml -->
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:id="@+id/spinner_time" />
+                android:text="Plaatje artist" />
 
         </LinearLayout>
 
@@ -169,7 +137,7 @@
         android:layout_height="@dimen/general_padding_TB"
         android:background="@drawable/gradient_grey"/>
 
-    <!-- Range Row -->
+    <!-- Address/Buttons Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -180,7 +148,7 @@
         android:paddingTop="@dimen/general_padding_TB"
         android:paddingBottom="@dimen/general_padding_TB">
 
-        <!-- Range Column Left -->
+        <!-- Address/Buttons Column -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -193,16 +161,32 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:text="@string/settings_range1" />
+                android:text="Adres shit" />
 
-            <TextView
+            <Button
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_range2" />
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:background="@drawable/btn_pill"
+                android:id="@+id/btn_tickets"
+                android:text="Get Tickets"
+                android:layout_gravity="center_vertical" />
+            <Button
+                style="?attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show me route"
+                android:id="@+id/btn_detail_route"
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:background="@drawable/btn_pill"
+                android:layout_gravity="center_vertical" />
 
         </LinearLayout>
 
-        <!-- Range Column Right -->
+        <!-- Ratings Column -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -211,11 +195,35 @@
             android:gravity="right"
             android:orientation="vertical">
 
-            <Spinner
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:id="@+id/spinner_range" />
+                android:text="@string/ratings_1" />
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ratings_2" />
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ratings_3" />
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </LinearLayout>
@@ -225,7 +233,7 @@
         android:layout_height="@dimen/general_padding_TB"
         android:background="@drawable/gradient_grey"/>
 
-    <!-- Route Row -->
+    <!-- Info Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -236,12 +244,12 @@
         android:paddingTop="@dimen/general_padding_TB"
         android:paddingBottom="@dimen/general_padding_TB">
 
-        <!-- Route Column Left -->
+        <!-- Info Column -->
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
@@ -266,35 +274,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_route5" />
 
-        </LinearLayout>
-
-        <!-- Route Column Right -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:orientation="vertical">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:ems="10"
-                android:textColor="@color/colorGrey"
-                android:textColorHint="@color/colorGrey"
-                android:hint="@string/settings_route3"
-                android:id="@+id/editText_Home"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGrey"
-                android:buttonTint="@color/colorGrey"
-                android:text="@string/settings_route4"
-                android:layout_gravity="right"
-                android:id="@+id/checkBox_GPS"/>
         </LinearLayout>
 
     </LinearLayout>

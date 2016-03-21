@@ -1,5 +1,6 @@
 package tue.easyevents;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -8,11 +9,15 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -67,6 +72,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        SearchView searchView = (SearchView) findViewById(R.id.search_events);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("test", query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
@@ -82,7 +100,7 @@ public class MainActivity extends AppCompatActivity
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
             //Comment voor de software scientist Koen Verhaegh toevegoed.
-            Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            Intent intent = new Intent(MainActivity.this,GoogleDirectionsActivity.class);
             startActivity(intent);
             return true;
         }

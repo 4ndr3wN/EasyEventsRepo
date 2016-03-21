@@ -24,7 +24,8 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/first"
-            android:title="First item" />
+            android:title="First item"
+            android:icon="@drawable/gradient_grey"/>
     </group>
 
     <group android:id="@+id/group2"

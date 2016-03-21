@@ -1,5 +1,6 @@
 package tue.easyevents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,10 +17,6 @@ public class Settings_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-//
-//
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setDisplayOptions();
@@ -47,7 +44,14 @@ public class Settings_Activity extends AppCompatActivity {
         /**
          * Super class method back pressed, to get the original map activity back
          */
-        super.onBackPressed();
+//        super.onBackPressed();
+
+        /**
+         * GOING TO THE DETAIL VIEW
+         */
+
+        Intent intent = new Intent(Settings_Activity.this,DetailView_Activity.class);
+        startActivity(intent);
 
         /**
          * New intent, in case we want to redraw the google map
