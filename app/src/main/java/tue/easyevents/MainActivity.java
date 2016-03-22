@@ -1,5 +1,6 @@
 package tue.easyevents;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
+import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity
     public String geoCodedLocation;
     public String from = "20160321";
     public String to = "20160328";
-    public ArrayList<Event> events;
+    public static ArrayList<Event> events;
     public int range;
 
     @Override
@@ -84,12 +86,16 @@ public class MainActivity extends AppCompatActivity
                 e1.printStackTrace();
             }
             try {
-                fos.write(string.getBytes());
+                if (fos != null) {
+                    fos.write(string.getBytes());
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
             try {
-                fos.close();
+                if (fos != null) {
+                    fos.close();
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -109,12 +115,16 @@ public class MainActivity extends AppCompatActivity
                 e1.printStackTrace();
             }
             try {
-                fos.write(string.getBytes());
+                if (fos != null) {
+                    fos.write(string.getBytes());
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
             try {
-                fos.close();
+                if (fos != null) {
+                    fos.close();
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -236,7 +246,7 @@ public class MainActivity extends AppCompatActivity
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
             if (fis != null) {
                 while ((read = reader.readLine()) != null) {
-                    buffer.append(read + "\n" );
+                    buffer.append(read);
                 }
             }
             fis.close();
@@ -283,7 +293,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -292,85 +301,17 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        //original menu in the drawer ALSO COMMENTED IN menu/activity_main_drawer.xml
-        /*if (id == R.id.nav_camara) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
-
-        /**
-         * TESTING DRAWER GROUPS
-         */
-
-        if (id == R.id.group01) {
-
-            System.out.println("CLICKED ON GROUP 1");
-
-        } else if (id == R.id.group02) {
-
-        } else if (id == R.id.group03) {
-
-        } else if (id == R.id.group04) {
-
-        } else if (id == R.id.group05) {
-
-        } else if (id == R.id.group06) {
-
-        } else if (id == R.id.group07) {
-
-        } else if (id == R.id.group08) {
-
-        } else if (id == R.id.group09) {
-
-        } else if (id == R.id.group10) {
-
-        }
-
-        /**
-         * TESTING DRAWER EVENT ITEMS
-         */
-        if (id == R.id.event01) {
-
-            System.out.println("CLICKED ON ITEM 1");
-
-        } else if (id == R.id.event02) {
-
-        } else if (id == R.id.event03) {
-
-        } else if (id == R.id.event04) {
-
-        } else if (id == R.id.event05) {
-
-        } else if (id == R.id.event06) {
-
-        } else if (id == R.id.event07) {
-
-        } else if (id == R.id.event08) {
-
-        } else if (id == R.id.event09) {
-
-        } else if (id == R.id.group10) {
-
-        }
-
+        Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
+        intent.putExtra("eventIndex", id);
+        startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    //use an Asynchronous Task to do the GeoCodingAPI call
-    //TODO: runOnUiThread
+    //use an Asynchronous Task to do the GeoCodingAPI and EventfulAPI calls
+    //TODO: Map markers
     public class Search extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -380,19 +321,23 @@ public class MainActivity extends AppCompatActivity
 
                 try {
                     events = EventfulAPI.searchEvents(geoCodedLocation, from, to, range);
-
+                    //Updating the UI cannot be done in the background, so we run on UI thread
                     runOnUiThread(new Runnable() {
                     @Override
                         public void run() {
-                            //doe functionaliteit op UI thread hier
-                            //vul de list view
-                            NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+                            NavigationView navView = (NavigationView) findViewById(R.id.nav_itemlist);
                             Menu m = navView.getMenu();
+                            m.clear();
                             SubMenu topChannelMenu = m.addSubMenu("Events");
-                            topChannelMenu.add("Event 1");
-                            topChannelMenu.add("Event 2");
-                            topChannelMenu.add("Event 3");
+                            //Add all the events to the list
+                            int i = 0;
+                            while(i < events.size()){
+                                String title = events.get(i).titleEvent;
+                                topChannelMenu.add(R.id.eventsGroup, i, Menu.NONE, title);
 
+                                i = i+1;
+                            }
+                            //This is required to refresh the list view
                             MenuItem mi = m.getItem(m.size()-1);
                             mi.setTitle(mi.getTitle());
                         }

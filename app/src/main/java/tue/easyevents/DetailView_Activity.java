@@ -1,5 +1,6 @@
 package tue.easyevents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +16,13 @@ public class DetailView_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //Get the intent from the MainActivity, the int sent along with it is the index of the
+        //requested event
+        Intent intent = getIntent();
+        int eventIndex = intent.getIntExtra("eventIndex", 0);
+        //This is just for testing, but can be changed to actually add functionality to detailView
+        String title = MainActivity.events.get(eventIndex).titleEvent;
+        String country = MainActivity.events.get(eventIndex).countryEvent;
     }
 
 
