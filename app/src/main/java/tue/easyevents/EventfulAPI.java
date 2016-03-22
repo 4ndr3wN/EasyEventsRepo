@@ -89,39 +89,111 @@ public class EventfulAPI {
                 if(nodeList.item(i) != null){
                     Node node = nodeList.item(i);
                     String ticket = "";
+                    //This is the standard icon for our events, just in case no picture is found
+                    String picture = "mipmap-xxxhdpi/ic_launcher.png";
+                    String info = "";
+                    String id = "";
+                    String title = "";
+                    String venue = "";
+                    String longitude = "";
+                    String latitude = "";
+                    String dateString = "";
+                    String address = "";
+                    String country = "";
+                    String city = "";
+
+                    //Sometimes one or more of these values are not available, to prevent
+                    //NullPointerExceptions we surround everything in a try/catch construction
+                    try {
+                        city = parseData(node, "city_name");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "city");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        country = parseData(node, "country_name");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "country");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        address = parseData(node, "venue_address");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "address");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        dateString = parseData(node, "start_time");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "date");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        latitude = parseData(node, "latitude");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "latitude");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        longitude = parseData(node, "longitude");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "longitude");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        venue = parseData(node, "venue_name");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "venue");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        title = parseData(node, "title");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "title");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        id = parseData(node, "id");
+                    } catch (NullPointerException e){
+                        Log.d("Null", "id");
+                        e.printStackTrace();
+                    }
+
                     Boolean ticketAvailable = true;
                     try {
                         ticket = parseData(node, "links");
                     } catch (NullPointerException e){
+                        Log.d("Null", "ticket");
                         ticketAvailable = false;
                         e.printStackTrace();
                     }
-                    Log.d("Ticket url", ticket);
 
-                    String id = parseData(node, "id");
-                    String title = parseData(node, "title");
-                    String picture = "mipmap-xxxhdpi/ic_launcher.png";
+
                     try {
                         picture = parseData(node, "image");
                     } catch (NullPointerException e){
+                        Log.d("Null", "image");
                         picture = "mipmap-xxxhdpi/ic_launcher.png";
                         e.printStackTrace();
                     }
-                    Log.d("Image url:", picture);
-                    String info = "";
+
+
                     try {
                         info = parseData(node, "description");
                     } catch (NullPointerException e){
+                        Log.d("Null", "info");
                         e.printStackTrace();
                     }
 
-                    String venue = parseData(node, "venue_name");
-                    String longitude = parseData(node, "longitude");
-                    String latitude = parseData(node, "latitude");
-                    String dateString = parseData(node, "start_time");
-                    String address = parseData(node, "venue_address");
-                    String country = parseData(node, "country_name");
-                    String city = parseData(node, "city_name");
+
                     Date dateDate = stringToDate(dateString);
                     Long date = dateDate.getTime();
                     //Create an Event object and add it to the arraylist
@@ -130,10 +202,6 @@ public class EventfulAPI {
                 }
 
             }
-
-
-
-
         //Error handling
         } catch (IOException e) {
             e.printStackTrace();

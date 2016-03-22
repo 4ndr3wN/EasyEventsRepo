@@ -4,29 +4,17 @@
         in this comment the id's of these views are listed for quick reference. Line numbers are
         included but they might be incorrect, due to future updates.
 
-        Time Period:
-            ID:     @+id/spinner_time
-            LINE:   149
-            TYPE:   Spinner
-            REFERENCE: http://developer.android.com/guide/topics/ui/controls/spinner.html
+        Overall Rating:
+            ID:     @+id/rating_overall
+            LINE:   179
 
-        Search Range:
-            ID:     @+id/spinner_range
-            LINE:   206
-            TYPE:   Spinner
-            REFERENCE: http://developer.android.com/guide/topics/ui/controls/spinner.html
+        Weather Rating:
+            ID:     @+id/rating_weather
+            LINE:   191
 
-        Home Address:
-            ID:     @+id/editText_Home
-            LINE:   272
-            TYPE:   EditText, inputType="textPostalAddress"
-            REFERENCE: http://developer.android.com/reference/android/widget/EditText.html
-
-        Use GPS:
-            ID:     @+id/checkBox_GPS
-            LINE:   282
-            TYPE:   CheckBox
-            REFERENCE: http://developer.android.com/reference/android/widget/CheckBox.html
+        Foursquare Rating:
+            ID:     @+id/rating_foursquare
+            LINE:   203
         -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -66,11 +54,13 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/event_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
                 android:textStyle="bold"
                 android:text="Event Name" />
+
 
         </LinearLayout>
 
@@ -106,29 +96,16 @@
     <!-- Image Row -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:orientation="horizontal"
-        android:background="@drawable/gradient_dark"
-        android:paddingLeft="@dimen/general_padding_LR"
-        android:paddingRight="@dimen/general_padding_LR"
-        android:paddingTop="@dimen/general_padding_TB"
-        android:paddingBottom="@dimen/general_padding_TB">
+        android:background="@drawable/gradient_dark">
 
-        <!-- Image Column -->
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="Plaatje artist" />
-
-        </LinearLayout>
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/event_artist2"/>
 
     </LinearLayout>
 
@@ -155,13 +132,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:orientation="vertical">
-
             <TextView
+                android:id="@+id/event_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
                 android:textStyle="bold"
-                android:text="Adres shit" />
+                android:text="Feb 19, 2016" />
+
+            <TextView
+                android:id="@+id/event_adress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Grenswerk)Peperstraat 10, Venlo" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -202,8 +184,10 @@
 
             <RatingBar
                 style="?android:attr/ratingBarStyleSmall"
+                android:id="@+id/rating_overall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:rating="4"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -212,8 +196,10 @@
 
             <RatingBar
                 style="?android:attr/ratingBarStyleSmall"
+                android:id="@+id/rating_weather"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:rating="3"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -222,8 +208,10 @@
 
             <RatingBar
                 style="?android:attr/ratingBarStyleSmall"
+                android:id="@+id/rating_foursquare"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:rating="5"/>
 
         </LinearLayout>
     </LinearLayout>

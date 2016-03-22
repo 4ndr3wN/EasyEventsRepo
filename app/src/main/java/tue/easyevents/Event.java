@@ -13,7 +13,7 @@ public class Event {
     String ticketEvent;
     String titleEvent;
     String venueEvent;
-    String eventLongtitude;
+    String eventLongitude;
     String eventLatitude;
     String idEvent;
 
@@ -28,7 +28,7 @@ public class Event {
 
 
     public Event(String address, String country, String city, String info, String picture, String ticket, String title, String venue,
-                 String longtitude, String latitude, double ratingEvent, double ratingUsers, double ratingVenue,
+                 String longitude, String latitude, double ratingEvent, double ratingUsers, double ratingVenue,
                  double ratingWeather, long date, String id, Boolean ticketAvailable) {
 
         this.addressEvent = address; //get from api
@@ -40,8 +40,8 @@ public class Event {
         this.titleEvent = title;
         this.venueEvent = venue;
 
-        this.eventLatitude = longtitude;
-        this.eventLongtitude = latitude;
+        this.eventLatitude = latitude;
+        this.eventLongitude = longitude;
         this.ratingEvent = ratingEvent;
         this.ratingUsers = ratingUsers;
         this.ratingWeather = ratingWeather;
