@@ -18,7 +18,7 @@ public class DetailView_Activity extends AppCompatActivity {
     }
 
 
-    public void btn_close_settings(View v) {
+    public void btn_close_detailview(View v) {
         /**
          * Super class method back pressed, to get the original map activity back
          *

@@ -33,7 +33,7 @@ public class Event {
 
         this.addressEvent = address; //get from api
         this.countryEvent = country;
-        this.cityEvent = cityEvent;
+        this.cityEvent = city;
         this.infoEvent = info;
         this.pictureEvent = picture;
         this.ticketEvent = ticket;
