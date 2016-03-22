@@ -178,27 +178,7 @@ public class MainActivity extends AppCompatActivity
         long unixTime = System.currentTimeMillis();
         long unixDay = 86400000;
 
-        //CHECK SAVED TIME PERIOD
-        String read = "";
-        String saved_time = "";
-        //check for fileinput files
-        try {
-            FileInputStream fis = openFileInput("time_file");
-            StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-            if (fis != null) {
-                while ((read = reader.readLine()) != null) {
-                    buffer.append(read + "\n" );
-                }
-            }
-            fis.close();
-            saved_time = buffer.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        String saved_time = inputFile("time_file");
 
         if (saved_time.equals("Today")) {
             to = date;
@@ -219,25 +199,7 @@ public class MainActivity extends AppCompatActivity
             to = date2;
         }
 
-        //CHECK THE RANGE
-        String saved_range = "";
-        //check for fileinput files
-        try {
-            FileInputStream fis = openFileInput("time_file");
-            StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-            if (fis != null) {
-                while ((read = reader.readLine()) != null) {
-                    buffer.append(read + "\n" );
-                }
-            }
-            fis.close();
-            saved_range = buffer.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String saved_range = inputFile("range_file");
 
         if (saved_range.equals("5 km")) {
             range = 5;
@@ -261,6 +223,30 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             System.err.println(e);
         }
+    }
+
+    //Reads the input file with specified file_name
+    public String inputFile(String file_name) {
+        String saved = "";
+        String read;
+        //check for fileinput files
+        try {
+            FileInputStream fis = openFileInput(file_name);
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+            if (fis != null) {
+                while ((read = reader.readLine()) != null) {
+                    buffer.append(read + "\n" );
+                }
+            }
+            fis.close();
+            saved = buffer.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return saved;
     }
 
     @Override
