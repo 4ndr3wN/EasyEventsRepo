@@ -39,15 +39,14 @@ public class MainActivity extends AppCompatActivity
 
     public String location;
     public String query;
-    public String geoCodedLocation;
-    public String from = "20160321";
-    public String to = "20160328";
+    public static String geoCodedLocation;
+    public String from;
+    public String to;
     public ArrayList<Event> events;
     public int range;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO: search met location van user??
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -119,6 +118,8 @@ public class MainActivity extends AppCompatActivity
                 e1.printStackTrace();
             }
         }
+
+        //TODO: search met location van user??
     }
 
     //Toggles the drawer, used on the side-bar-buttons
@@ -267,6 +268,10 @@ public class MainActivity extends AppCompatActivity
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
             Intent intent = new Intent(this, GoogleDirectionsActivity.class);
+            //Bundle bundle = new Bundle();
+            //bundle.putString("1", geoCodedLocation);
+            //intent.putExtras(bundle);
+            //intent.putExtra("1", geoCodedLocation);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_settings) {
