@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 public class Settings_Activity extends AppCompatActivity {
@@ -33,8 +37,8 @@ public class Settings_Activity extends AppCompatActivity {
         //getSupportActionBar().setHomeButtonEnabled(true); //laat nu dus niets zien! Want is niet specified
         //go-up-pijltje veranderen in eigen drawable
         //getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_arrow);
-//        getSupportActionBar().setDisplayOptions();
-////
+        //getSupportActionBar().setDisplayOptions();
+
 
         // Code for dropdowns, see settings_view.xml for instructions on how to use
         // or check: http://developer.android.com/guide/topics/ui/controls/spinner.html
@@ -43,6 +47,16 @@ public class Settings_Activity extends AppCompatActivity {
                 R.array.time_array, android.R.layout.simple_spinner_item);
         adapter_time.setDropDownViewResource(R.layout.dropdown_layouts);
         spinner_time.setAdapter(adapter_time);
+        String data = inputFile("time_file");
+        if(data.equals("Today")){
+            spinner_time.setSelection(0);
+        } else if(data.equals("Weekend")){
+            spinner_time.setSelection(1);
+        } else if(data.equals("Week")){
+            spinner_time.setSelection(2);
+        } else if(data.equals("Month")){
+            spinner_time.setSelection(3);
+        }
 
         spinner_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -75,6 +89,24 @@ public class Settings_Activity extends AppCompatActivity {
         });
 
         final Spinner spinner_range = (Spinner) findViewById(R.id.spinner_range);
+        ArrayAdapter<CharSequence> adapter_range = ArrayAdapter.createFromResource(this,
+                R.array.range_array, android.R.layout.simple_spinner_item);
+        adapter_range.setDropDownViewResource(R.layout.dropdown_layouts);
+        spinner_range.setAdapter(adapter_range);
+        data = inputFile("range_file");
+        if(data.equals("5 km")){
+            spinner_range.setSelection(0);
+        } else if(data.equals("10 km")){
+            spinner_range.setSelection(1);
+        } else if(data.equals("25 km")){
+            spinner_range.setSelection(2);
+        } else if(data.equals("50 km")){
+            spinner_range.setSelection(3);
+        } else if(data.equals("100 km")){
+            spinner_range.setSelection(4);
+        }
+        int test = spinner_range.getSelectedItemPosition();
+        Log.d("Selected range", String.valueOf(test));
 
         spinner_range.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -106,11 +138,32 @@ public class Settings_Activity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<CharSequence> adapter_range = ArrayAdapter.createFromResource(this,
-                R.array.range_array, android.R.layout.simple_spinner_item);
-        adapter_range.setDropDownViewResource(R.layout.dropdown_layouts);
-        spinner_range.setAdapter(adapter_range);
 
+
+    }
+
+    //Reads the input file with specified file_name
+    public String inputFile(String file_name) {
+        String saved = "";
+        String read;
+        //check for fileinput files
+        try {
+            FileInputStream fis = openFileInput(file_name);
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+            if (fis != null) {
+                while ((read = reader.readLine()) != null) {
+                    buffer.append(read);
+                }
+            }
+            fis.close();
+            saved = buffer.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return saved;
     }
 
 

@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
@@ -44,24 +45,18 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
+            GoogleMap.OnMarkerClickListener {
 
     public String location;
     public String query;
-//<<<<<<< HEAD
     public static String geoCodedLocation;
     public String from;
     public String to;
-    //public ArrayList<Event> events;
-//=======
-    //public String geoCodedLocation;
-    //public String from = "20160321";
-    //public String to = "20160328";
     public static ArrayList<Event> events;
-//>>>>>>> origin/master
     public int range;
-
     private GoogleMap mMap;
+    public String lastMarkerClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,11 +151,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker on Current Location and move the camera
-        LatLng locCur = new LatLng(52, 5);
-        mMap.addMarker(new MarkerOptions().position(locCur).title("You are here!").snippet("test"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(locCur));
+        //Set the listener for the map markers
+        mMap.setOnMarkerClickListener(this);
     }
 
     public void addMarker(Double latitude, Double longitude, String title, String id) {
@@ -199,7 +191,8 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String userQuery) {
-                //Log.d("test", query); //test
+                //Clear lastMarkerClicked to prevent errors
+                lastMarkerClicked = null;
 
                 //call search function to handle searching and API calls
                 search(userQuery);
@@ -212,6 +205,24 @@ public class MainActivity extends AppCompatActivity
             }
         });
         return true;
+    }
+
+    public boolean onMarkerClick(final Marker marker){
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+
+        marker.showInfoWindow();
+
+        if(marker.getSnippet().equals(lastMarkerClicked)){
+            String idString = marker.getSnippet();
+            int id = Integer.parseInt(idString);
+            Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
+            intent.putExtra("eventIndex", id);
+            startActivity(intent);
+            return true;
+        } else {
+            lastMarkerClicked = marker.getSnippet();
+            return true;
+        }
     }
 
     public void search(String userQuery) {
@@ -375,7 +386,19 @@ public class MainActivity extends AppCompatActivity
                                 Double searchLatitudeDouble = Double.valueOf(searchLatitudeString);
                                 Double searchLongitudeDouble = Double.valueOf(searchLongitudeString);
                                 LatLng zoomLL = new LatLng(searchLatitudeDouble, searchLongitudeDouble);
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 15));
+                                if(range == 5){
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 13));
+                                } else if(range == 10){
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 11));
+                                }else if(range == 25){
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 9));
+                                }else if(range == 50){
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 8));
+                                }else if(range == 100){
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 7));
+
+                                }
+
                             } catch(NoSuchElementException e){
                                 e.printStackTrace();
                             }
