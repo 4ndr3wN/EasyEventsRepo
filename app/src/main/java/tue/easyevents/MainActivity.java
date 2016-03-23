@@ -40,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -157,14 +159,15 @@ public class MainActivity extends AppCompatActivity
 
         // Add a marker on Current Location and move the camera
         LatLng locCur = new LatLng(52, 5);
-        mMap.addMarker(new MarkerOptions().position(locCur).title("You are here!"));
+        mMap.addMarker(new MarkerOptions().position(locCur).title("You are here!").snippet("test"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(locCur));
     }
 
     public void addMarker(Double latitude, Double longitude, String title, String id) {
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
-                .title(title));
+                .title(title)
+                .snippet(id));
     }
 
     //Toggles the drawer, used on the side-bar-buttons
@@ -365,15 +368,35 @@ public class MainActivity extends AppCompatActivity
                     runOnUiThread(new Runnable() {
                     @Override
                         public void run() {
+                            StringTokenizer st = new StringTokenizer(geoCodedLocation, ",");
+                            try{
+                                String searchLatitudeString = st.nextElement().toString();
+                                String searchLongitudeString = st.nextElement().toString();
+                                Double searchLatitudeDouble = Double.valueOf(searchLatitudeString);
+                                Double searchLongitudeDouble = Double.valueOf(searchLongitudeString);
+                                LatLng zoomLL = new LatLng(searchLatitudeDouble, searchLongitudeDouble);
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 15));
+                            } catch(NoSuchElementException e){
+                                e.printStackTrace();
+                            }
+
+
+
+
                             NavigationView navView = (NavigationView) findViewById(R.id.nav_itemlist);
                             Menu m = navView.getMenu();
                             m.clear();
+                            mMap.clear();
                             SubMenu topChannelMenu = m.addSubMenu("Events");
                             //Add all the events to the list
                             int i = 0;
                             while(i < events.size()){
                                 String title = events.get(i).titleEvent;
+                                Double latitude = Double.valueOf(events.get(i).eventLatitude);
+                                Double longitude = Double.valueOf(events.get(i).eventLongitude);
+                                String id = Integer.toString(i);
                                 topChannelMenu.add(R.id.eventsGroup, i, Menu.NONE, title);
+                                addMarker(latitude, longitude, title, id);
 
                                 i = i+1;
                             }
