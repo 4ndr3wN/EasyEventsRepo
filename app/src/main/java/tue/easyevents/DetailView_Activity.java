@@ -95,4 +95,8 @@ public class DetailView_Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Home-icon takes you back to MainActivity
+    public void btn_home(View v) {
+        super.onBackPressed();
+    }
 }
