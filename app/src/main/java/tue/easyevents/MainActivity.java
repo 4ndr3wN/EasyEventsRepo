@@ -41,17 +41,17 @@ public class MainActivity extends AppCompatActivity
 
     public String location;
     public String query;
-<<<<<<< HEAD
+//<<<<<<< HEAD
     public static String geoCodedLocation;
     public String from;
     public String to;
-    public ArrayList<Event> events;
-=======
-    public String geoCodedLocation;
-    public String from = "20160321";
-    public String to = "20160328";
+    //public ArrayList<Event> events;
+//=======
+    //public String geoCodedLocation;
+    //public String from = "20160321";
+    //public String to = "20160328";
     public static ArrayList<Event> events;
->>>>>>> origin/master
+//>>>>>>> origin/master
     public int range;
 
     @Override
