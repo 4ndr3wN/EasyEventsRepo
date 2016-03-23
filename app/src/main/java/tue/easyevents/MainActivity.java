@@ -20,7 +20,12 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -37,7 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     public String location;
     public String query;
@@ -54,10 +59,17 @@ public class MainActivity extends AppCompatActivity
 //>>>>>>> origin/master
     public int range;
 
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -137,6 +149,22 @@ public class MainActivity extends AppCompatActivity
         }
 
         //TODO: search met location van user??
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker on Current Location and move the camera
+        LatLng locCur = new LatLng(52, 5);
+        mMap.addMarker(new MarkerOptions().position(locCur).title("You are here!"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(locCur));
+    }
+
+    public void addMarker(Double latitude, Double longitude, String title, String id) {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(title));
     }
 
     //Toggles the drawer, used on the side-bar-buttons
