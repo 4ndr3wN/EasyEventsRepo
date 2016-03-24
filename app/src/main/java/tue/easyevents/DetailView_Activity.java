@@ -187,7 +187,7 @@ public class DetailView_Activity extends AppCompatActivity {
                 int openWeatherRating = OpenWeatherAPI.searchWeather(detailEvent.eventLatitude,
                         detailEvent.eventLongitude, detailEvent.dateEvent);
 
-                detailEvent.updateRatingVenue(openWeatherRating);
+                detailEvent.updateRatingWeather(openWeatherRating);
                 detailEvent.updateRatingVenue(foursquareRating);
 
                 //We need to update the ratings here, as otherwise the AsyncTask will not have
