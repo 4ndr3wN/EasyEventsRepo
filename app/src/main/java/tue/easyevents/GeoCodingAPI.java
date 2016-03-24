@@ -11,9 +11,11 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +44,11 @@ public class GeoCodingAPI {
 
         InputStream in = null;
         String latLong = "";
+        try {
+            address = URLEncoder.encode(address, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         String searchAddress = baseAddress + address + appKey;
         //Log the search address for testing
         Log.d("Address", searchAddress);
