@@ -36,37 +36,46 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     //change according to origin for directions
     private LatLng origin;
     //change according to destination (location of event)
-    private LatLng destination = new LatLng(51.31, 6.09);
+    private LatLng destination = new LatLng(51.4, 5.79);
 
     String latitude;
     String longitude;
     double la;
     double lo;
 
+    public String eventLoc;
+    public String latitudeLoc;
+    public String longitudeLoc;
+    double eventLa;
+    double eventLo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Intent intent = getIntent();
-        //String parameters = intent.getExtras().getString("1");
-        //Log.d("Parameters", parameters);
-        Log.d("test", "test");
-        String loc = MainActivity.geoCodedLocation;
-        //split geoCodedLocation
-        StringTokenizer st = new StringTokenizer(loc, ",");
-        latitude = st.nextElement().toString();
-        longitude = st.nextElement().toString();
 
-        Log.d("Lat", latitude);
-        Log.d("Long", longitude);
+        Intent intent = getIntent();
+        latitude = intent.getStringExtra("lat");
+        longitude = intent.getStringExtra("lon");
+        eventLoc = intent.getStringExtra("eventLoc");
+
+        //StringTokenizer st = new StringTokenizer(eventLoc, ",");
+        //latitudeLoc = st.nextElement().toString();
+        //longitudeLoc = st.nextElement().toString();
+
+       // eventLa = Double.parseDouble(latitudeLoc);
+       // eventLo = Double.parseDouble(longitudeLoc);
 
         //Parse strings to double
         la = Double.parseDouble(latitude);
         lo = Double.parseDouble(longitude);
 
-        //set destination LatLng
+        //set origin LatLng
         origin = new LatLng(la, lo);
 
-        //TODO: fix origin???
+        //set destination LatLng
+        //destination = new LatLng(eventLa, eventLo);
+
+        //TODO: fix origin
         //TODO: Set destination according to event location
         //TODO: Check settings for the checkbox/address
 

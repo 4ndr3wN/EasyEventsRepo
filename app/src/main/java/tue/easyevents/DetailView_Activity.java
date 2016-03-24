@@ -27,6 +27,9 @@ import java.util.Date;
 
 public class DetailView_Activity extends AppCompatActivity {
     public Event detailEvent;
+    public String latitude;
+    public String longitude;
+    public String eventLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class DetailView_Activity extends AppCompatActivity {
         //requested event
         Intent intent = getIntent();
         int eventIndex = intent.getIntExtra("eventIndex", 0);
+        latitude = intent.getStringExtra("lat");
+        longitude = intent.getStringExtra("lon");
         //Store the required event as detailEvent to save a lot of typing
         detailEvent = MainActivity.events.get(eventIndex);
 
@@ -101,6 +106,17 @@ public class DetailView_Activity extends AppCompatActivity {
         ticketButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 goToUrl(ticketURL);
+            }
+        });
+
+        routeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                eventLoc = detailEvent.addressEvent;
+                Intent intent = new Intent(DetailView_Activity.this, GoogleDirectionsActivity.class);
+                intent.putExtra("lat", latitude);
+                intent.putExtra("lon", longitude);
+                intent.putExtra("eventLoc", eventLoc);
+                startActivity(intent);
             }
         });
 

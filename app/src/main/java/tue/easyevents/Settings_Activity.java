@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -104,8 +105,21 @@ public class Settings_Activity extends AppCompatActivity {
         });
 
         data = inputFile("address_file");
-        EditText addressText = (EditText) findViewById(R.id.editText_Home);
+        final EditText addressText = (EditText) findViewById(R.id.editText_Home);
         addressText.setHint(data);
+
+        Button saveButton = (Button) findViewById(R.id.btn_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newAddress = addressText.getText().toString();
+                if(!(newAddress.equals(""))){
+                    outputFile("address_file", newAddress);
+                    addressText.setHint(newAddress);
+                    addressText.setText("");
+                }
+            }
+        });
 
         data = inputFile("GPSCheck");
         CheckBox gpsCheck = (CheckBox) findViewById(R.id.checkBox_GPS);
