@@ -1,5 +1,7 @@
 package tue.easyevents;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -171,11 +173,28 @@ public class DetailView_Activity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.action_about_us) {
-            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
-            Intent intent = new Intent(this, AboutUs_Activity.class);
-            startActivity(intent);
-            finish();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Chain together various setter methods to set the dialog characteristics
+            builder.setMessage(R.string.action_about_us_msg)
+                    .setTitle(R.string.action_about_us_title)
+                    .setPositiveButton(R.string.action_about_us_like, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE DEM MISSILES! A.K.A LIKE OUR APP
+                        }
+                    }).setNegativeButton(R.string.action_about_us_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // CANCEL DIALOG
+                }
+            });
+            // Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            //Set AlertDialog background to our theme
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.gradient_dark);
+            //Display Dialog
+            dialog.show();
+
+
             return true;
         }
 
