@@ -129,10 +129,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/gradient_light"
-        android:paddingLeft="@dimen/general_padding_LR"
-        android:paddingRight="@dimen/general_padding_LR"
-        android:paddingTop="@dimen/general_padding_TB"
-        android:paddingBottom="@dimen/general_padding_LR">
+        android:padding="@dimen/general_padding_LR">
 
         <!-- Address/Ratings Row -->
         <LinearLayout
