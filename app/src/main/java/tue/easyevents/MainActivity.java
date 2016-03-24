@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity
             // Get the AlertDialog from create()
             AlertDialog dialog = builder.create();
             //Set AlertDialog background to our theme
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.gradient_dark);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.pop_up);
             //Display Dialog
             dialog.show();
 
