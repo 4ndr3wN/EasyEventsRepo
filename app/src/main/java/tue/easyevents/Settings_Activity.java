@@ -243,4 +243,9 @@ public class Settings_Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Home-icon takes you back to MainActivity
+    public void btn_home(View v) {
+        super.onBackPressed();
+    }
+
 }

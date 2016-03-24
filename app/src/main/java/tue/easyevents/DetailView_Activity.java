@@ -177,6 +177,7 @@ public class DetailView_Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public class updateEventRating extends AsyncTask <Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params){
@@ -256,6 +257,12 @@ public class DetailView_Activity extends AppCompatActivity {
         Uri uriUrl = Uri.parse(url);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);
+    }
+
+
+    //Home-icon takes you back to MainActivity
+    public void btn_home(View v) {
+        super.onBackPressed();
     }
 
 }

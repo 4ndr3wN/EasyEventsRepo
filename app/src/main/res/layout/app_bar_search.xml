@@ -20,7 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
                 android:adjustViewBounds="true"
-                android:src="@drawable/img_logo" />
+                android:src="@drawable/img_logo"
+                android:onClick="btn_home"/>
 
             <!--<EditText
                 android:layout_width="wrap_content"
