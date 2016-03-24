@@ -3,10 +3,16 @@ package tue.easyevents;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
+import java.security.Permission;
 import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,12 +50,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
-            GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener {
 
-    public String location;
+    public String myLocation;
+    public String lat;
+    public String lon;
     public String query;
     public static String geoCodedLocation;
     public String from;
@@ -57,11 +67,36 @@ public class MainActivity extends AppCompatActivity
     public int range;
     private GoogleMap mMap;
     public String lastMarkerClicked;
+    LocationManager locationManager;
+
+    //false searches on input, true searches on user Loc
+    public boolean whatSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //USER LOCATION
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            //TODO: take standard location from settings
+            //TODO: OR if that is not there take the location of the searched city
+            whatSearch = false;
+        } else {
+            //permission already granted
+            //get location :)
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (location != null) {
+                //PARSE LOCATION TO USABLE FORMAT
+                lat = Double.toString(location.getLatitude());
+                lon = Double.toString(location.getLongitude());
+                whatSearch = true;
+            }
+        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -203,7 +238,38 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        //TODO: search met location van user??
+        if (whatSearch) {
+            search(whatSearch);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //permission is granted
+                    //set location to myLocation
+                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    if (location != null) {
+                        //PARSE LOCATION TO USABLE FORMAT
+                        lat = Double.toString(location.getLatitude());
+                        lon = Double.toString(location.getLongitude());
+                    }
+                } else {
+                    //permission not granted
+                    //dont use user location :(
+                    //TODO: take standard location from settings
+                    //TODO: OR if that is not there take the location of the searched city
+                }
+                return;
+            }
+        }
     }
 
     @Override
@@ -252,8 +318,12 @@ public class MainActivity extends AppCompatActivity
                 //Clear lastMarkerClicked to prevent errors
                 lastMarkerClicked = null;
 
+                //set query for geocoding API
+                query = userQuery;
+
                 //call search function to handle searching and API calls
-                search(userQuery);
+                search(false);
+
                 return false;
             }
 
@@ -275,6 +345,8 @@ public class MainActivity extends AppCompatActivity
             int id = Integer.parseInt(idString);
             Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
             intent.putExtra("eventIndex", id);
+            intent.putExtra("lat", lat);
+            intent.putExtra("lon", lon);
             startActivity(intent);
             return true;
         } else {
@@ -283,9 +355,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void search(String userQuery) {
-        query = userQuery;
-
+    public void search(boolean userLoc) {
         //get the date
         String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
 
@@ -335,9 +405,13 @@ public class MainActivity extends AppCompatActivity
             range = 100;
         }
 
-        //geocode the users requested location
+        //call the APIs and onward
         try {
-            new Search().execute();
+            if (userLoc) {
+                new Search2().execute();
+            } else {
+                new Search().execute();
+            }
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -383,17 +457,11 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_ptview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
             Intent intent = new Intent(this, GoogleDirectionsActivity.class);
-            //Bundle bundle = new Bundle();
-            //bundle.putString("1", geoCodedLocation);
-            //intent.putExtras(bundle);
-            //intent.putExtra("1", geoCodedLocation);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_settings) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
             Intent intent = new Intent(this, Settings_Activity.class);
             startActivity(intent);
             return true;
@@ -423,7 +491,71 @@ public class MainActivity extends AppCompatActivity
     }
 
     //use an Asynchronous Task to do the GeoCodingAPI and EventfulAPI calls
-    //TODO: Map markers
+    public class Search2 extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params){
+            geoCodedLocation = lat + "," + lon;
+
+            try {
+                events = EventfulAPI.searchEvents(geoCodedLocation, from, to, range);
+                //Updating the UI cannot be done in the background, so we run on UI thread
+                runOnUiThread(new Runnable() {
+                @Override
+                    public void run() {
+                        StringTokenizer st = new StringTokenizer(geoCodedLocation, ",");
+                        try{
+                            String searchLatitudeString = st.nextElement().toString();
+                            String searchLongitudeString = st.nextElement().toString();
+                            Double searchLatitudeDouble = Double.valueOf(searchLatitudeString);
+                            Double searchLongitudeDouble = Double.valueOf(searchLongitudeString);
+                            LatLng zoomLL = new LatLng(searchLatitudeDouble, searchLongitudeDouble);
+                            if (range == 5) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 13));
+                            } else if(range == 10) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 11));
+                            } else if(range == 25) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 9));
+                            } else if(range == 50) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 8));
+                            } else if(range == 100) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 7));
+                            }
+                        } catch(NoSuchElementException e){
+                            e.printStackTrace();
+                        }
+
+                        NavigationView navView = (NavigationView) findViewById(R.id.nav_itemlist);
+                        Menu m = navView.getMenu();
+                        m.clear();
+                        mMap.clear();
+                        SubMenu topChannelMenu = m.addSubMenu("Events");
+                        //Add all the events to the list
+                        int i = 0;
+                        while(i < events.size()){
+                            String title = events.get(i).titleEvent;
+                            Double latitude = Double.valueOf(events.get(i).eventLatitude);
+                            Double longitude = Double.valueOf(events.get(i).eventLongitude);
+                            String id = Integer.toString(i);
+                            topChannelMenu.add(R.id.eventsGroup, i, Menu.NONE, title);
+                            addMarker(latitude, longitude, title, id);
+
+                            i = i+1;
+                        }
+                        //This is required to refresh the list view
+                        MenuItem mi = m.getItem(m.size()-1);
+                        mi.setTitle(mi.getTitle());
+                    }
+                });
+
+            } catch (ConnectException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    //use an Asynchronous Task to do the GeoCodingAPI and EventfulAPI calls
     public class Search extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -435,7 +567,7 @@ public class MainActivity extends AppCompatActivity
                     events = EventfulAPI.searchEvents(geoCodedLocation, from, to, range);
                     //Updating the UI cannot be done in the background, so we run on UI thread
                     runOnUiThread(new Runnable() {
-                    @Override
+                        @Override
                         public void run() {
                             StringTokenizer st = new StringTokenizer(geoCodedLocation, ",");
                             try{
@@ -461,9 +593,6 @@ public class MainActivity extends AppCompatActivity
                                 e.printStackTrace();
                             }
 
-
-
-
                             NavigationView navView = (NavigationView) findViewById(R.id.nav_itemlist);
                             Menu m = navView.getMenu();
                             m.clear();
@@ -486,17 +615,13 @@ public class MainActivity extends AppCompatActivity
                             mi.setTitle(mi.getTitle());
                         }
                     });
-
                 } catch (ConnectException e) {
                     e.printStackTrace();
                 }
             } catch (ConnectException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
-
     }
 }
-
