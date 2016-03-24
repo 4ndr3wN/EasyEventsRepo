@@ -1,7 +1,8 @@
 package tue.easyevents;
 
-import android.content.ClipData;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -12,13 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,19 +33,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
-import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
-            GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener {
 
     public String location;
     public String query;
@@ -57,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     public int range;
     private GoogleMap mMap;
     public String lastMarkerClicked;
+    public String searchQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -265,12 +263,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public boolean onMarkerClick(final Marker marker){
+    public boolean onMarkerClick(final Marker marker) {
         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
 
         marker.showInfoWindow();
 
-        if(marker.getSnippet().equals(lastMarkerClicked)){
+        if (marker.getSnippet().equals(lastMarkerClicked)) {
             String idString = marker.getSnippet();
             int id = Integer.parseInt(idString);
             Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
@@ -300,18 +298,15 @@ public class MainActivity extends AppCompatActivity
 
         if (saved_time.equals("Today")) {
             to = date;
-        }
-        else if (saved_time.equals("Weekend")) {
-            unixTime =  unixTime + (unixDay*3);
+        } else if (saved_time.equals("Weekend")) {
+            unixTime = unixTime + (unixDay * 3);
             String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
             to = date2;
-        }
-        else if (saved_time.equals("Week")) {
-            unixTime =  unixTime + (unixDay*7);
+        } else if (saved_time.equals("Week")) {
+            unixTime = unixTime + (unixDay * 7);
             String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
             to = date2;
-        }
-        else if (saved_time.equals("Month")) {
+        } else if (saved_time.equals("Month")) {
             unixTime = unixTime + (unixDay * 30);
             String date2 = new SimpleDateFormat("yyyyMMdd").format(unixTime);
             to = date2;
@@ -321,17 +316,13 @@ public class MainActivity extends AppCompatActivity
 
         if (saved_range.equals("5 km")) {
             range = 5;
-        }
-        else if (saved_range.equals("10 km")) {
+        } else if (saved_range.equals("10 km")) {
             range = 10;
-        }
-        else if (saved_range.equals("25 km")) {
+        } else if (saved_range.equals("25 km")) {
             range = 25;
-        }
-        else if (saved_range.equals("50 km")) {
+        } else if (saved_range.equals("50 km")) {
             range = 50;
-        }
-        else if (saved_range.equals("100 km")) {
+        } else if (saved_range.equals("100 km")) {
             range = 100;
         }
 
@@ -375,13 +366,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_detailview) {
-            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
-            Intent intent = new Intent(this, DetailView_Activity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.action_ptview) {
+        if (id == R.id.action_ptview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
             Intent intent = new Intent(this, GoogleDirectionsActivity.class);
@@ -398,10 +383,28 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             return true;
         } else if (id == R.id.action_about_us) {
-            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
-            Intent intent = new Intent(this, AboutUs_Activity.class);
-            startActivity(intent);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Chain together various setter methods to set the dialog characteristics
+            builder.setMessage(R.string.action_about_us_msg)
+                    .setTitle(R.string.action_about_us_title)
+                    .setPositiveButton(R.string.action_about_us_like, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            // FIRE DEM MISSILES! A.K.A LIKE OUR APP
+                            }
+                    }).setNegativeButton(R.string.action_about_us_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            // CANCEL DIALOG
+                            }
+                    });
+            // Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            //Set AlertDialog background to our theme
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.gradient_dark);
+            //Display Dialog
+            dialog.show();
+
+
             return true;
         }
 
@@ -427,7 +430,7 @@ public class MainActivity extends AppCompatActivity
     public class Search extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void... params){
+        protected Void doInBackground(Void... params) {
             try {
                 geoCodedLocation = GeoCodingAPI.geoCode(query);
 
@@ -435,33 +438,31 @@ public class MainActivity extends AppCompatActivity
                     events = EventfulAPI.searchEvents(geoCodedLocation, from, to, range);
                     //Updating the UI cannot be done in the background, so we run on UI thread
                     runOnUiThread(new Runnable() {
-                    @Override
+                        @Override
                         public void run() {
                             StringTokenizer st = new StringTokenizer(geoCodedLocation, ",");
-                            try{
+                            try {
                                 String searchLatitudeString = st.nextElement().toString();
                                 String searchLongitudeString = st.nextElement().toString();
                                 Double searchLatitudeDouble = Double.valueOf(searchLatitudeString);
                                 Double searchLongitudeDouble = Double.valueOf(searchLongitudeString);
                                 LatLng zoomLL = new LatLng(searchLatitudeDouble, searchLongitudeDouble);
-                                if(range == 5){
+                                if (range == 5) {
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 13));
-                                } else if(range == 10){
+                                } else if (range == 10) {
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 11));
-                                }else if(range == 25){
+                                } else if (range == 25) {
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 9));
-                                }else if(range == 50){
+                                } else if (range == 50) {
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 8));
-                                }else if(range == 100){
+                                } else if (range == 100) {
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLL, 7));
 
                                 }
 
-                            } catch(NoSuchElementException e){
+                            } catch (NoSuchElementException e) {
                                 e.printStackTrace();
                             }
-
-
 
 
                             NavigationView navView = (NavigationView) findViewById(R.id.nav_itemlist);
@@ -471,7 +472,7 @@ public class MainActivity extends AppCompatActivity
                             SubMenu topChannelMenu = m.addSubMenu("Events");
                             //Add all the events to the list
                             int i = 0;
-                            while(i < events.size()){
+                            while (i < events.size()) {
                                 String title = events.get(i).titleEvent;
                                 Double latitude = Double.valueOf(events.get(i).eventLatitude);
                                 Double longitude = Double.valueOf(events.get(i).eventLongitude);
@@ -479,10 +480,10 @@ public class MainActivity extends AppCompatActivity
                                 topChannelMenu.add(R.id.eventsGroup, i, Menu.NONE, title);
                                 addMarker(latitude, longitude, title, id);
 
-                                i = i+1;
+                                i = i + 1;
                             }
                             //This is required to refresh the list view
-                            MenuItem mi = m.getItem(m.size()-1);
+                            MenuItem mi = m.getItem(m.size() - 1);
                             mi.setTitle(mi.getTitle());
                         }
                     });

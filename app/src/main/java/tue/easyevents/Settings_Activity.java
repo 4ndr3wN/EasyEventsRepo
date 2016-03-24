@@ -2,11 +2,9 @@ package tue.easyevents;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -225,14 +223,7 @@ public class Settings_Activity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_detailview) {
-            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
-            Intent intent = new Intent(this, DetailView_Activity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        } else if (id == R.id.action_ptview) {
+        if (id == R.id.action_ptview) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
             Intent intent = new Intent(this, GoogleDirectionsActivity.class);

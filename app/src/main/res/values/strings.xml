@@ -9,6 +9,14 @@
     <string name="action_ptview">Transport view</string>
     <string name="action_settings">Settings</string>
     <string name="action_about_us">About Us</string>
+    <string name="action_about_us_msg" color="@color/colorGrey">This is our group effort of a DBL COURSE. Rest in peace Johan Cruijff. Rest in peace Raket-IJsjes</string>
+    <string name="action_about_us_title">About us</string>
+    <string name="action_about_us_like">Like our app!</string>
+    <string name="action_about_us_cancel">Cancel</string>
+
+
+
+
 
 
     <string name="title_activity_maps">Map</string>
