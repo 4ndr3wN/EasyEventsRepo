@@ -145,6 +145,64 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        try {
+            openFileInput("address_file");
+        } catch (FileNotFoundException e) {
+            //set basic settings
+            String FILENAME = "address_file";
+            String string = "Den Dolech 2, Eindhoven";
+
+            FileOutputStream fos = null;
+            try {
+                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                if (fos != null) {
+                    fos.write(string.getBytes());
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        try {
+            openFileInput("GPSCheck");
+        } catch (FileNotFoundException e) {
+            //set basic settings
+            String FILENAME = "GPSCheck";
+            String string = "1";
+
+            FileOutputStream fos = null;
+            try {
+                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                if (fos != null) {
+                    fos.write(string.getBytes());
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
         //TODO: search met location van user??
     }
 
