@@ -15,6 +15,14 @@
         Foursquare Rating:
             ID:     @+id/rating_foursquare
             LINE:   203
+
+        Event Image:
+            ID:     @+id/image_event
+            Line:   107
+
+            Important note:
+            two textviews have been added with zero regard for layout.
+            The textviews are: event_city & event_country.
         -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -101,11 +109,12 @@
         android:background="@drawable/gradient_dark">
 
         <ImageView
+            android:id="@+id/image_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/event_artist2"/>
+            android:src="@drawable/easyevents"/>
 
     </LinearLayout>
 
@@ -140,10 +149,19 @@
                 android:text="Feb 19, 2016" />
 
             <TextView
-                android:id="@+id/event_adress"
+                android:id="@+id/event_address"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(Grenswerk)Peperstraat 10, Venlo" />
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/event_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/event_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -245,22 +263,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:text="@string/settings_route1" />
+                android:text="@string/event_details" />
 
             <TextView
+                android:id="@+id/information_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_route2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_route5" />
+                android:text="@string/event_information_stock" />
 
         </LinearLayout>
 

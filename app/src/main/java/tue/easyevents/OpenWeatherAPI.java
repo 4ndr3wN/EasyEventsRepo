@@ -70,7 +70,7 @@ public class OpenWeatherAPI {
             doc.getDocumentElement().normalize();
 
             NodeList nodeList = doc.getElementsByTagName("time");
-            String icon = "";
+            String icon = "xx";
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 if(nodeList.item(i) != null){
@@ -89,35 +89,35 @@ public class OpenWeatherAPI {
 
             //Openweather geeft icoontjes per categorie
             //Hieronder staat de rating die ik per icoontje toepasselijk vond
-            if(icon.equals("")){
+            if(icon.equalsIgnoreCase("xx")){
                 ratingWeather = 0;
             }
-            else if (icon == "01d" || icon == "01n"){
-                ratingWeather = 10;
+            else if (icon.equalsIgnoreCase("01d") || icon.equalsIgnoreCase("01n")){
+                ratingWeather = 5;
             }
-            else if (icon == "02d" || icon == "02n"){
-                ratingWeather = 9;
+            else if (icon.equalsIgnoreCase("02d") || icon.equalsIgnoreCase("02n")){
+                ratingWeather = 5;
             }
-            else if (icon == "03d" || icon == "03n"){
-                ratingWeather = 8;
-            }
-            else if (icon == "04d" || icon == "04n"){
-                ratingWeather = 6;
-            }
-            else if (icon == "09d" || icon == "09n"){
-                ratingWeather = 3;
-            }
-            else if (icon == "10d" || icon == "10n"){
+            else if (icon.equalsIgnoreCase("03d") || icon.equalsIgnoreCase("03n")){
                 ratingWeather = 4;
             }
-            else if (icon == "11d" || icon == "11n"){
-                ratingWeather = 1;
+            else if (icon.equalsIgnoreCase("04d") || icon.equalsIgnoreCase("04n")){
+                ratingWeather = 3;
             }
-            else if (icon == "13d" || icon == "13n"){
+            else if (icon.equalsIgnoreCase("09d") || icon.equalsIgnoreCase("09n")){
                 ratingWeather = 2;
             }
-            else if (icon == "50d" || icon == "50n"){
-                ratingWeather = 5;
+            else if (icon.equalsIgnoreCase("10d") || icon.equalsIgnoreCase("10n")){
+                ratingWeather = 2;
+            }
+            else if (icon.equalsIgnoreCase("11d") || icon.equalsIgnoreCase("11n")){
+                ratingWeather = 1;
+            }
+            else if (icon.equalsIgnoreCase("13d") || icon.equalsIgnoreCase("13n")){
+                ratingWeather = 1;
+            }
+            else if (icon.equalsIgnoreCase("50d") || icon.equalsIgnoreCase("50n")){
+                ratingWeather = 3;
             }
 
         } catch (IOException e) {

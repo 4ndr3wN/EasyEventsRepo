@@ -21,15 +21,15 @@ public class Event {
 
     double ratingEvent;
     double ratingUsers;
-    double ratingVenue;
-    double ratingWeather;
+    int ratingVenue;
+    int ratingWeather;
 
     long dateEvent;
 
 
     public Event(String address, String country, String city, String info, String picture, String ticket, String title, String venue,
-                 String longitude, String latitude, double ratingEvent, double ratingUsers, double ratingVenue,
-                 double ratingWeather, long date, String id, Boolean ticketAvailable) {
+                 String longitude, String latitude, double ratingEvent, double ratingUsers, int ratingVenue,
+                 int ratingWeather, long date, String id, Boolean ticketAvailable) {
 
         this.addressEvent = address; //get from api
         this.countryEvent = country;
