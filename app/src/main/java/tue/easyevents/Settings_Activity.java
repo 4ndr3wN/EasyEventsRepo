@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.io.BufferedReader;
@@ -61,25 +64,7 @@ public class Settings_Activity extends AppCompatActivity {
         spinner_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String FILENAME = "time_file";
-                String string = spinner_time.getSelectedItem().toString();
-
-                FileOutputStream fos = null;
-                try {
-                    fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fos.write(string.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                outputFile("time_file", spinner_time.getSelectedItem().toString());
             }
 
             @Override
@@ -102,39 +87,45 @@ public class Settings_Activity extends AppCompatActivity {
             spinner_range.setSelection(2);
         } else if(data.equals("50 km")){
             spinner_range.setSelection(3);
-        } else if(data.equals("100 km")){
+        } else if(data.equals("100 km")) {
             spinner_range.setSelection(4);
         }
-        int test = spinner_range.getSelectedItemPosition();
-        Log.d("Selected range", String.valueOf(test));
 
         spinner_range.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String FILENAME = "range_file";
-                String string = spinner_range.getSelectedItem().toString();
-
-                FileOutputStream fos = null;
-                try {
-                    fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fos.write(string.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                outputFile("range_file", spinner_range.getSelectedItem().toString());
             }
+
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
+            }
+        });
+
+        data = inputFile("address_file");
+        EditText addressText = (EditText) findViewById(R.id.editText_Home);
+        addressText.setHint(data);
+
+        data = inputFile("GPSCheck");
+        CheckBox gpsCheck = (CheckBox) findViewById(R.id.checkBox_GPS);
+        if(data.equals("1")){
+            gpsCheck.setChecked(true);
+        } else{
+            gpsCheck.setChecked(false);
+        }
+
+        gpsCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    outputFile("GPSCheck", "1");
+                } else{
+                    outputFile("GPSCheck", "0");
+                }
+
             }
         });
 
@@ -164,6 +155,31 @@ public class Settings_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         return saved;
+    }
+
+    public void outputFile(String file_name, String data){
+
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(file_name, Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            if (fos != null) {
+                fos.write(data.getBytes());
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            if (fos != null) {
+                fos.close();
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
     }
 
 

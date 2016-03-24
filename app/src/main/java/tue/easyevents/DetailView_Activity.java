@@ -68,6 +68,7 @@ public class DetailView_Activity extends AppCompatActivity {
         TextView informationView = (TextView) findViewById(R.id.information_event);
         TextView cityView = (TextView) findViewById(R.id.event_city);
         TextView countryView = (TextView) findViewById(R.id.event_country);
+        TextView venueView = (TextView) findViewById(R.id.venue_name);
 
         //Just setting textViews to their proper values
         titleView.setText(detailEvent.titleEvent);
@@ -77,6 +78,7 @@ public class DetailView_Activity extends AppCompatActivity {
         addressView.setText(detailEvent.addressEvent);
         cityView.setText(detailEvent.cityEvent);
         countryView.setText(detailEvent.countryEvent);
+        venueView.setText(detailEvent.venueEvent);
         if(!(detailEvent.infoEvent.equals(""))){
             informationView.setText(detailEvent.infoEvent);
         }
