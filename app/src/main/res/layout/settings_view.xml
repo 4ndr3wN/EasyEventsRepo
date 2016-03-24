@@ -295,6 +295,19 @@
                 android:text="@string/settings_route4"
                 android:layout_gravity="right"
                 android:id="@+id/checkBox_GPS"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:background="@drawable/btn_pill"
+                android:id="@+id/btn_save"
+                android:text="@string/save_text"
+                android:gravity="center"
+                android:layout_gravity="right"
+                android:maxWidth="@dimen/btn_trans_maxWidth"/>
         </LinearLayout>
 
     </LinearLayout>

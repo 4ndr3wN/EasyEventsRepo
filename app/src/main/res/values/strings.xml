@@ -37,6 +37,7 @@
     <string name="settings_route5">NOTE: Ticking the box will override your depature location with your current location.</string>
     <string name="settings_route3">E.g. your home address</string>
     <string name="settings_route4">Use GPS location</string>
+    <string name="save_text">Save Address</string>
 
     <!-- Activity Strings -->
     <string name="title_activity_settings_">Settings_Activity</string>
