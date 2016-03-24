@@ -28,7 +28,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDark"
+    android:background="@drawable/gradient_dark"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -101,216 +101,229 @@
         android:layout_height="@dimen/general_padding_TB"
         android:background="@drawable/gradient_grey"/>
 
-    <!-- Image Row -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:orientation="horizontal"
-        android:background="@drawable/gradient_dark">
-
-        <ImageView
-            android:id="@+id/image_event"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/easyevents"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/general_padding_TB"
-        android:background="@drawable/gradient_grey"/>
-
-    <!-- Address/Buttons Rows -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/gradient_light"
-        android:padding="@dimen/general_padding_LR">
-
-        <!-- Address/Ratings Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!-- Address Column -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/event_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Feb 19, 2016" />
-
-                <TextView
-                    android:id="@+id/venue_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/event_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/event_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/event_country"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-            </LinearLayout>
-
-            <!-- Ratings Column -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ratings_1" />
-
-                <RatingBar
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:id="@+id/rating_overall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ratings_2" />
-
-                <RatingBar
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:id="@+id/rating_weather"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ratings_3" />
-
-                <RatingBar
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:id="@+id/rating_foursquare"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Buttons Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!-- Car Column -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingRight="@dimen/general_padding_LR">
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/general_padding_LR"
-                    android:paddingRight="@dimen/general_padding_LR"
-                    android:background="@drawable/btn_pill"
-                    android:id="@+id/btn_tickets"
-                    android:text="Get Tickets"
-                    android:gravity="center"
-                    android:maxWidth="@dimen/btn_trans_maxWidth"/>
-
-
-            </LinearLayout>
-
-            <!-- PT Column -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/general_padding_LR">
-
-                <Button
-                    style="?attr/buttonStyleSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Show me route"
-                    android:id="@+id/btn_detail_route"
-                    android:paddingLeft="@dimen/general_padding_LR"
-                    android:paddingRight="@dimen/general_padding_LR"
-                    android:background="@drawable/btn_pill"
-                    android:gravity="center" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/general_padding_TB"
-        android:background="@drawable/gradient_grey"/>
-
-    <!-- Info Row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@drawable/gradient_dark"
-        android:paddingLeft="@dimen/general_padding_LR"
-        android:paddingRight="@dimen/general_padding_LR"
-        android:paddingTop="@dimen/general_padding_TB"
-        android:paddingBottom="@dimen/general_padding_TB">
-
-        <!-- Info Column -->
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/event_details" />
+            <!-- Image Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="horizontal"
+                android:background="@drawable/gradient_dark">
 
-            <TextView
-                android:id="@+id/information_event"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/image_event"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/easyevents"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_padding_TB"
+                android:background="@drawable/gradient_grey"/>
+
+            <!-- Address/Buttons Rows -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/event_information_stock" />
+                android:orientation="vertical"
+                android:background="@drawable/gradient_light"
+                android:padding="@dimen/general_padding_LR">
+
+                <!-- Address/Ratings Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- Address Column -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/event_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="Feb 19, 2016" />
+
+                        <TextView
+                            android:id="@+id/venue_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/event_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/event_city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/event_country"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+                    <!-- Ratings Column -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ratings_1" />
+
+                        <RatingBar
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:id="@+id/rating_overall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ratings_2" />
+
+                        <RatingBar
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:id="@+id/rating_weather"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ratings_3" />
+
+                        <RatingBar
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:id="@+id/rating_foursquare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Buttons Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- Car Column -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingRight="@dimen/general_padding_LR">
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/general_padding_LR"
+                            android:paddingRight="@dimen/general_padding_LR"
+                            android:background="@drawable/btn_pill"
+                            android:id="@+id/btn_tickets"
+                            android:text="Get Tickets"
+                            android:gravity="center"
+                            android:maxWidth="@dimen/btn_trans_maxWidth"/>
+
+
+                    </LinearLayout>
+
+                    <!-- PT Column -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/general_padding_LR">
+
+                        <Button
+                            style="?attr/buttonStyleSmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Show me route"
+                            android:id="@+id/btn_detail_route"
+                            android:paddingLeft="@dimen/general_padding_LR"
+                            android:paddingRight="@dimen/general_padding_LR"
+                            android:background="@drawable/btn_pill"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_padding_TB"
+                android:background="@drawable/gradient_grey"/>
+
+            <!-- Info Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:paddingTop="@dimen/general_padding_TB"
+                android:paddingBottom="@dimen/general_padding_TB">
+
+                <!-- Info Column -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:text="@string/event_details" />
+
+                    <TextView
+                        android:id="@+id/information_event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/event_information_stock" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

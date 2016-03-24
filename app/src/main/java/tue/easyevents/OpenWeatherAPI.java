@@ -79,8 +79,12 @@ public class OpenWeatherAPI {
                     String dateTime = firstElement.getAttribute("from");
                     Date dateDate = stringToDate(dateTime);
                     Long dateUnix = dateDate.getTime();
-                    Long timeDifference = Math.abs(date-dateUnix);
+                    Long timeDifference = date-dateUnix;
                     if(timeDifference < 10800000){
+                        icon = parseData(node, "symbol");
+                        i = nodeList.getLength();
+                    }
+                    if(timeDifference < 0){
                         icon = parseData(node, "symbol");
                         i = nodeList.getLength();
                     }
