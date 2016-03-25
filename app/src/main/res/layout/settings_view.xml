@@ -32,7 +32,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDark"
+    android:background="@drawable/gradient_dark"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,211 +105,223 @@
         android:layout_height="@dimen/general_padding_TB"
         android:background="@drawable/gradient_grey"/>
 
-    <!-- Time Row -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/gradient_dark"
-        android:paddingLeft="@dimen/general_padding_LR"
-        android:paddingRight="@dimen/general_padding_LR"
-        android:paddingTop="@dimen/general_padding_TB"
-        android:paddingBottom="@dimen/general_padding_TB">
+        android:layout_height="wrap_content">
 
-        <!-- Time Column Left -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_time1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_time2" />
-
-        </LinearLayout>
-
-        <!-- Time Column Right -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:orientation="vertical">
-
-           <!-- Spinner are dropdown menu's, they are only constructors in xml
-                i.e. to modify them you'll need to search the related Activity (java file)
-                for the id, in this case "spinner_time".
-
-                In this same snippet of Java you'll find a reference to an ArrayAdapter,
-                in this case R.array.time_array. This 'time_array' contains the actual items inside
-                the dropdown and these can be modified in res/values/settings_view_spinners.xml -->
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:id="@+id/spinner_time" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/general_padding_TB"
-        android:background="@drawable/gradient_grey"/>
-
-    <!-- Range Row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/gradient_light"
-        android:paddingLeft="@dimen/general_padding_LR"
-        android:paddingRight="@dimen/general_padding_LR"
-        android:paddingTop="@dimen/general_padding_TB"
-        android:paddingBottom="@dimen/general_padding_TB">
-
-        <!-- Range Column Left -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_range1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_range2" />
-
-        </LinearLayout>
-
-        <!-- Range Column Right -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:orientation="vertical">
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:id="@+id/spinner_range" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/general_padding_TB"
-        android:background="@drawable/gradient_grey"/>
-
-    <!-- Route Row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@drawable/gradient_dark"
-        android:paddingLeft="@dimen/general_padding_LR"
-        android:paddingRight="@dimen/general_padding_LR"
-        android:paddingTop="@dimen/general_padding_TB"
-        android:paddingBottom="@dimen/general_padding_TB">
-
-        <!-- Route Column Left -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="@string/settings_route1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_route2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_route5" />
-
-        </LinearLayout>
-
-        <!-- Route Column Right -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:orientation="vertical">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:ems="10"
-                android:textColor="@color/colorGrey"
-                android:textColorHint="@color/colorGrey"
-                android:hint="@string/settings_route3"
-                android:id="@+id/editText_Home"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGrey"
-                android:buttonTint="@color/colorGrey"
-                android:text="@string/settings_route4"
-                android:layout_gravity="right"
-                android:id="@+id/checkBox_GPS"/>
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
+            <!-- Time Row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/gradient_dark"
                 android:paddingLeft="@dimen/general_padding_LR"
                 android:paddingRight="@dimen/general_padding_LR"
-                android:background="@drawable/btn_pill"
-                android:id="@+id/btn_save"
-                android:text="@string/save_text"
-                android:gravity="center"
-                android:layout_gravity="right"
-                android:maxWidth="@dimen/btn_trans_maxWidth"/>
+                android:paddingTop="@dimen/general_padding_TB"
+                android:paddingBottom="@dimen/general_padding_TB">
+
+                <!-- Time Column Left -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:text="@string/settings_time1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_time2" />
+
+                </LinearLayout>
+
+                <!-- Time Column Right -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <!-- Spinner are dropdown menu's, they are only constructors in xml
+                         i.e. to modify them you'll need to search the related Activity (java file)
+                         for the id, in this case "spinner_time".
+
+                         In this same snippet of Java you'll find a reference to an ArrayAdapter,
+                         in this case R.array.time_array. This 'time_array' contains the actual items inside
+                         the dropdown and these can be modified in res/values/settings_view_spinners.xml -->
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:id="@+id/spinner_time" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_padding_TB"
+                android:background="@drawable/gradient_grey"/>
+
+            <!-- Range Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/gradient_light"
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:paddingTop="@dimen/general_padding_TB"
+                android:paddingBottom="@dimen/general_padding_TB">
+
+                <!-- Range Column Left -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:text="@string/settings_range1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_range2" />
+
+                </LinearLayout>
+
+                <!-- Range Column Right -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:id="@+id/spinner_range" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_padding_TB"
+                android:background="@drawable/gradient_grey"/>
+
+            <!-- Route Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/general_padding_LR"
+                android:paddingRight="@dimen/general_padding_LR"
+                android:paddingTop="@dimen/general_padding_TB"
+                android:paddingBottom="@dimen/general_padding_TB">
+
+                <!-- Route Column Left -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:text="@string/settings_route1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_route2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_route5" />
+
+                </LinearLayout>
+
+                <!-- Route Column Right -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:ems="10"
+                        android:textColor="@color/colorGrey"
+                        android:textColorHint="@color/colorGrey"
+                        android:hint="@string/settings_route3"
+                        android:id="@+id/editText_Home"/>
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorGrey"
+                        android:buttonTint="@color/colorGrey"
+                        android:text="@string/settings_route4"
+                        android:layout_gravity="right"
+                        android:id="@+id/checkBox_GPS"/>
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/general_padding_LR"
+                        android:paddingRight="@dimen/general_padding_LR"
+                        android:background="@drawable/btn_pill"
+                        android:id="@+id/btn_save"
+                        android:text="@string/save_text"
+                        android:gravity="center"
+                        android:layout_gravity="right"
+                        android:maxWidth="@dimen/btn_trans_maxWidth"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

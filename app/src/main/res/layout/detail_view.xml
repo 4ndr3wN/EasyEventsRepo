@@ -248,7 +248,7 @@
                             android:paddingRight="@dimen/general_padding_LR"
                             android:background="@drawable/btn_pill"
                             android:id="@+id/btn_tickets"
-                            android:text="Get Tickets"
+                            android:text="@string/btn_tickets"
                             android:gravity="center"
                             android:maxWidth="@dimen/btn_trans_maxWidth"/>
 
@@ -268,7 +268,7 @@
                             style="?attr/buttonStyleSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Show me route"
+                            android:text="@string/btn_transport"
                             android:id="@+id/btn_detail_route"
                             android:paddingLeft="@dimen/general_padding_LR"
                             android:paddingRight="@dimen/general_padding_LR"
