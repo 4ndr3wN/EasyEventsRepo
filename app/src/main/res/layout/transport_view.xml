@@ -82,7 +82,7 @@
         android:orientation="horizontal"
         android:background="@drawable/gradient_dark">
 
-        <include layout="@layout/activity_maps_PT_test" />
+        <include layout="@layout/activity_maps_pt_test" />
 
     </LinearLayout>
 
