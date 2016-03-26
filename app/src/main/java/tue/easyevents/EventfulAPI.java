@@ -204,13 +204,13 @@ public class EventfulAPI {
             }
         //Error handling
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConnectException("IOException");
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            throw new ConnectException("ParserConfigurationException");
         } catch (SAXException e) {
-            e.printStackTrace();
+            throw new ConnectException("SAXException");
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new ConnectException("ParseException");
         }
 
         return events;

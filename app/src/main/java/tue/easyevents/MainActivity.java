@@ -60,12 +60,13 @@ public class MainActivity extends AppCompatActivity
     public int range;
     private GoogleMap mMap;
     public String lastMarkerClicked;
-    public String searchQuery;
+    public static String searchQuery = null;
+    public static boolean alreadySearched = false;
 
     LocationManager locationManager;
 
-    //false searches on input, true searches on user Loc
-    public boolean whatSearch;
+    //Keep track of wether we actually have a user location.
+    public boolean locationAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,21 @@ public class MainActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             //TODO: take standard location from settings
             //TODO: OR if that is not there take the location of the searched city
-            whatSearch = false;
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED){
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                if (location != null) {
+                    //PARSE LOCATION TO USABLE FORMAT
+                    lat = Double.toString(location.getLatitude());
+                    lon = Double.toString(location.getLongitude());
+                    locationAvailable = true;
+                }
+            } else{
+                locationAvailable = false;
+            }
+
         } else {
             //permission already granted
             //get location :)
@@ -89,7 +104,7 @@ public class MainActivity extends AppCompatActivity
                 //PARSE LOCATION TO USABLE FORMAT
                 lat = Double.toString(location.getLatitude());
                 lon = Double.toString(location.getLongitude());
-                whatSearch = true;
+                locationAvailable = true;
             }
         }
 
@@ -155,9 +170,23 @@ public class MainActivity extends AppCompatActivity
             outputFile(FILENAME, string);
         }
 
-        if (whatSearch) {
-            search(whatSearch);
+//        if (whatSearch) {
+//            search(whatSearch);
+//        }
+
+        //For searching from different screens we need to have three different cases.
+        //First if there is no search query, no search done yet, and a GPS location available,
+        // we search by GPS location
+        if(searchQuery == null && locationAvailable && !alreadySearched) {
+            search(true);
+            alreadySearched = true;
+        //Secondly, if there is a searchQuery and no search done yet, we search by the searchQuery
+        } else if(searchQuery != null && !alreadySearched){
+            query = searchQuery;
+            search(false);
+            alreadySearched = true;
         }
+        //Finally, if there has already been searched, we should not search again, so nothing happens
     }
 
     @Override
@@ -540,9 +569,23 @@ public class MainActivity extends AppCompatActivity
                     });
                 } catch (ConnectException e) {
                     e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorMessage("Unfortunately something went wrong getting the events," +
+                                    " please try again.");
+                        }
+                    });
                 }
             } catch (ConnectException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        errorMessage("We could not get a geocoded location, please check your input.");
+                    }
+                });
+
             }
             return null;
         }
@@ -573,5 +616,23 @@ public class MainActivity extends AppCompatActivity
             e1.printStackTrace();
         }
 
+    }
+
+    public void errorMessage(String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Chain together various setter methods to set the dialog characteristics
+        builder.setMessage(message)
+                .setTitle(R.string.error_title)
+                .setPositiveButton(R.string.error_positive, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE DEM MISSILES! A.K.A LIKE OUR APP
+                    }
+                });
+        // Get the AlertDialog from create()
+        AlertDialog dialog = builder.create();
+        //Set AlertDialog background to our theme
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.pop_up);
+        //Display Dialog
+        dialog.show();
     }
 }

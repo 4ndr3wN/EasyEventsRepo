@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import java.io.BufferedReader;
@@ -223,6 +224,27 @@ public class Settings_Activity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
+        //Make sure you can search from this activity as well
+        SearchView searchView = (SearchView) findViewById(R.id.search_events);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String userQuery) {
+
+                //Set the searchQuery variable in the main activity
+                MainActivity.searchQuery = userQuery;
+                MainActivity.alreadySearched = false;
+
+                Intent intent = new Intent(Settings_Activity.this, MainActivity.class);
+                startActivity(intent);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 

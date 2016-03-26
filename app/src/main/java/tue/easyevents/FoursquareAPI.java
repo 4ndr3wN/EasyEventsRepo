@@ -91,10 +91,7 @@ public class FoursquareAPI {
                 JSONObject venue = venues.getJSONObject(0);
                 String id = venue.getString("id");
                 likesVenue = getVenueLikes(id);
-
             }
-
-
         //Error handling
         } catch (IOException e) {
             e.printStackTrace();

@@ -14,6 +14,9 @@
     <string name="action_about_us_like">Like our app!</string>
     <string name="action_about_us_cancel">Cancel</string>
 
+    <string name="error_title">An error has occurred</string>
+    <string name="error_positive">Ok</string>
+
 
 
 

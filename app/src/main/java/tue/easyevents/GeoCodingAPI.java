@@ -76,11 +76,13 @@ public class GeoCodingAPI {
 
         //Error handling
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            throw new ConnectException("ParserConfigurationException");
         } catch (SAXException e) {
-            e.printStackTrace();
+            throw new ConnectException("SAXException");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConnectException("IOException");
+        } catch (NullPointerException e){
+            throw new ConnectException("No data returned");
         }
 
 
