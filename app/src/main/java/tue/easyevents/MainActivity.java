@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_itemlist);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         //check for fileoutput files
         try {
             openFileInput("time_file");
@@ -170,10 +172,6 @@ public class MainActivity extends AppCompatActivity
             outputFile(FILENAME, string);
         }
 
-//        if (whatSearch) {
-//            search(whatSearch);
-//        }
-
         //For searching from different screens we need to have three different cases.
         //First if there is no search query, no search done yet, and a GPS location available,
         // we search by GPS location
@@ -187,6 +185,20 @@ public class MainActivity extends AppCompatActivity
             alreadySearched = true;
         }
         //Finally, if there has already been searched, we should not search again, so nothing happens
+
+        //Check if this is the first time the user has opened the app
+        try {
+            openFileInput("FirstTimeStart");
+        } catch (FileNotFoundException e) {
+            //Create the FirstTimeStart file so the next time this error will not be thrown
+            String FILENAME = "FirstTimeStart";
+            String string = "Nope";
+            outputFile(FILENAME, string);
+            //Create the overlay manual
+            //http://stackoverflow.com/questions/18476088/how-do-i-create-the-semi-transparent-grey-tutorial-overlay-in-android This seems useful
+
+            errorMessage("This is the first time running the app!");
+        }
     }
 
     @Override
