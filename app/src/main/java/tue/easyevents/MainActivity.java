@@ -124,27 +124,7 @@ public class MainActivity extends AppCompatActivity
             //set basic settings
             String FILENAME = "time_file";
             String string = "Week";
-
-            FileOutputStream fos = null;
-            try {
-                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.write(string.getBytes());
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            outputFile(FILENAME, string);
         }
 
         try {
@@ -153,27 +133,7 @@ public class MainActivity extends AppCompatActivity
             //set basic settings
             String FILENAME = "range_file";
             String string = "10 km";
-
-            FileOutputStream fos = null;
-            try {
-                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.write(string.getBytes());
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            outputFile(FILENAME, string);
         }
 
         try {
@@ -182,27 +142,8 @@ public class MainActivity extends AppCompatActivity
             //set basic settings
             String FILENAME = "address_file";
             String string = "Den Dolech 2, Eindhoven";
+            outputFile(FILENAME, string);
 
-            FileOutputStream fos = null;
-            try {
-                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.write(string.getBytes());
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
         }
 
         try {
@@ -211,27 +152,7 @@ public class MainActivity extends AppCompatActivity
             //set basic settings
             String FILENAME = "GPSCheck";
             String string = "1";
-
-            FileOutputStream fos = null;
-            try {
-                fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.write(string.getBytes());
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            outputFile(FILENAME, string);
         }
 
         if (whatSearch) {
@@ -625,5 +546,32 @@ public class MainActivity extends AppCompatActivity
             }
             return null;
         }
+    }
+
+    //Method to store a String locally on the phone. Used in onCreate in case certain files are
+    // not created yet.
+    public void outputFile(String file_name, String data){
+
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(file_name, Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            if (fos != null) {
+                fos.write(data.getBytes());
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            if (fos != null) {
+                fos.close();
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
     }
 }

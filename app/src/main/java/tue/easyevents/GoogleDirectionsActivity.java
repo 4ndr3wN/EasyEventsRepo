@@ -55,7 +55,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     double la;
     double lo;
 
-    public String eventLoc;
     public String latitudeLoc;
     public String longitudeLoc;
     public double eventLa;
@@ -73,7 +72,8 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         Intent intent = getIntent();
         latitude = intent.getStringExtra("lat");
         longitude = intent.getStringExtra("lon");
-        eventLoc = intent.getStringExtra("eventLoc");
+        latitudeLoc = intent.getStringExtra("eventLat");
+        longitudeLoc = intent.getStringExtra("eventLong");
 
         //check settings for standard origin (user location or different address)
         //see if the "use location" checkbox is checked
@@ -100,11 +100,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         }
         //set origin LatLng according to above if-else clause
         origin = new LatLng(la, lo);
-
-        //split up event location
-        StringTokenizer st = new StringTokenizer(eventLoc, ",");
-        latitudeLoc = st.nextElement().toString();
-        longitudeLoc = st.nextElement().toString();
 
         eventLa = Double.parseDouble(latitudeLoc);
         eventLo = Double.parseDouble(longitudeLoc);

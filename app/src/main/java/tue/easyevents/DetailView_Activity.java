@@ -31,7 +31,8 @@ public class DetailView_Activity extends AppCompatActivity {
     public Event detailEvent;
     public String latitude;
     public String longitude;
-    public String eventLoc;
+    public String eventLat;
+    public String eventLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,11 +114,13 @@ public class DetailView_Activity extends AppCompatActivity {
 
         routeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                eventLoc = detailEvent.addressEvent;
+                eventLat = detailEvent.eventLatitude;
+                eventLong = detailEvent.eventLongitude;
                 Intent intent = new Intent(DetailView_Activity.this, GoogleDirectionsActivity.class);
                 intent.putExtra("lat", latitude);
                 intent.putExtra("lon", longitude);
-                intent.putExtra("eventLoc", eventLoc);
+                intent.putExtra("eventLat", eventLat);
+                intent.putExtra("eventLong", eventLong);
                 startActivity(intent);
             }
         });
