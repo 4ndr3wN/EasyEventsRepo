@@ -117,15 +117,14 @@
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/general_padding_LR"
-                        android:paddingRight="@dimen/general_padding_LR"
+                        android:ems="12"
                         android:background="@drawable/btn_pill"
                         android:id="@+id/btn_tickets"
                         android:text="@string/PT"
                         android:gravity="center"
-                        android:maxWidth="@dimen/btn_trans_maxWidth"/>
+                        android:layout_gravity="center"/>
 
 
                 </LinearLayout>
@@ -141,14 +140,14 @@
 
                     <Button
                         style="?attr/buttonStyleSmall"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ems="12"
                         android:text="@string/car"
                         android:id="@+id/btn_detail_route"
-                        android:paddingLeft="@dimen/general_padding_LR"
-                        android:paddingRight="@dimen/general_padding_LR"
                         android:background="@drawable/btn_pill"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:layout_gravity="center"/>
 
                 </LinearLayout>
             </LinearLayout>
