@@ -76,8 +76,8 @@ public class DetailView_Activity extends AppCompatActivity {
 
         //Just setting textViews to their proper values
         titleView.setText(detailEvent.titleEvent);
-        Date dateEvent = new Date(detailEvent.dateEvent);
-        String dateString = new SimpleDateFormat("dd'-'MM'-'yyyy HH:mm").format(dateEvent);
+        final Date dateEvent = new Date(detailEvent.dateEvent);
+        final String dateString = new SimpleDateFormat("dd'-'MM'-'yyyy HH:mm").format(dateEvent);
         dateView.setText(dateString);
         addressView.setText(detailEvent.addressEvent);
         cityView.setText(detailEvent.cityEvent);
@@ -122,6 +122,10 @@ public class DetailView_Activity extends AppCompatActivity {
                 intent.putExtra("lon", longitude);
                 intent.putExtra("eventLat", eventLat);
                 intent.putExtra("eventLong", eventLong);
+                Date date = new Date(detailEvent.dateEvent);
+                double d = date.getTime();
+                intent.putExtra("date", d);
+
                 startActivity(intent);
             }
         });

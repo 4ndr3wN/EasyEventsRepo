@@ -4,21 +4,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.widget.Button;
-
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
-import com.akexorcist.googledirection.model.Info;
 import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Line;
 import com.akexorcist.googledirection.model.Route;
@@ -33,7 +24,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,7 +31,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class GoogleDirectionsActivity extends AppCompatActivity implements OnMapReadyCallback, DirectionCallback {
@@ -70,6 +59,14 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     public Boolean go = false;
     public Boolean pt = false;
     public Boolean car = false;
+    public double date;
+    public Boolean firstRequest = true;
+    public String totalDuration;
+    public double hm;
+    public String depart;
+
+    //false for public transport, true for personal
+    public Boolean personalTransport = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +77,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         longitude = intent.getStringExtra("lon");
         latitudeLoc = intent.getStringExtra("eventLat");
         longitudeLoc = intent.getStringExtra("eventLong");
+        date = intent.getDoubleExtra("date", 0);
 
         //check settings for standard origin (user location or different address)
         //see if the "use location" checkbox is checked
@@ -138,10 +136,14 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         //TODO: find some way to set the zoom appropriately depending on the distance
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, 9));
 
-        //car = true;
-        //requestDirectionDriving();
-        pt = true;
-        requestDirectionPublic();
+        //TODO: pass a parameter to this activity/fragment indicating public or personal transport
+        if (personalTransport) {
+            car = true;
+            requestDirectionDriving();
+        } else {
+            pt = true;
+            requestDirectionPublic();
+        }
     }
 
     public void requestDirectionDriving() {
@@ -160,64 +162,90 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 .execute(this);
     }
 
+    public void requestDirectionDriving2() {
+        GoogleDirection.withServerKey(serverKey)
+                .from(origin)
+                .to(destination)
+                .transportMode(TransportMode.DRIVING)
+                .departureTime(depart)
+                .execute(this);
+    }
+
+    public void requestDirectionPublic2() {
+        GoogleDirection.withServerKey(serverKey)
+                .from(origin)
+                .to(destination)
+                .transportMode(TransportMode.TRANSIT)
+                .departureTime(depart)
+                .execute(this);
+    }
+
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
-        String testStatus;
+        //String testStatus;
         String instruction;
         String duration;
         String distance;
-        testStatus = direction.getStatus();
-        Log.d("TestStatus", testStatus);
-        if (direction.isOK()) {
-            googleMap.addMarker(new MarkerOptions().position(origin));
-            googleMap.addMarker(new MarkerOptions().position(destination));
+        //testStatus = direction.getStatus();
+        //Log.d("TestStatus", testStatus);
 
-            ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
-            googleMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.RED));
+        if(firstRequest) {
+            if (direction.isOK()) {
+                Route route = direction.getRouteList().get(0);
+                Leg leg = route.getLegList().get(0);
+                totalDuration = leg.getDuration().getText();
 
-            Route route = direction.getRouteList().get(0);
-            Leg leg = route.getLegList().get(0);
-            Step step;
+                StringTokenizer str = new StringTokenizer(totalDuration);
+                String hours = str.nextElement().toString();
+                str.nextElement();
+                String minutes = str.nextElement().toString();
 
-            ArrayList<String> instructions = new ArrayList<>();
-            ArrayList<String> durations= new ArrayList<>();
-            ArrayList<String> distances = new ArrayList<>();
+                int h = Integer.parseInt(hours);
+                int m = Integer.parseInt(minutes);
 
-            if (car) {
-                for (int i = 0; i < leg.getStepList().size(); i++) {
-                    step = leg.getStepList().get(i);
-                    instruction = step.getHtmlInstruction();
-                    instruction = instruction.replace("<b>", "");
-                    instruction = instruction.replace("</b>", "");
-                    instruction = instruction.replace("<div style=\"font-size:0.9em\">", "");
-                    instruction = instruction.replace("</div>", "");
-                    instructions.add(instruction);
-                    distance = step.getDistance().getText();
-                    distances.add(distance);
+                //get milliseconds
+                h = h*3600000;
+                m = m*60000;
 
-                    duration = step.getDuration().getText();
-                    durations.add(duration);
+                hm = h+m;
+
+                //set departure time to event time-duration
+                //divide by 1000 to get seconds for Google API
+                date = (date - hm) /1000;
+
+                long d = (long) date;
+
+                depart = Long.toString(d);
+
+                //Log.d("depart", depart);
+                if(car) {
+                    firstRequest = false;
+                    requestDirectionDriving2();
+                } else if (pt) {
+                    firstRequest = false;
+                    requestDirectionPublic2();
                 }
             }
+        } else if (!firstRequest) {
 
-            if(pt) {
-                StopPoint arrivalStopPoint;
-                TransitDetail transitDetail;
-                StopPoint departureStopPoint;
-                TimeInfo arriveTimeInfo;
-                TimeInfo departureTimeInfo;
-                Line transitLine;
-                String arrivalStopPointSTR;
-                String departureStopPointSTR;
-                String arrivalTime;
-                String departureTime;
-                String line;
-                String line2;
+            if (direction.isOK()) {
+                googleMap.addMarker(new MarkerOptions().position(origin));
+                googleMap.addMarker(new MarkerOptions().position(destination));
 
-                for (int i = 0; i < leg.getStepList().size(); i++) {
-                    step = leg.getStepList().get(i);
+                ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
+                googleMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.RED));
 
-                    if (step.getTravelMode().equals("WALKING")) {
+                Route route = direction.getRouteList().get(0);
+                Leg leg = route.getLegList().get(0);
+                Step step;
+
+                ArrayList<String> instructions = new ArrayList<>();
+                ArrayList<String> durations = new ArrayList<>();
+                ArrayList<String> distances = new ArrayList<>();
+
+                if (car) {
+                    for (int i = 0; i < leg.getStepList().size(); i++) {
+                        step = leg.getStepList().get(i);
                         instruction = step.getHtmlInstruction();
                         instruction = instruction.replace("<b>", "");
                         instruction = instruction.replace("</b>", "");
@@ -230,32 +258,65 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                         duration = step.getDuration().getText();
                         durations.add(duration);
                     }
+                }
 
-                    if (step.getTravelMode().equals("TRANSIT")) {
-                        transitDetail = step.getTransitDetail();
-                        arrivalStopPoint = transitDetail.getArrivalStopPoint();
-                        arrivalStopPointSTR = arrivalStopPoint.getName();
-                        //Log.d("test1", arrivalStopPointSTR);
+                if (pt) {
+                    StopPoint arrivalStopPoint;
+                    TransitDetail transitDetail;
+                    StopPoint departureStopPoint;
+                    TimeInfo arriveTimeInfo;
+                    TimeInfo departureTimeInfo;
+                    Line transitLine;
+                    String arrivalStopPointSTR;
+                    String departureStopPointSTR;
+                    String arrivalTime;
+                    String departureTime;
+                    String line;
+                    String line2;
 
-                        departureStopPoint = transitDetail.getDepartureStopPoint();
-                        departureStopPointSTR = departureStopPoint.getName();
-                        //Log.d("test2", departureStopPointSTR);
+                    for (int i = 0; i < leg.getStepList().size(); i++) {
+                        step = leg.getStepList().get(i);
 
-                        arriveTimeInfo = transitDetail.getArrivalTime();
-                        arrivalTime = arriveTimeInfo.getText();
-                        //Log.d("time", arrivalTime);
+                        if (step.getTravelMode().equals("WALKING")) {
+                            instruction = step.getHtmlInstruction();
+                            instruction = instruction.replace("<b>", "");
+                            instruction = instruction.replace("</b>", "");
+                            instruction = instruction.replace("<div style=\"font-size:0.9em\">", "");
+                            instruction = instruction.replace("</div>", "");
+                            instructions.add(instruction);
+                            distance = step.getDistance().getText();
+                            distances.add(distance);
 
-                        departureTimeInfo = transitDetail.getDepartureTime();
-                        departureTime = departureTimeInfo.getText();
-                        //Log.d("time2", departureTime);
+                            duration = step.getDuration().getText();
+                            durations.add(duration);
+                        }
 
-                        transitLine = transitDetail.getLine();
-                        line = transitLine.getShortName();
-                        //Log.d("line2", line);
-                        line2 = transitLine.getName();
+                        if (step.getTravelMode().equals("TRANSIT")) {
+                            transitDetail = step.getTransitDetail();
+                            arrivalStopPoint = transitDetail.getArrivalStopPoint();
+                            arrivalStopPointSTR = arrivalStopPoint.getName();
+                            //Log.d("test1", arrivalStopPointSTR);
 
-                        instructions.add("Take bus/train " + line + " " + line2 + " to " + arrivalStopPointSTR + " at " + departureStopPointSTR + " at " + departureTime);
-                        instructions.add("You will arrive at " + arrivalStopPointSTR + " at " + arrivalTime);
+                            departureStopPoint = transitDetail.getDepartureStopPoint();
+                            departureStopPointSTR = departureStopPoint.getName();
+                            //Log.d("test2", departureStopPointSTR);
+
+                            arriveTimeInfo = transitDetail.getArrivalTime();
+                            arrivalTime = arriveTimeInfo.getText();
+                            //Log.d("time", arrivalTime);
+
+                            departureTimeInfo = transitDetail.getDepartureTime();
+                            departureTime = departureTimeInfo.getText();
+                            //Log.d("time2", departureTime);
+
+                            transitLine = transitDetail.getLine();
+                            line = transitLine.getShortName();
+                            //Log.d("line2", line);
+                            line2 = transitLine.getName();
+
+                            instructions.add("Take bus/train " + line + " " + line2 + " to " + arrivalStopPointSTR + " at " + departureStopPointSTR + " at " + departureTime);
+                            instructions.add("You will arrive at " + arrivalStopPointSTR + " at " + arrivalTime);
+                        }
                     }
                 }
                 for (int i = 0; i < instructions.size(); i++) {
@@ -308,5 +369,4 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             return null;
         }
     }
-
 }
