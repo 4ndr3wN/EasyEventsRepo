@@ -20,8 +20,12 @@ import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.model.Info;
 import com.akexorcist.googledirection.model.Leg;
+import com.akexorcist.googledirection.model.Line;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
+import com.akexorcist.googledirection.model.StopPoint;
+import com.akexorcist.googledirection.model.TimeInfo;
+import com.akexorcist.googledirection.model.TransitDetail;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,9 +65,11 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     public double eventLo;
     public String standardLoc;
     public String userLoc;
-    public String geoCodedOrigin;
     public double cameraLat;
     public double cameraLon;
+    public Boolean go = false;
+    public Boolean pt = false;
+    public Boolean car = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +85,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         //see if the "use location" checkbox is checked
         //if so, set la and lo to the users latitude and longitude
         userLoc = inputFile("GPSCheck");
-        if (userLoc.equals("1")) {
+        if (userLoc.equals("1") && latitude != null && longitude != null) {
             //Parse user location strings to double
             la = Double.parseDouble(latitude);
             lo = Double.parseDouble(longitude);
@@ -89,8 +95,12 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             standardLoc = inputFile("address_file");
             new GeoCode().execute();
 
+            while (!go) {
+                //wait
+            }
+
             //split up geocoded location
-            StringTokenizer str = new StringTokenizer(geoCodedOrigin, ",");
+            StringTokenizer str = new StringTokenizer(standardLoc, ",");
             String oriLat = str.nextElement().toString();
             String oriLon = str.nextElement().toString();
 
@@ -128,7 +138,10 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         //TODO: find some way to set the zoom appropriately depending on the distance
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, 9));
 
-        requestDirectionDriving();
+        //car = true;
+        //requestDirectionDriving();
+        pt = true;
+        requestDirectionPublic();
     }
 
     public void requestDirectionDriving() {
@@ -150,6 +163,9 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
         String testStatus;
+        String instruction;
+        String duration;
+        String distance;
         testStatus = direction.getStatus();
         Log.d("TestStatus", testStatus);
         if (direction.isOK()) {
@@ -161,15 +177,91 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
 
             Route route = direction.getRouteList().get(0);
             Leg leg = route.getLegList().get(0);
-            Step step = leg.getStepList().get(0);
-            Info infoDuration = leg.getDuration();
-            Info infoDistance = leg.getDistance();
-            String duration = infoDuration.getText();
-            String distance = infoDistance.getText();
+            Step step;
 
-            String instruction = step.getHtmlInstruction();
-            Log.d("inst", instruction);
+            ArrayList<String> instructions = new ArrayList<>();
+            ArrayList<String> durations= new ArrayList<>();
+            ArrayList<String> distances = new ArrayList<>();
 
+            if (car) {
+                for (int i = 0; i < leg.getStepList().size(); i++) {
+                    step = leg.getStepList().get(i);
+                    instruction = step.getHtmlInstruction();
+                    instruction = instruction.replace("<b>", "");
+                    instruction = instruction.replace("</b>", "");
+                    instruction = instruction.replace("<div style=\"font-size:0.9em\">", "");
+                    instruction = instruction.replace("</div>", "");
+                    instructions.add(instruction);
+                    distance = step.getDistance().getText();
+                    distances.add(distance);
+
+                    duration = step.getDuration().getText();
+                    durations.add(duration);
+                }
+            }
+
+            if(pt) {
+                StopPoint arrivalStopPoint;
+                TransitDetail transitDetail;
+                StopPoint departureStopPoint;
+                TimeInfo arriveTimeInfo;
+                TimeInfo departureTimeInfo;
+                Line transitLine;
+                String arrivalStopPointSTR;
+                String departureStopPointSTR;
+                String arrivalTime;
+                String departureTime;
+                String line;
+                String line2;
+
+                for (int i = 0; i < leg.getStepList().size(); i++) {
+                    step = leg.getStepList().get(i);
+
+                    if (step.getTravelMode().equals("WALKING")) {
+                        instruction = step.getHtmlInstruction();
+                        instruction = instruction.replace("<b>", "");
+                        instruction = instruction.replace("</b>", "");
+                        instruction = instruction.replace("<div style=\"font-size:0.9em\">", "");
+                        instruction = instruction.replace("</div>", "");
+                        instructions.add(instruction);
+                        distance = step.getDistance().getText();
+                        distances.add(distance);
+
+                        duration = step.getDuration().getText();
+                        durations.add(duration);
+                    }
+
+                    if (step.getTravelMode().equals("TRANSIT")) {
+                        transitDetail = step.getTransitDetail();
+                        arrivalStopPoint = transitDetail.getArrivalStopPoint();
+                        arrivalStopPointSTR = arrivalStopPoint.getName();
+                        //Log.d("test1", arrivalStopPointSTR);
+
+                        departureStopPoint = transitDetail.getDepartureStopPoint();
+                        departureStopPointSTR = departureStopPoint.getName();
+                        //Log.d("test2", departureStopPointSTR);
+
+                        arriveTimeInfo = transitDetail.getArrivalTime();
+                        arrivalTime = arriveTimeInfo.getText();
+                        //Log.d("time", arrivalTime);
+
+                        departureTimeInfo = transitDetail.getDepartureTime();
+                        departureTime = departureTimeInfo.getText();
+                        //Log.d("time2", departureTime);
+
+                        transitLine = transitDetail.getLine();
+                        line = transitLine.getShortName();
+                        //Log.d("line2", line);
+                        line2 = transitLine.getName();
+
+                        instructions.add("Take bus/train " + line + " " + line2 + " to " + arrivalStopPointSTR + " at " + departureStopPointSTR + " at " + departureTime);
+                        instructions.add("You will arrive at " + arrivalStopPointSTR + " at " + arrivalTime);
+                    }
+                }
+                for (int i = 0; i < instructions.size(); i++) {
+                    Log.d("instr", instructions.get(i));
+                }
+            }
         }
     }
 
@@ -208,7 +300,8 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                geoCodedOrigin = GeoCodingAPI.geoCode(standardLoc);
+                standardLoc = GeoCodingAPI.geoCode(standardLoc);
+                go = true;
             } catch (ConnectException e) {
                 e.printStackTrace();
             }
