@@ -96,7 +96,6 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/info_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -151,12 +150,19 @@
                         android:layout_gravity="center"/>
 
                 </LinearLayout>
-
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/general_padding_TB"
                 android:background="@drawable/gradient_grey"/>
+
+            <!-- Info Row 6 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/info_layout"
+                android:orientation="vertical">
 
 
             </LinearLayout>
