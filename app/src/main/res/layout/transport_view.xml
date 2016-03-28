@@ -78,7 +78,7 @@
     <!-- Map Row -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="200dp"
         android:orientation="horizontal"
         android:background="@drawable/gradient_dark">
 
@@ -96,6 +96,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/info_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -150,250 +151,13 @@
                         android:layout_gravity="center"/>
 
                 </LinearLayout>
-            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/general_padding_TB"
                 android:background="@drawable/gradient_grey"/>
 
-            <!-- Info Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-
-                android:paddingLeft="@dimen/general_padding_LR"
-                android:paddingRight="@dimen/general_padding_LR"
-                android:paddingTop="@dimen/general_padding_TB"
-                android:paddingBottom="@dimen/general_padding_TB">
-
-                <TextView
-                    android:layout_marginRight="@dimen/general_padding_LR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:47" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/general_padding_LR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Rembrandtstraat w/e" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7 minuten over 500 meter" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Info Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@drawable/gradient_light"
-                android:paddingLeft="@dimen/general_padding_LR"
-                android:paddingRight="@dimen/general_padding_LR"
-                android:paddingTop="@dimen/general_padding_TB"
-                android:paddingBottom="@dimen/general_padding_TB">
-
-                <TextView
-                    android:layout_marginRight="@dimen/general_padding_LR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:47" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/general_padding_LR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Rembrandtstraat w/e" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7 minuten over 500 meter" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Info Row 3 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-
-                android:paddingLeft="@dimen/general_padding_LR"
-                android:paddingRight="@dimen/general_padding_LR"
-                android:paddingTop="@dimen/general_padding_TB"
-                android:paddingBottom="@dimen/general_padding_TB">
-
-                <TextView
-                    android:layout_marginRight="@dimen/general_padding_LR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:47" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/general_padding_LR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Rembrandtstraat w/e" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7 minuten over 500 meter" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Info Row 4 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@drawable/gradient_light"
-                android:paddingLeft="@dimen/general_padding_LR"
-                android:paddingRight="@dimen/general_padding_LR"
-                android:paddingTop="@dimen/general_padding_TB"
-                android:paddingBottom="@dimen/general_padding_TB">
-
-                <TextView
-                    android:layout_marginRight="@dimen/general_padding_LR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:47" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/general_padding_LR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Rembrandtstraat w/e" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7 minuten over 500 meter" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Info Row 5 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-
-                android:paddingLeft="@dimen/general_padding_LR"
-                android:paddingRight="@dimen/general_padding_LR"
-                android:paddingTop="@dimen/general_padding_TB"
-                android:paddingBottom="@dimen/general_padding_TB">
-
-                <TextView
-                    android:layout_marginRight="@dimen/general_padding_LR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:47" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/general_padding_LR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Rembrandtstraat w/e" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7 minuten over 500 meter" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Info Row 6 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@drawable/gradient_light"
-                android:paddingLeft="@dimen/general_padding_LR"
-                android:paddingRight="@dimen/general_padding_LR"
-                android:paddingTop="@dimen/general_padding_TB"
-                android:paddingBottom="@dimen/general_padding_TB">
-
-                <TextView
-                    android:layout_marginRight="@dimen/general_padding_LR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18:47" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/general_padding_LR">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:text="Rembrandtstraat w/e" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7 minuten over 500 meter" />
-
-                </LinearLayout>
 
             </LinearLayout>
 

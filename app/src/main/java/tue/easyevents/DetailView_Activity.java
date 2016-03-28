@@ -125,6 +125,7 @@ public class DetailView_Activity extends AppCompatActivity {
                 Date date = new Date(detailEvent.dateEvent);
                 double d = date.getTime();
                 intent.putExtra("date", d);
+                intent.putExtra("title", detailEvent.titleEvent);
 
                 startActivity(intent);
             }

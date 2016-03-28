@@ -1,11 +1,23 @@
 package tue.easyevents;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
@@ -24,6 +36,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,13 +79,24 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     public String totalDuration;
     public double hm;
     public String depart;
+    public String eventTitle;
 
     //false for public transport, true for personal
     public Boolean personalTransport = true;
 
+    public LinearLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.transport_view);
+
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
         latitude = intent.getStringExtra("lat");
@@ -78,6 +104,36 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         latitudeLoc = intent.getStringExtra("eventLat");
         longitudeLoc = intent.getStringExtra("eventLong");
         date = intent.getDoubleExtra("date", 0);
+        eventTitle = intent.getStringExtra("title");
+
+        TextView title = (TextView) findViewById(R.id.event_name);
+        title.setText(eventTitle);
+
+        //buttons
+        //public transport
+        Button ticketButton = (Button) findViewById(R.id.btn_tickets);
+        //personal transport
+        Button routeButton = (Button) findViewById(R.id.btn_detail_route);
+
+        ticketButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                googleMap.clear();
+                layout = (LinearLayout) findViewById(R.id.info_layout);
+                layout.removeAllViews();
+                requestDirectionPublic();
+            }
+        });
+
+        routeButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                googleMap.clear();
+                layout = (LinearLayout) findViewById(R.id.info_layout);
+                layout.removeAllViews();
+                requestDirectionDriving();
+            }
+        });
+
+
 
         //check settings for standard origin (user location or different address)
         //see if the "use location" checkbox is checked
@@ -124,10 +180,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         camera = new LatLng(cameraLat, cameraLon);
 
         //TODO: find some way to set the zoom appropriately depending on the distance
-
-        setContentView(R.layout.directions_activity);
-
-        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
     }
 
     @Override
@@ -186,6 +238,8 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         String instruction;
         String duration;
         String distance;
+        String minutes;
+        String hours;
         //testStatus = direction.getStatus();
         //Log.d("TestStatus", testStatus);
 
@@ -196,9 +250,14 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 totalDuration = leg.getDuration().getText();
 
                 StringTokenizer str = new StringTokenizer(totalDuration);
-                String hours = str.nextElement().toString();
+                hours = str.nextElement().toString();
                 str.nextElement();
-                String minutes = str.nextElement().toString();
+                if (str.hasMoreElements()) {
+                    minutes = str.nextElement().toString();
+                } else {
+                    minutes = hours;
+                    hours = "0";
+                }
 
                 int h = Integer.parseInt(hours);
                 int m = Integer.parseInt(minutes);
@@ -242,6 +301,10 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 ArrayList<String> instructions = new ArrayList<>();
                 ArrayList<String> durations = new ArrayList<>();
                 ArrayList<String> distances = new ArrayList<>();
+                ArrayList<String> times = new ArrayList<>();
+
+                //add layouts
+                layout = (LinearLayout) findViewById(R.id.info_layout);
 
                 if (car) {
                     for (int i = 0; i < leg.getStepList().size(); i++) {
@@ -257,6 +320,33 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
 
                         duration = step.getDuration().getText();
                         durations.add(duration);
+
+                        LinearLayout infoRow = new LinearLayout(this);
+
+                        TextView time = new TextView(this);
+                        time.setText(durations.get(i));
+                        time.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        infoRow.addView(time);
+
+                        LinearLayout inst = new LinearLayout(this);
+                        inst.setPadding(20, 0, 0, 0);
+                        inst.setOrientation(LinearLayout.VERTICAL);
+                        inst.setGravity(Gravity.START);
+                        inst.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                        TextView text = new TextView(this);
+                        text.setText(instructions.get(i));
+                        text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text.setTextSize(16);
+                        inst.addView(text);
+
+                        TextView text2 = new TextView(this);
+                        text2.setText(distances.get(i));
+                        text2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        inst.addView(text2);
+
+                        infoRow.addView(inst);
+                        layout.addView(infoRow);
                     }
                 }
 
@@ -267,12 +357,12 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                     TimeInfo arriveTimeInfo;
                     TimeInfo departureTimeInfo;
                     Line transitLine;
-                    String arrivalStopPointSTR;
-                    String departureStopPointSTR;
-                    String arrivalTime;
-                    String departureTime;
-                    String line;
-                    String line2;
+                    String arrivalStopPointSTR = "";
+                    String departureStopPointSTR = "";
+                    String arrivalTime = "";
+                    String departureTime = "";
+                    String line = "";
+                    String line2 = "";
 
                     for (int i = 0; i < leg.getStepList().size(); i++) {
                         step = leg.getStepList().get(i);
@@ -317,11 +407,38 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                             instructions.add("Take bus/train " + line + " " + line2 + " to " + arrivalStopPointSTR + " at " + departureStopPointSTR + " at " + departureTime);
                             instructions.add("You will arrive at " + arrivalStopPointSTR + " at " + arrivalTime);
                         }
+
+                        LinearLayout infoRow = new LinearLayout(this);
+
+                        TextView time = new TextView(this);
+                        time.setText(departureTime);
+                        time.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        infoRow.addView(time);
+
+                        LinearLayout inst = new LinearLayout(this);
+                        inst.setPadding(20, 0, 0, 0);
+                        inst.setOrientation(LinearLayout.VERTICAL);
+                        inst.setGravity(Gravity.START);
+                        inst.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                        TextView text = new TextView(this);
+                        text.setText(instructions.get(i));
+                        text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text.setTextSize(16);
+                        inst.addView(text);
+
+                        TextView text2 = new TextView(this);
+                        text2.setText(instructions.get(i+1));
+                        text2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        inst.addView(text2);
+
+                        infoRow.addView(inst);
+                        layout.addView(infoRow);
                     }
                 }
-                for (int i = 0; i < instructions.size(); i++) {
-                    Log.d("instr", instructions.get(i));
-                }
+//                for (int i = 0; i < instructions.size(); i++) {
+//                    Log.d("instr", instructions.get(i));
+//                }
             }
         }
     }
