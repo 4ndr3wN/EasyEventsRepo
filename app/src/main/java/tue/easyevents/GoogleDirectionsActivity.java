@@ -185,9 +185,9 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         destination = new LatLng(eventLa, eventLo);
 
         //set camera latitude in the middle of the origin and destination
-        cameraLat = (eventLa + la)/2;
+        cameraLat = la;
         //set camera longitude in the middle of the origin and destination
-        cameraLon = (eventLo + lo)/2;
+        cameraLon = lo;
 
         //set camera
         camera = new LatLng(cameraLat, cameraLon);
