@@ -70,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                android:text="@string/settings_title" />
+                android:text="@string/settings_title"
+                style="@style/easyText"/>
 
         </LinearLayout>
 
@@ -92,7 +93,8 @@
                     android:background="@drawable/btn_closebtn"
                     android:layout_gravity="right"
                     android:focusable="true"
-                    android:onClick="btn_close_settings"/>
+                    android:onClick="btn_close_settings"
+                    android:textColor="@color/colorGrey"/>
 
 
 
@@ -138,12 +140,14 @@
                         android:layout_height="wrap_content"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:text="@string/settings_time1" />
+                        android:text="@string/settings_time1"
+                        style="@style/easyText"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_time2" />
+                        android:text="@string/settings_time2"
+                        style="@style/easyText"/>
 
                 </LinearLayout>
 
@@ -167,7 +171,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:id="@+id/spinner_time" />
+                        android:id="@+id/spinner_time"
+                        android:textColor="@color/colorGrey"/>
 
                 </LinearLayout>
 
@@ -202,12 +207,14 @@
                         android:layout_height="wrap_content"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:text="@string/settings_range1" />
+                        android:text="@string/settings_range1"
+                        style="@style/easyText"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_range2" />
+                        android:text="@string/settings_range2"
+                        style="@style/easyText"/>
 
                 </LinearLayout>
 
@@ -257,22 +264,26 @@
                         android:layout_height="wrap_content"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:text="@string/settings_route1" />
+                        android:text="@string/settings_route1"
+                        style="@style/easyText"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_route2" />
+                        android:text="@string/settings_route2"
+                        style="@style/easyText"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="" />
+                        android:text=""
+                        style="@style/easyText"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_route5" />
+                        android:text="@string/settings_route5"
+                        style="@style/easyText"/>
 
                 </LinearLayout>
 
@@ -315,7 +326,8 @@
                         android:text="@string/save_text"
                         android:gravity="center"
                         android:layout_gravity="right"
-                        android:maxWidth="@dimen/btn_trans_maxWidth"/>
+                        android:maxWidth="@dimen/btn_trans_maxWidth"
+                        android:textColor="@color/colorGrey"/>
                 </LinearLayout>
 
             </LinearLayout>

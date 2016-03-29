@@ -434,6 +434,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                         TextView time = new TextView(this);
                         time.setText(durations.get(i));
                         time.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        time.setTextColor(getResources().getColor(R.color.colorGrey));
                         infoRow.addView(time);
 
                         LinearLayout inst = new LinearLayout(this);
@@ -446,11 +447,13 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                         text.setText(instructions.get(i));
                         text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         text.setTextSize(16);
+                        text.setTextColor(getResources().getColor(R.color.colorGrey));
                         inst.addView(text);
 
                         TextView text2 = new TextView(this);
                         text2.setText(distances.get(i));
                         text2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text2.setTextColor(getResources().getColor(R.color.colorGrey));
                         inst.addView(text2);
 
                         infoRow.addView(inst);

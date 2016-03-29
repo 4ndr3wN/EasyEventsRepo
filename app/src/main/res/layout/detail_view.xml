@@ -67,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                android:text="Event Name" />
+                android:text="Event Name"
+                style="@style/easyText"/>
 
 
         </LinearLayout>
@@ -90,7 +91,7 @@
                 android:background="@drawable/btn_closebtn"
                 android:layout_gravity="right"
                 android:focusable="true"
-                android:onClick="btn_close_detailview"/>
+                android:onClick="btn_close_detailview" />
 
         </LinearLayout>
 
@@ -157,27 +158,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:text="Feb 19, 2016" />
+                            android:text="Feb 19, 2016"
+                            style="@style/easyText"/>
 
                         <TextView
                             android:id="@+id/venue_name"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            style="@style/easyText"/>
 
                         <TextView
                             android:id="@+id/event_address"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            style="@style/easyText"/>
 
                         <TextView
                             android:id="@+id/event_city"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            style="@style/easyText"/>
 
                         <TextView
                             android:id="@+id/event_country"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            style="@style/easyText"/>
 
 
                     </LinearLayout>
@@ -194,7 +200,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ratings_1" />
+                            android:text="@string/ratings_1"
+                            style="@style/easyText"/>
 
                         <RatingBar
                             style="?android:attr/ratingBarStyleSmall"
@@ -205,7 +212,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ratings_2" />
+                            android:text="@string/ratings_2"
+                            style="@style/easyText"/>
 
                         <RatingBar
                             style="?android:attr/ratingBarStyleSmall"
@@ -216,7 +224,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ratings_3" />
+                            android:text="@string/ratings_3"
+                            style="@style/easyText"/>
 
                         <RatingBar
                             style="?android:attr/ratingBarStyleSmall"
@@ -249,7 +258,8 @@
                             android:id="@+id/btn_tickets"
                             android:text="@string/btn_tickets"
                             android:gravity="center"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorGrey"/>
 
 
                     </LinearLayout>
@@ -272,7 +282,8 @@
                             android:id="@+id/btn_detail_route"
                             android:background="@drawable/btn_pill"
                             android:gravity="center"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorGrey"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -309,13 +320,15 @@
                         android:layout_height="wrap_content"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:text="@string/event_details" />
+                        android:text="@string/event_details"
+                        style="@style/easyText"/>
 
                     <TextView
                         android:id="@+id/information_event"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/event_information_stock" />
+                        android:text="@string/event_information_stock"
+                        style="@style/easyText"/>
 
                 </LinearLayout>
 
