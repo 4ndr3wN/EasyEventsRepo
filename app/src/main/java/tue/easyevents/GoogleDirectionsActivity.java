@@ -91,7 +91,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.transport_view);
+        setContentView(R.layout.activity_transport_view);
 
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
