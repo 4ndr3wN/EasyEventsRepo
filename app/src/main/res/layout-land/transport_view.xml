@@ -67,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                android:text="Event Name" />
+                android:text="Event Name"
+                style="@style/easyText"/>
 
 
         </LinearLayout>
@@ -158,7 +159,8 @@
                             android:id="@+id/btn_tickets"
                             android:text="@string/PT"
                             android:gravity="center"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorGrey"/>
 
 
                     </LinearLayout>
@@ -181,7 +183,8 @@
                             android:id="@+id/btn_detail_route"
                             android:background="@drawable/btn_pill"
                             android:gravity="center"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorGrey"/>
 
                     </LinearLayout>
                 </LinearLayout>
