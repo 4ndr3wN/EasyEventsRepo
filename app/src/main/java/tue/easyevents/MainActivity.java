@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     public String lastMarkerClicked;
     public static String searchQuery = null;
     public static boolean alreadySearched = false;
+    public boolean usedLocation;
+    static final String PREVIOUS_SEARCH = "prev_search";
 
     LocationManager locationManager;
 
@@ -176,10 +179,12 @@ public class MainActivity extends AppCompatActivity
         //First if there is no search query, no search done yet, and a GPS location available,
         // we search by GPS location
         if(searchQuery == null && locationAvailable && !alreadySearched) {
+            usedLocation = true;
             search(true);
             alreadySearched = true;
         //Secondly, if there is a searchQuery and no search done yet, we search by the searchQuery
         } else if(searchQuery != null && !alreadySearched){
+            usedLocation = false;
             query = searchQuery;
             search(false);
             alreadySearched = true;
@@ -275,6 +280,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onQueryTextSubmit(String userQuery) {
                 //Clear lastMarkerClicked to prevent errors
                 lastMarkerClicked = null;
+                usedLocation = false;
 
                 //set query for geocoding API
                 query = userQuery;
@@ -303,8 +309,10 @@ public class MainActivity extends AppCompatActivity
             int id = Integer.parseInt(idString);
             Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
             intent.putExtra("eventIndex", id);
-            intent.putExtra("lat", lat);
-            intent.putExtra("lon", lon);
+            intent.putExtra("usedLocation", usedLocation);
+            if(!usedLocation){
+                intent.putExtra("query", query);
+            }
             startActivity(intent);
             return true;
         } else {
@@ -440,6 +448,10 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
+        intent.putExtra("usedLocation", usedLocation);
+        if(!usedLocation){
+            intent.putExtra("query", query);
+        }
         intent.putExtra("eventIndex", id);
         startActivity(intent);
 
@@ -642,4 +654,6 @@ public class MainActivity extends AppCompatActivity
         //Display Dialog
         dialog.show();
     }
+
+
 }

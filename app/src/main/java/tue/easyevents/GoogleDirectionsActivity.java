@@ -1,6 +1,8 @@
 package tue.easyevents;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -13,10 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.akexorcist.googledirection.DirectionCallback;
@@ -81,6 +86,8 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     public double hm;
     public String depart;
     public String eventTitle;
+    public String prevQuery;
+    public boolean usedLocation;
 
     //false for public transport, true for personal
     public Boolean personalTransport = true;
@@ -106,6 +113,11 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         longitudeLoc = intent.getStringExtra("eventLong");
         date = intent.getDoubleExtra("date", 0);
         eventTitle = intent.getStringExtra("title");
+
+        usedLocation = intent.getBooleanExtra("usedLocation", false);
+        if(!usedLocation){
+            prevQuery = intent.getStringExtra("prevQuery");
+        }
 
         TextView title = (TextView) findViewById(R.id.event_name);
         title.setText(eventTitle);
@@ -181,6 +193,97 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         camera = new LatLng(cameraLat, cameraLon);
 
         //TODO: find some way to set the zoom appropriately depending on the distance
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        //Make sure you can search from this activity as well
+        SearchView searchView = (SearchView) findViewById(R.id.search_events);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String userQuery) {
+
+                //Set the searchQuery variable in the main activity
+                MainActivity.searchQuery = userQuery;
+                MainActivity.alreadySearched = false;
+
+                Intent intent = new Intent(GoogleDirectionsActivity.this, MainActivity.class);
+                startActivity(intent);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return true;
+    }
+
+    public void btn_close_detailview(View v) {
+        /**
+         * Super class method back pressed, to get the original map activity back
+         *
+         * Need to change the onclick in the layout to refer to a different name.
+         */
+        super.onBackPressed();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_ptview) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(this, GoogleDirectionsActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        } else if (id == R.id.action_settings) {
+            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
+            //
+            Intent intent = new Intent(this, Settings_Activity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        } else if (id == R.id.action_about_us) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Chain together various setter methods to set the dialog characteristics
+            builder.setMessage(R.string.action_about_us_msg)
+                    .setTitle(R.string.action_about_us_title)
+                    .setPositiveButton(R.string.action_about_us_like, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE DEM MISSILES! A.K.A LIKE OUR APP
+                        }
+                    }).setNegativeButton(R.string.action_about_us_cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // CANCEL DIALOG
+                }
+            });
+            // Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            //Set AlertDialog background to our theme
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.pop_up);
+            //Display Dialog
+            dialog.show();
+
+
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -490,5 +593,18 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             }
             return null;
         }
+    }
+
+    //Home-icon takes you back to MainActivity
+    public void btn_home(View v) {
+        Intent intent = new Intent(GoogleDirectionsActivity.this, MainActivity.class);
+        if(usedLocation){
+            MainActivity.alreadySearched = false;
+            MainActivity.searchQuery = null;
+        } else {
+            MainActivity.alreadySearched = false;
+            MainActivity.searchQuery = prevQuery;
+        }
+        startActivity(intent);
     }
 }
