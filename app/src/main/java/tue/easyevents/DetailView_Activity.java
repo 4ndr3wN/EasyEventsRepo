@@ -34,6 +34,8 @@ public class DetailView_Activity extends AppCompatActivity {
     public String longitude;
     public String eventLat;
     public String eventLong;
+    public String prevQuery;
+    public boolean usedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,10 @@ public class DetailView_Activity extends AppCompatActivity {
         //Get the intent from the MainActivity, the int sent along with it is the index of the
         //requested event
         Intent intent = getIntent();
+        usedLocation = intent.getBooleanExtra("usedLocation", false);
+        if(!usedLocation){
+            prevQuery = intent.getStringExtra("query");
+        }
         int eventIndex = intent.getIntExtra("eventIndex", 0);
         latitude = intent.getStringExtra("lat");
         longitude = intent.getStringExtra("lon");
@@ -126,6 +132,10 @@ public class DetailView_Activity extends AppCompatActivity {
                 double d = date.getTime();
                 intent.putExtra("date", d);
                 intent.putExtra("title", detailEvent.titleEvent);
+                intent.putExtra("usedLocation", usedLocation);
+                if (!usedLocation){
+                    intent.putExtra("prevQuery", prevQuery);
+                }
 
                 startActivity(intent);
             }
