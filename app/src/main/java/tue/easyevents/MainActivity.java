@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
             outputFile(FILENAME, string);
         }
 
-        //For searching from different screens we need to have four different cases.
+        //For searching from different screens we need to have three different cases.
         //First if there is no search query, no search done yet, and a GPS location available,
         // we search by GPS location
         if(searchQuery == null && locationAvailable && !alreadySearched) {
@@ -188,17 +188,6 @@ public class MainActivity extends AppCompatActivity
             query = searchQuery;
             search(false);
             alreadySearched = true;
-        //Thirdly, if there is no searchQuery, no search done yet but no location available we
-        // should search by saved location;
-        } else if(searchQuery == null && !alreadySearched && !locationAvailable){
-            try{
-                query = openFileInput("address_file").toString();
-            } catch (FileNotFoundException e) {
-                query = "Amsterdam";
-                e.printStackTrace();
-            }
-            search(false);
-
         }
         //Finally, if there has already been searched, we should not search again, so nothing happens
 
