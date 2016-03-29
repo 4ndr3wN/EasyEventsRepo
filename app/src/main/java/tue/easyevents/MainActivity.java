@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity
             } else{
                 locationAvailable = false;
             }
-
         } else {
             //permission already granted
             //get location :)
@@ -118,7 +117,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -134,8 +132,6 @@ public class MainActivity extends AppCompatActivity
         //ORIGINAL: R.id.nav_view, had to bechanged due to the new wrapping NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_itemlist);
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
         //check for fileoutput files
         try {
@@ -175,19 +171,25 @@ public class MainActivity extends AppCompatActivity
             outputFile(FILENAME, string);
         }
 
-        //For searching from different screens we need to have three different cases.
+        //For searching from different screens we need to have four different cases.
         //First if there is no search query, no search done yet, and a GPS location available,
         // we search by GPS location
         if(searchQuery == null && locationAvailable && !alreadySearched) {
             usedLocation = true;
             search(true);
             alreadySearched = true;
-        //Secondly, if there is a searchQuery and no search done yet, we search by the searchQuery
+            //Secondly, if there is a searchQuery and no search done yet, we search by the searchQuery
         } else if(searchQuery != null && !alreadySearched){
             usedLocation = false;
             query = searchQuery;
             search(false);
             alreadySearched = true;
+            //Thirdly, if there is no searchQuery, no search done yet but no location available we
+            // should search by saved location;
+        } else if(searchQuery == null && !alreadySearched && !locationAvailable){
+            query = inputFile("address_file");
+            search(false);
+
         }
         //Finally, if there has already been searched, we should not search again, so nothing happens
 
@@ -420,14 +422,14 @@ public class MainActivity extends AppCompatActivity
             builder.setMessage(R.string.action_about_us_msg)
                     .setTitle(R.string.action_about_us_title)
                     .setPositiveButton(R.string.action_about_us_like, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                        public void onClick(DialogInterface dialog, int id) {
                             // FIRE DEM MISSILES! A.K.A LIKE OUR APP
-                            }
+                        }
                     }).setNegativeButton(R.string.action_about_us_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                            // CANCEL DIALOG
-                            }
-                    });
+                public void onClick(DialogInterface dialog, int id) {
+                    // CANCEL DIALOG
+                }
+            });
             // Get the AlertDialog from create()
             AlertDialog dialog = builder.create();
             //Set AlertDialog background to our theme
@@ -471,7 +473,7 @@ public class MainActivity extends AppCompatActivity
                 events = EventfulAPI.searchEvents(geoCodedLocation, from, to, range);
                 //Updating the UI cannot be done in the background, so we run on UI thread
                 runOnUiThread(new Runnable() {
-                @Override
+                    @Override
                     public void run() {
                         StringTokenizer st = new StringTokenizer(geoCodedLocation, ",");
                         try{

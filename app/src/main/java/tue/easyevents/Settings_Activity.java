@@ -261,14 +261,7 @@ public class Settings_Activity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_ptview) {
-            //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
-            Intent intent = new Intent(this, GoogleDirectionsActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        } else if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
             //
             Intent intent = new Intent(this, Settings_Activity.class);
