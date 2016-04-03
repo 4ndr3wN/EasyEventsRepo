@@ -42,7 +42,7 @@ public class OpenWeatherAPI {
 
 
     /**
-     * Search for the weatherforecast at the location of the event
+     * Search for the weather forecast at the location and time of the event
      * @param latitude
      * @param longitude
      * @return An arraylist of the weather forecast from now
@@ -55,11 +55,11 @@ public class OpenWeatherAPI {
         InputStream in = null;
         int ratingWeather = 0;
 
-        //Coordinaten van event locations
+        //Coordinates of the event location
         String locationSearch = "lat=" + latitude + "&lon=" +  longitude;
         String searchAddress = baseAdress + locationSearch + "&mode=xml" + appid;
 
-//        String searchAddress = "http://api.openweathermap.org/data/2.5/forecast?lat=32.746682&lon=-117.162741&mode=xml&appid=0dfcf6d089af67d15ee8bcb4221b55c9";
+        //Here we connect to the API
         try {
             HttpURLConnection connect = getHttpConnection(searchAddress);
             in = connect.getInputStream();
@@ -72,6 +72,8 @@ public class OpenWeatherAPI {
             NodeList nodeList = doc.getElementsByTagName("time");
             String icon = "xx";
 
+            //Find the weather forecast within 3 hours of the event start time
+            //This is the closest we can get the forecast
             for (int i = 0; i < nodeList.getLength(); i++) {
                 if(nodeList.item(i) != null){
                     Node node = nodeList.item(i);
@@ -91,8 +93,7 @@ public class OpenWeatherAPI {
                 }
             }
 
-            //Openweather geeft icoontjes per categorie
-            //Hieronder staat de rating die ik per icoontje toepasselijk vond
+            //Openweather returns icons for each weather type, so we process those into a rating
             if(icon.equalsIgnoreCase("xx")){
                 ratingWeather = 0;
             }

@@ -56,7 +56,7 @@ public class EventfulAPI {
      * @return An arraylist of events fitting the criteria
      */
 
-    // Add this in as input for implementing categories: ArrayList<String> cat
+
     public static ArrayList<Event> searchEvents(String latLong, String from, String to, int range)
             throws ConnectException{
 
@@ -68,9 +68,6 @@ public class EventfulAPI {
                 "&units=km&include=categories,links&page_size=25" + "&within=" + range;
         String searchAddress = baseAddress + "/search?..." + searchParameters +
                 "&sort_order=popularity&sort_direction=descending" + appKey;
-
-        //We log the search address for testing purposes
-        Log.d("Address", searchAddress);
 
         //Here the connection is made with the API and the generated searchAddress
         try {

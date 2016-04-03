@@ -38,12 +38,6 @@ public class Settings_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         //go-up-pijltje die het doet ook al is parent niet specified
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //go-up-pijltje die het alleen doet als parent specified is
-        //getSupportActionBar().setHomeButtonEnabled(true); //laat nu dus niets zien! Want is niet specified
-        //go-up-pijltje veranderen in eigen drawable
-        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_arrow);
-        //getSupportActionBar().setDisplayOptions();
-
 
         // Code for dropdowns, see settings_view.xml for instructions on how to use
         // or check: http://developer.android.com/guide/topics/ui/controls/spinner.html
@@ -52,6 +46,7 @@ public class Settings_Activity extends AppCompatActivity {
                 R.array.time_array, android.R.layout.simple_spinner_item);
         adapter_time.setDropDownViewResource(R.layout.dropdown_layouts);
         spinner_time.setAdapter(adapter_time);
+        //Check what the previous setting was, set the spinner to the right position
         String data = inputFile("time_file");
         if(data.equals("Today")){
             spinner_time.setSelection(0);
@@ -80,6 +75,7 @@ public class Settings_Activity extends AppCompatActivity {
                 R.array.range_array, android.R.layout.simple_spinner_item);
         adapter_range.setDropDownViewResource(R.layout.dropdown_layouts);
         spinner_range.setAdapter(adapter_range);
+        //Check what the previous setting was, set the spinner to the right position
         data = inputFile("range_file");
         if(data.equals("5 km")){
             spinner_range.setSelection(0);
@@ -93,6 +89,7 @@ public class Settings_Activity extends AppCompatActivity {
             spinner_range.setSelection(4);
         }
 
+        //When an item is selected in the spinner, store that value
         spinner_range.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -107,6 +104,7 @@ public class Settings_Activity extends AppCompatActivity {
             }
         });
 
+        //See what address has been stored, change the editText hint to that value.
         data = inputFile("address_file");
         final EditText addressText = (EditText) findViewById(R.id.editText_Home);
         addressText.setHint(data);
@@ -124,6 +122,7 @@ public class Settings_Activity extends AppCompatActivity {
             }
         });
 
+        //See if GPS starting location was selected, set the checkbox accordingly
         data = inputFile("GPSCheck");
         CheckBox gpsCheck = (CheckBox) findViewById(R.id.checkBox_GPS);
         if(data.equals("1")){
@@ -148,7 +147,7 @@ public class Settings_Activity extends AppCompatActivity {
 
     }
 
-    //Reads the input file with specified file_name
+    //Reads the input file with specified file_name and returns the string value
     public String inputFile(String file_name) {
         String saved = "";
         String read;
@@ -172,6 +171,7 @@ public class Settings_Activity extends AppCompatActivity {
         return saved;
     }
 
+    //Stores the string data in the file with name file_name
     public void outputFile(String file_name, String data){
 
         FileOutputStream fos = null;

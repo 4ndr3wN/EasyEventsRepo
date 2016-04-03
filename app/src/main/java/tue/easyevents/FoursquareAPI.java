@@ -60,11 +60,6 @@ public class FoursquareAPI {
         String searchAddress = baseAddress + "search?" + apiKey + searchParameters;
         int likesVenue = -1;
 
-
-        //We log the search address for testing purposes
-        Log.d("Address", searchAddress);
-
-
         //Here the connection is made with the API and the generated searchAddress
         try {
             HttpURLConnection connect = getHttpConnection(searchAddress);
@@ -90,6 +85,7 @@ public class FoursquareAPI {
             if(venues.length()>0){
                 JSONObject venue = venues.getJSONObject(0);
                 String id = venue.getString("id");
+                //Call likesVenue with the id of the requested venue
                 likesVenue = getVenueLikes(id);
             }
         //Error handling
@@ -106,6 +102,7 @@ public class FoursquareAPI {
 
         String searchAddress = baseAddress + id + "?" + apiKey;
 
+        //Here we connect to the API
         try {
 
             HttpURLConnection connect = getHttpConnection(searchAddress);
@@ -124,6 +121,7 @@ public class FoursquareAPI {
             }
             result = sb.toString();
 
+            //Get the likes count from the JSONObject
             JSONObject jObject = new JSONObject(result);
             JSONObject response = jObject.getJSONObject("response");
             JSONObject venue = response.getJSONObject("venue");

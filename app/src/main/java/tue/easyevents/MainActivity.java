@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         //USER LOCATION
+        //If we don't have permission, request permission
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            //TODO: take standard location from settings
-            //TODO: OR if that is not there take the location of the searched city
+            //If permission is granted, we still search
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED){
                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        //Initialize the map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -121,7 +122,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         //Make drawer dark fading colour transparent
@@ -129,11 +131,12 @@ public class MainActivity extends AppCompatActivity
         //dat go-up-pijltje eindelijk uitgezet, hoera!
         toolbar.setNavigationIcon(null);
 
-        //ORIGINAL: R.id.nav_view, had to bechanged due to the new wrapping NavigationView
+        //ORIGINAL: R.id.nav_view, had to be changed due to the new wrapping NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_itemlist);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //check for fileoutput files
+        //check for setting files
+        //For each file we check if it is already available, if not we create a new file
         try {
             openFileInput("time_file");
         } catch (FileNotFoundException e) {
@@ -192,20 +195,6 @@ public class MainActivity extends AppCompatActivity
 
         }
         //Finally, if there has already been searched, we should not search again, so nothing happens
-
-        //Check if this is the first time the user has opened the app
-        try {
-            openFileInput("FirstTimeStart");
-        } catch (FileNotFoundException e) {
-            //Create the FirstTimeStart file so the next time this error will not be thrown
-            String FILENAME = "FirstTimeStart";
-            String string = "Nope";
-            outputFile(FILENAME, string);
-            //Create the overlay manual
-            //http://stackoverflow.com/questions/18476088/how-do-i-create-the-semi-transparent-grey-tutorial-overlay-in-android This seems useful
-
-            errorMessage("This is the first time running the app!");
-        }
     }
 
     @Override
@@ -244,6 +233,7 @@ public class MainActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(this);
     }
 
+    //This method adds a marker to the map
     public void addMarker(Double latitude, Double longitude, String title, String id) {
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
@@ -261,6 +251,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Override the default back action by checking if the drawer is open and if it is, close it
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -306,7 +297,10 @@ public class MainActivity extends AppCompatActivity
 
         marker.showInfoWindow();
 
+        //If a marker is clicked twice, open the detailView
         if (marker.getSnippet().equals(lastMarkerClicked)) {
+            //Clear lastMarkerClicked to prevent errors
+            lastMarkerClicked = null;
             String idString = marker.getSnippet();
             int id = Integer.parseInt(idString);
             Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
@@ -336,6 +330,7 @@ public class MainActivity extends AppCompatActivity
 
         String saved_time = inputFile("time_file");
 
+        //Set the search period based on the time setting stored.
         if (saved_time.equals("Today")) {
             to = date;
         } else if (saved_time.equals("Weekend")) {
@@ -354,6 +349,7 @@ public class MainActivity extends AppCompatActivity
 
         String saved_range = inputFile("range_file");
 
+        //Set the search radius based on the radius setting stored
         if (saved_range.equals("5 km")) {
             range = 5;
         } else if (saved_range.equals("10 km")) {
@@ -378,7 +374,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //Reads the input file with specified file_name
+    //Reads the input file with specified file_name and returns the stored string.
     public String inputFile(String file_name) {
         String saved = "";
         String read;
@@ -447,7 +443,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        //On clicking an item from the list, we open the detailView with the right information.
         int id = item.getItemId();
         Intent intent = new Intent(MainActivity.this, DetailView_Activity.class);
         intent.putExtra("usedLocation", usedLocation);

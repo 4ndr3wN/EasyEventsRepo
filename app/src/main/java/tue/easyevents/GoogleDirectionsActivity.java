@@ -1,19 +1,14 @@
 package tue.easyevents;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +18,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
@@ -42,9 +36,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -54,44 +45,74 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class GoogleDirectionsActivity extends AppCompatActivity implements OnMapReadyCallback, DirectionCallback {
+public class GoogleDirectionsActivity extends AppCompatActivity
+        implements OnMapReadyCallback, DirectionCallback {
+
     private GoogleMap googleMap;
     private String serverKey = "AIzaSyDc-zOLX34KkiohWYfd0JOmlfbEGv2VT9M";
+
     //change preferably according to center of origin and destination
     private LatLng camera;
+
     //change according to origin for directions
     private LatLng origin;
+
     //change according to destination (location of event)
     private LatLng destination;
 
-    String latitude;
-    String longitude;
-    double la;
-    double lo;
+    //get from intent, latitude of user
+    public String latitude;
 
+    //get from intent, longitude of user
+    public String longitude;
+
+    //get from intent, event location latitude
     public String latitudeLoc;
+
+    //get from intent, event location longitude
     public String longitudeLoc;
-    public double eventLa;
-    public double eventLo;
-    public String standardLoc;
-    public String userLoc;
-    public double cameraLat;
-    public double cameraLon;
-    public Boolean go = false;
-    public Boolean pt = false;
-    public Boolean car = false;
-    public double date;
-    public Boolean firstRequest = true;
-    public String totalDuration;
-    public double hm;
+
+    //departure time of public transport
     public String depart;
+
+    //when not using user location, this is the standard location to find routes from
+    public String standardLoc;
+
+    //check if the "use location" checkbox is set in the settings
+    public String userLoc;
+
+    //total duration of the route find
+    public String totalDuration;
+
     public String eventTitle;
     public String prevQuery;
+
+    //doubles to parse the string above to doubles so that they can be used in API calls
+    public double eventLa;
+    public double eventLo;
+    public double la;
+    public double lo;
+    public double cameraLat;
+    public double cameraLon;
+    public double date;
+    public double hm; //hours + minutes of the duration of the route
+
+    //wait for API to finish geocoding
+    public Boolean go = false;
+
+    //requested public transport or car route
+    public Boolean pt = false;
+    public Boolean car = false;
+
+    public Boolean firstRequest = true;
+
+    //boolean that keeps track if we used the user location or not
     public boolean usedLocation;
 
     //false for public transport, true for personal
     public Boolean personalTransport = true;
 
+    //linear layout used to add the transport information programmatically
     public LinearLayout layout;
 
     @Override
@@ -102,10 +123,12 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
 
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
+        //layout
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //get values from previous activity
         Intent intent = getIntent();
         latitude = intent.getStringExtra("lat");
         longitude = intent.getStringExtra("lon");
@@ -113,12 +136,12 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         longitudeLoc = intent.getStringExtra("eventLong");
         date = intent.getDoubleExtra("date", 0);
         eventTitle = intent.getStringExtra("title");
-
         usedLocation = intent.getBooleanExtra("usedLocation", false);
-        if(!usedLocation){
+        if (!usedLocation) {
             prevQuery = intent.getStringExtra("prevQuery");
         }
 
+        //layout
         TextView title = (TextView) findViewById(R.id.event_name);
         title.setText(eventTitle);
 
@@ -146,8 +169,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             }
         });
 
-
-
         //check settings for standard origin (user location or different address)
         //see if the "use location" checkbox is checked
         //if so, set la and lo to the users latitude and longitude
@@ -163,7 +184,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             new GeoCode().execute();
 
             while (!go) {
-                //wait
+                //wait for GeoCoding API to finish
             }
 
             //split up geocoded location
@@ -171,32 +192,32 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             String oriLat = str.nextElement().toString();
             String oriLon = str.nextElement().toString();
 
-            //parse oriLat and oriLon to double
+            //parse la and lo to double
             la = Double.parseDouble(oriLat);
             lo = Double.parseDouble(oriLon);
         }
+
         //set origin LatLng according to above if-else clause
         origin = new LatLng(la, lo);
 
+        //parse eventLa and eventLo to double
         eventLa = Double.parseDouble(latitudeLoc);
         eventLo = Double.parseDouble(longitudeLoc);
 
         //set destination LatLng
         destination = new LatLng(eventLa, eventLo);
 
-        //set camera latitude in the middle of the origin and destination
+        //set camera latitude
         cameraLat = la;
-        //set camera longitude in the middle of the origin and destination
+        //set camera longitude
         cameraLon = lo;
-
         //set camera
         camera = new LatLng(cameraLat, cameraLon);
-
-        //TODO: find some way to set the zoom appropriately depending on the distance
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
@@ -225,13 +246,9 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
     }
 
     public void btn_close_detailview(View v) {
-        /**
-         * Super class method back pressed, to get the original map activity back
-         *
-         * Need to change the onclick in the layout to refer to a different name.
-         */
+         //Super class method back pressed, to get the original map activity back
+         //Need to change the onclick in the layout to refer to a different name.
         super.onBackPressed();
-
     }
 
     @Override
@@ -244,7 +261,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             //Intent intent = new Intent(MainActivity.this,Settings_Activity.class);
-            //
             Intent intent = new Intent(this, Settings_Activity.class);
             startActivity(intent);
             finish();
@@ -255,11 +271,13 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             // Chain together various setter methods to set the dialog characteristics
             builder.setMessage(R.string.action_about_us_msg)
                     .setTitle(R.string.action_about_us_title)
-                    .setPositiveButton(R.string.action_about_us_like, new DialogInterface.OnClickListener() {
+                    .setPositiveButton
+                            (R.string.action_about_us_like, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // FIRE DEM MISSILES! A.K.A LIKE OUR APP
                         }
-                    }).setNegativeButton(R.string.action_about_us_cancel, new DialogInterface.OnClickListener() {
+                    }).setNegativeButton
+                    (R.string.action_about_us_cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // CANCEL DIALOG
                 }
@@ -270,22 +288,20 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.pop_up);
             //Display Dialog
             dialog.show();
-
-
             return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        //TODO: find some way to set the zoom appropriately depending on the distance
+        //set zoom of the camera/map
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, 9));
 
-        //TODO: pass a parameter to this activity/fragment indicating public or personal transport
+        //public transport or personal transport
+        //initialized to personal transport, can be used to start with public transport by passing
+        //a parameter to this class, using the intent
         if (personalTransport) {
             car = true;
             requestDirectionDriving();
@@ -295,6 +311,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
         }
     }
 
+    //request the directions for personal transport
     public void requestDirectionDriving() {
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
@@ -303,6 +320,7 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 .execute(this);
     }
 
+    //request the directions for public transport
     public void requestDirectionPublic() {
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
@@ -311,6 +329,8 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 .execute(this);
     }
 
+    //request the directions for personal transport, this time using a departure time set so that
+    //the event will be reached on time
     public void requestDirectionDriving2() {
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
@@ -320,6 +340,8 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 .execute(this);
     }
 
+    //request the directions for public transport, this time using a departure time set so that
+    //the event will be reached on time
     public void requestDirectionPublic2() {
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
@@ -331,21 +353,22 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
 
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
-        //String testStatus;
         String instruction;
         String duration;
         String distance;
         String minutes;
         String hours;
-        //testStatus = direction.getStatus();
-        //Log.d("TestStatus", testStatus);
 
+        //if this is the first request, all we want is to find the total duration of the route
+        //then we can calculate the departure time accordingly and request the route again
+        //using the departure time set so that the event is reached in time
         if(firstRequest) {
             if (direction.isOK()) {
                 Route route = direction.getRouteList().get(0);
                 Leg leg = route.getLegList().get(0);
                 totalDuration = leg.getDuration().getText();
 
+                //split up the totalDuration string
                 StringTokenizer str = new StringTokenizer(totalDuration);
                 hours = str.nextElement().toString();
                 str.nextElement();
@@ -369,11 +392,13 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                 //divide by 1000 to get seconds for Google API
                 date = (date - hm) /1000;
 
+                //cast the date to long, so that it does not get put into scientific notation
                 long d = (long) date;
 
+                //get the value in a string, so that we can pass it to the API
                 depart = Long.toString(d);
 
-                //Log.d("depart", depart);
+                //depending on car or public transport, request the route again
                 if(car) {
                     firstRequest = false;
                     requestDirectionDriving2();
@@ -382,28 +407,38 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                     requestDirectionPublic2();
                 }
             }
+            //on the second request we get the route and show it on the map
         } else if (!firstRequest) {
-
+            //we only do something is the direction status returned by google is OK
             if (direction.isOK()) {
+                //add markers on the origin and destination
                 googleMap.addMarker(new MarkerOptions().position(origin));
                 googleMap.addMarker(new MarkerOptions().position(destination));
 
-                ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
-                googleMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.RED));
+                //add the red line that shows the route on the map
+                ArrayList<LatLng> directionPositionList =
+                        direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
+                googleMap.addPolyline(DirectionConverter.createPolyline
+                        (this, directionPositionList, 5, Color.RED));
 
+                //get the route, leg, and step
                 Route route = direction.getRouteList().get(0);
                 Leg leg = route.getLegList().get(0);
                 Step step;
 
+                //ArrayLists used to save information before displaying it in the layout
                 ArrayList<String> instructions = new ArrayList<>();
                 ArrayList<String> durations = new ArrayList<>();
                 ArrayList<String> distances = new ArrayList<>();
-                ArrayList<String> times = new ArrayList<>();
 
                 //add layouts
                 layout = (LinearLayout) findViewById(R.id.info_layout);
 
+                //requested a personal transport direction
                 if (car) {
+                    //for each step in the leg get the instructions
+                    //strip some HTML tags from it and save it to the arraylist
+                    //also save the distance and duration
                     for (int i = 0; i < leg.getStepList().size(); i++) {
                         step = leg.getStepList().get(i);
                         instruction = step.getHtmlInstruction();
@@ -412,48 +447,66 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                         instruction = instruction.replace("<div style=\"font-size:0.9em\">", "");
                         instruction = instruction.replace("</div>", "");
                         instructions.add(instruction);
+
                         distance = step.getDistance().getText();
                         distances.add(distance);
 
                         duration = step.getDuration().getText();
                         durations.add(duration);
 
+                        //adding layouts to display the instructions
                         LinearLayout infoRow = new LinearLayout(this);
 
+                        //every other row should have a different background color
                         if( i % 2 == 1) {
-                            infoRow.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient_light));
+                            infoRow.setBackground(ContextCompat.getDrawable
+                                    (this, R.drawable.gradient_light));
                         }
 
+                        //textview that will display the duration of this instruction
                         TextView time = new TextView(this);
                         time.setText(durations.get(i));
-                        time.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        time.setLayoutParams(new ViewGroup.LayoutParams
+                                        (ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                ViewGroup.LayoutParams.WRAP_CONTENT));
                         time.setTextColor(getResources().getColor(R.color.colorGrey));
                         infoRow.addView(time);
 
+                        //layout that will hold two textviews
                         LinearLayout inst = new LinearLayout(this);
                         inst.setPadding(20, 0, 0, 0);
                         inst.setOrientation(LinearLayout.VERTICAL);
                         inst.setGravity(Gravity.START);
-                        inst.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        inst.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
 
+                        //textview that will display the instruction
                         TextView text = new TextView(this);
                         text.setText(instructions.get(i));
-                        text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
                         text.setTextSize(16);
                         text.setTextColor(getResources().getColor(R.color.colorGrey));
                         inst.addView(text);
 
+                        //textview that will display the distance of this instruction
                         TextView text2 = new TextView(this);
                         text2.setText(distances.get(i));
-                        text2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text2.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
                         text2.setTextColor(getResources().getColor(R.color.colorGrey));
                         inst.addView(text2);
 
+                        //add the layouts to make them visible
                         infoRow.addView(inst);
                         layout.addView(infoRow);
                     }
                 }
 
+                //requested a public transport direction
                 if (pt) {
                     StopPoint arrivalStopPoint;
                     TransitDetail transitDetail;
@@ -468,94 +521,121 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
                     String line = "";
                     String line2 = "";
 
+                    //for each step see if the travel mode is walking or transit
+                    //accordingly set values
                     for (int i = 0; i < leg.getStepList().size(); i++) {
                         step = leg.getStepList().get(i);
 
+                        //travel mode is walking
                         if (step.getTravelMode().equals("WALKING")) {
+                            //get HTML instructions and strip the tags
                             instruction = step.getHtmlInstruction();
                             instruction = instruction.replace("<b>", "");
                             instruction = instruction.replace("</b>", "");
                             instruction = instruction.replace("<div style=\"font-size:0.9em\">", "");
                             instruction = instruction.replace("</div>", "");
+
+                            //add the instruction to the arraylist
                             instructions.add(instruction);
+
+                            //add the distance
                             distance = step.getDistance().getText();
                             distances.add(distance);
 
+                            //add the duration
                             duration = step.getDuration().getText();
                             durations.add(duration);
                         }
 
+                        //travelmode is public transport
                         if (step.getTravelMode().equals("TRANSIT")) {
+                            //get the transit information
                             transitDetail = step.getTransitDetail();
+
+                            //get the arrival stop point, and set it
                             arrivalStopPoint = transitDetail.getArrivalStopPoint();
                             arrivalStopPointSTR = arrivalStopPoint.getName();
-                            //Log.d("test1", arrivalStopPointSTR);
 
+                            //get the departure stop point and set it
                             departureStopPoint = transitDetail.getDepartureStopPoint();
                             departureStopPointSTR = departureStopPoint.getName();
-                            //Log.d("test2", departureStopPointSTR);
 
+                            //get the arrival time and set it
                             arriveTimeInfo = transitDetail.getArrivalTime();
                             arrivalTime = arriveTimeInfo.getText();
-                            //Log.d("time", arrivalTime);
 
+                            //get the departure tiem and set it
                             departureTimeInfo = transitDetail.getDepartureTime();
                             departureTime = departureTimeInfo.getText();
-                            //Log.d("time2", departureTime);
 
+                            //get the transit line and set it (together with its short name/number)
                             transitLine = transitDetail.getLine();
                             line = transitLine.getShortName();
-                            //Log.d("line2", line);
                             line2 = transitLine.getName();
 
-                            instructions.add("Take bus/train " + line + " " + line2 + " to " + arrivalStopPointSTR + " at " + departureStopPointSTR + " at " + departureTime);
-                            instructions.add("You will arrive at " + arrivalStopPointSTR + " at " + arrivalTime);
+                            //add the instructions
+                            instructions.add("Take bus/train " + line + " " + line2 + " to " +
+                                    arrivalStopPointSTR + " at " + departureStopPointSTR + " at " +
+                                    departureTime);
+                            instructions.add("You will arrive at " + arrivalStopPointSTR + " at " +
+                                    arrivalTime);
                         }
 
+                        //add layouts
                         LinearLayout infoRow = new LinearLayout(this);
 
+                        //textview that displays the duration
                         TextView time = new TextView(this);
                         time.setText(departureTime);
-                        time.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        time.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
                         infoRow.addView(time);
 
+                        //layout that holds the two textviews below
                         LinearLayout inst = new LinearLayout(this);
                         inst.setPadding(20, 0, 0, 0);
                         inst.setOrientation(LinearLayout.VERTICAL);
                         inst.setGravity(Gravity.START);
-                        inst.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        inst.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
 
+                        //textview that displays the instruction
                         TextView text = new TextView(this);
                         text.setText(instructions.get(i));
-                        text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
                         text.setTextSize(16);
                         inst.addView(text);
 
+                        //textview that displays the next instruction
                         TextView text2 = new TextView(this);
                         text2.setText(instructions.get(i+1));
-                        text2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        text2.setLayoutParams(new ViewGroup.LayoutParams
+                                (ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
                         inst.addView(text2);
 
+                        //add the layouts to make them visible
                         infoRow.addView(inst);
                         layout.addView(infoRow);
                     }
                 }
-//                for (int i = 0; i < instructions.size(); i++) {
-//                    Log.d("instr", instructions.get(i));
-//                }
             }
         }
     }
 
     @Override
     public void onDirectionFailure(Throwable t) {
-        //nog niks
-        Log.d("KAPOT", "WAAROM WERKT HET NIET");
+        //do nothing
     }
 
     public String inputFile(String file_name) {
         String saved = "";
         String read;
+
         //check for fileinput files
         try {
             FileInputStream fis = openFileInput(file_name);
@@ -578,7 +658,6 @@ public class GoogleDirectionsActivity extends AppCompatActivity implements OnMap
 
     //use an Asynchronous Task to do the GeoCodingAPI and EventfulAPI calls
     public class GeoCode extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... params) {
             try {

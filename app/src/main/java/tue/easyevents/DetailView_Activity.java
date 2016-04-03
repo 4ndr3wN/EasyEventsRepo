@@ -119,6 +119,7 @@ public class DetailView_Activity extends AppCompatActivity {
             }
         });
 
+        //Make sure the routeButton opens the transportView
         routeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 eventLat = detailEvent.eventLatitude;
